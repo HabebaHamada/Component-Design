@@ -1,0 +1,939 @@
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\M   11-10-2022  17:40:19        PAGE  1
+
+
+LOC    OBJECT CODE    LINE  SOURCE TEXT
+  VALUE
+
+                      00001 ;--------------------------------------------------------
+                      00002 ; File Created by SDCC : free open source ANSI-C Compiler
+                      00003 ; Version 3.5.0 #9253 (Jun 20 2015) (MINGW64)
+                      00004 ; This file was generated Thu Nov 10 17:40:19 2022
+                      00005 ;--------------------------------------------------------
+                      00006 ; PIC port for the 14-bit core
+                      00007 ;--------------------------------------------------------
+                      00008 ;       .file   "MODE_int.c"
+                      00009         list    p=16f877a
+                      00010         radix dec
+                      00011         include "p16f877a.inc"
+                      00001         LIST
+                      00002 
+                      00003 ;==========================================================================
+                      00004 ; Build date : Aug 07 2014
+                      00005 ;  MPASM PIC16F877A processor include
+                      00006 ; 
+                      00007 ;  (c) Copyright 1999-2014 Microchip Technology, All rights reserved
+                      00008 ;==========================================================================
+                      00009 
+                      00567         LIST
+                      00012 ;--------------------------------------------------------
+                      00013 ; external declarations
+                      00014 ;--------------------------------------------------------
+  0000                00015         extern  _TIF_vidInit
+  0000                00016         extern  _TIF_vidTask
+  0000                00017         extern  _TIF_vidSetMode
+  0000                00018         extern  _HIF_vidInit
+  0000                00019         extern  _HIF_vidTask
+  0000                00020         extern  _HIF_vidSetMode
+  0000                00021         extern  _DIO_u8ReadChannel
+  0000                00022         extern  _DIO_vidWriteChannel
+  0000                00023         extern  _DIO_vidWritePort
+  0000                00024         extern  _PBD_vidInit
+  0000                00025         extern  _PBD_vidTask
+  0000                00026         extern  _PBD_enuGetButtonState
+                      00027 
+  0000                00028         extern PSAVE
+  0000                00029         extern SSAVE
+  0000                00030         extern WSAVE
+  0000                00031         extern STK12
+  0000                00032         extern STK11
+  0000                00033         extern STK10
+  0000                00034         extern STK09
+  0000                00035         extern STK08
+  0000                00036         extern STK07
+  0000                00037         extern STK06
+  0000                00038         extern STK05
+  0000                00039         extern STK04
+  0000                00040         extern STK03
+  0000                00041         extern STK02
+  0000                00042         extern STK01
+  0000                00043         extern STK00
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\M   11-10-2022  17:40:19        PAGE  2
+
+
+LOC    OBJECT CODE    LINE  SOURCE TEXT
+  VALUE
+
+                      00044 ;--------------------------------------------------------
+                      00045 ; global declarations
+                      00046 ;--------------------------------------------------------
+  0000                00047         global  _MODE_vidTask
+  0000                00048         global  _MODE_vidInit
+                      00049 
+                      00050 ;--------------------------------------------------------
+                      00051 ; global definitions
+                      00052 ;--------------------------------------------------------
+                      00053 ;--------------------------------------------------------
+                      00054 ; absolute symbol definitions
+                      00055 ;--------------------------------------------------------
+                      00056 ;--------------------------------------------------------
+                      00057 ; compiler-defined variables
+                      00058 ;--------------------------------------------------------
+                      00059 UDL_MODE_int_0  udata
+0000                  00060 r0x1002 res     1
+0001                  00061 r0x1003 res     1
+0002                  00062 r0x1004 res     1
+0003                  00063 _ModeState      res     1
+0004                  00064 _MODE_vidTask_PreviousState_1_18        res     1
+                      00065 ;--------------------------------------------------------
+                      00066 ; initialized data
+                      00067 ;--------------------------------------------------------
+                      00068 ;--------------------------------------------------------
+                      00069 ; overlayable items in internal ram 
+                      00070 ;--------------------------------------------------------
+                      00071 ;       udata_ovr
+                      00072 ;--------------------------------------------------------
+                      00073 ; code
+                      00074 ;--------------------------------------------------------
+                      00075 code_MODE_int   code
+                      00076 ;***
+                      00077 ;  pBlock Stats: dbName = C
+                      00078 ;***
+                      00079 ;entry:  _MODE_vidTask  ;Function start
+                      00080 ; 2 exit points
+                      00081 ;has an exit
+                      00082 ;functions called:
+                      00083 ;   _PBD_enuGetButtonState
+                      00084 ;   _PBD_enuGetButtonState
+                      00085 ;   _PBD_enuGetButtonState
+                      00086 ;   _HIF_vidSetMode
+                      00087 ;   _TIF_vidSetMode
+                      00088 ;   _HIF_vidSetMode
+                      00089 ;   _TIF_vidSetMode
+                      00090 ;   _HIF_vidSetMode
+                      00091 ;   _TIF_vidSetMode
+                      00092 ;   _HIF_vidSetMode
+                      00093 ;   _TIF_vidSetMode
+                      00094 ;   _PBD_enuGetButtonState
+                      00095 ;   _PBD_enuGetButtonState
+                      00096 ;   _PBD_enuGetButtonState
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\M   11-10-2022  17:40:19        PAGE  3
+
+
+LOC    OBJECT CODE    LINE  SOURCE TEXT
+  VALUE
+
+                      00097 ;   _HIF_vidSetMode
+                      00098 ;   _TIF_vidSetMode
+                      00099 ;   _HIF_vidSetMode
+                      00100 ;   _TIF_vidSetMode
+                      00101 ;   _HIF_vidSetMode
+                      00102 ;   _TIF_vidSetMode
+                      00103 ;   _HIF_vidSetMode
+                      00104 ;   _TIF_vidSetMode
+                      00105 ;3 compiler assigned registers:
+                      00106 ;   r0x1002
+                      00107 ;   r0x1003
+                      00108 ;   r0x1004
+                      00109 ;; Starting pCode block
+0000                  00110 _MODE_vidTask   ;Function start
+                      00111 ; 2 exit points
+                      00112 ;       .line   36; "MODE_int.c"        PBD_tenuButtonId ButtonStateDown = PBD_enuGetButtonState(PBD_BUT
+                            TON_STEP_DOWN);
+0000   3000           00113         MOVLW   0x00
+0001   ???? ????      00114         PAGESEL _PBD_enuGetButtonState
+0003   2???           00115         CALL    _PBD_enuGetButtonState
+0004   ???? ????      00116         PAGESEL $
+0006   ???? ????      00117         BANKSEL r0x1002
+0008   00??           00118         MOVWF   r0x1002
+                      00119 ;       .line   37; "MODE_int.c"        PBD_tenuButtonId ButtonStateUP = PBD_enuGetButtonState(PBD_BUTTO
+                            N_STEP_UP);
+0009   3001           00120         MOVLW   0x01
+000A   ???? ????      00121         PAGESEL _PBD_enuGetButtonState
+000C   2???           00122         CALL    _PBD_enuGetButtonState
+000D   ???? ????      00123         PAGESEL $
+000F   ???? ????      00124         BANKSEL r0x1003
+0011   00??           00125         MOVWF   r0x1003
+                      00126 ;       .line   38; "MODE_int.c"        PBD_tenuButtonId ButtonStateHazzard = PBD_enuGetButtonState(PBD_
+                            BUTTON_HAZZARD);
+0012   3002           00127         MOVLW   0x02
+0013   ???? ????      00128         PAGESEL _PBD_enuGetButtonState
+0015   2???           00129         CALL    _PBD_enuGetButtonState
+0016   ???? ????      00130         PAGESEL $
+0018   ???? ????      00131         BANKSEL r0x1004
+001A   00??           00132         MOVWF   r0x1004
+                      00133 ;;swapping arguments (AOP_TYPEs 1/3)
+                      00134 ;;unsigned compare: left >= lit(0x4=4), size=1
+                      00135 ;       .line   42; "MODE_int.c"        switch(ModeState)
+001B   3004           00136         MOVLW   0x04
+001C   ???? ????      00137         BANKSEL _ModeState
+001E   02??           00138         SUBWF   _ModeState,W
+001F   1803           00139         BTFSC   STATUS,0
+0020   2???           00140         GOTO    _00146_DS_
+                      00141 ;;genSkipc:3247: created from rifx:00000000047558B0
+0021   30??           00142         MOVLW   HIGH(_00188_DS_)
+0022   1283 1303      00143         BANKSEL PCLATH
+0024   008A           00144         MOVWF   PCLATH
+0025   30??           00145         MOVLW   _00188_DS_
+0026   ???? ????      00146         BANKSEL _ModeState
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\M   11-10-2022  17:40:19        PAGE  4
+
+
+LOC    OBJECT CODE    LINE  SOURCE TEXT
+  VALUE
+
+0028   07??           00147         ADDWF   _ModeState,W
+0029   1C03           00148         BTFSS   STATUS,0
+002A   2???           00149         GOTO    _00001_DS_
+002B   1283 1303      00150         BANKSEL PCLATH
+002D   0A8A           00151         INCF    PCLATH,F
+002E                  00152 _00001_DS_
+002E   0082           00153         MOVWF   PCL
+002F                  00154 _00188_DS_
+002F   2???           00155         GOTO    _00109_DS_
+0030   2???           00156         GOTO    _00127_DS_
+0031   2???           00157         GOTO    _00118_DS_
+0032   2???           00158         GOTO    _00136_DS_
+0033                  00159 _00109_DS_
+                      00160 ;       .line   45; "MODE_int.c"        if(ButtonStateDown == PBD_PUSHED)
+0033   ???? ????      00161         BANKSEL r0x1002
+0035   08??           00162         MOVF    r0x1002,W
+0036   3A01           00163         XORLW   0x01
+0037   1D03           00164         BTFSS   STATUS,2
+0038   2???           00165         GOTO    _00116_DS_
+                      00166 ;       .line   47; "MODE_int.c"        ModeState = LEFT_BLINK;
+0039   3002           00167         MOVLW   0x02
+003A   ???? ????      00168         BANKSEL _ModeState
+003C   00??           00169         MOVWF   _ModeState
+003D   2???           00170         GOTO    _00117_DS_
+003E                  00171 _00116_DS_
+                      00172 ;       .line   49; "MODE_int.c"        else if(ButtonStateUP == PBD_PUSHED)
+003E   ???? ????      00173         BANKSEL r0x1003
+0040   08??           00174         MOVF    r0x1003,W
+0041   3A01           00175         XORLW   0x01
+0042   1D03           00176         BTFSS   STATUS,2
+0043   2???           00177         GOTO    _00113_DS_
+                      00178 ;       .line   51; "MODE_int.c"        ModeState = RIGHT_BLINK;
+0044   3001           00179         MOVLW   0x01
+0045   ???? ????      00180         BANKSEL _ModeState
+0047   00??           00181         MOVWF   _ModeState
+0048   2???           00182         GOTO    _00117_DS_
+0049                  00183 _00113_DS_
+                      00184 ;       .line   53; "MODE_int.c"        else if(ButtonStateHazzard == PBD_PUSHED)
+0049   ???? ????      00185         BANKSEL r0x1004
+004B   08??           00186         MOVF    r0x1004,W
+004C   3A01           00187         XORLW   0x01
+004D   1D03           00188         BTFSS   STATUS,2
+004E   2???           00189         GOTO    _00117_DS_
+                      00190 ;       .line   55; "MODE_int.c"        PreviousState = IDLE;
+004F   ???? ????      00191         BANKSEL _MODE_vidTask_PreviousState_1_18
+0051   01??           00192         CLRF    _MODE_vidTask_PreviousState_1_18
+                      00193 ;       .line   56; "MODE_int.c"        ModeState = HAZZARD_BLINK;
+0052   3003           00194         MOVLW   0x03
+0053   ???? ????      00195         BANKSEL _ModeState
+0055   00??           00196         MOVWF   _ModeState
+0056                  00197 _00117_DS_
+                      00198 ;       .line   62; "MODE_int.c"        HIF_vidSetMode(HIF_OFF_MODE);
+0056   3000           00199         MOVLW   0x00
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\M   11-10-2022  17:40:19        PAGE  5
+
+
+LOC    OBJECT CODE    LINE  SOURCE TEXT
+  VALUE
+
+0057   ???? ????      00200         PAGESEL _HIF_vidSetMode
+0059   2???           00201         CALL    _HIF_vidSetMode
+005A   ???? ????      00202         PAGESEL $
+                      00203 ;       .line   63; "MODE_int.c"        TIF_vidSetMode(TIF_OFF_MODE);
+005C   3000           00204         MOVLW   0x00
+005D   ???? ????      00205         PAGESEL _TIF_vidSetMode
+005F   2???           00206         CALL    _TIF_vidSetMode
+0060   ???? ????      00207         PAGESEL $
+                      00208 ;       .line   65; "MODE_int.c"        break;
+0062   2???           00209         GOTO    _00146_DS_
+0063                  00210 _00118_DS_
+                      00211 ;       .line   68; "MODE_int.c"        if(ButtonStateUP == PBD_PUSHED)
+0063   ???? ????      00212         BANKSEL r0x1003
+0065   08??           00213         MOVF    r0x1003,W
+0066   3A01           00214         XORLW   0x01
+0067   1D03           00215         BTFSS   STATUS,2
+0068   2???           00216         GOTO    _00125_DS_
+                      00217 ;       .line   70; "MODE_int.c"        ModeState = IDLE;
+0069   ???? ????      00218         BANKSEL _ModeState
+006B   01??           00219         CLRF    _ModeState
+006C   2???           00220         GOTO    _00126_DS_
+006D                  00221 _00125_DS_
+                      00222 ;       .line   72; "MODE_int.c"        else if(ButtonStateDown == PBD_PUSHED)
+006D   ???? ????      00223         BANKSEL r0x1002
+006F   08??           00224         MOVF    r0x1002,W
+0070   3A01           00225         XORLW   0x01
+0071   1D03           00226         BTFSS   STATUS,2
+0072   2???           00227         GOTO    _00122_DS_
+                      00228 ;       .line   74; "MODE_int.c"        ModeState = LEFT_BLINK;
+0073   3002           00229         MOVLW   0x02
+0074   ???? ????      00230         BANKSEL _ModeState
+0076   00??           00231         MOVWF   _ModeState
+0077   2???           00232         GOTO    _00126_DS_
+0078                  00233 _00122_DS_
+                      00234 ;       .line   76; "MODE_int.c"        else if(ButtonStateHazzard == PBD_PUSHED)
+0078   ???? ????      00235         BANKSEL r0x1004
+007A   08??           00236         MOVF    r0x1004,W
+007B   3A01           00237         XORLW   0x01
+007C   1D03           00238         BTFSS   STATUS,2
+007D   2???           00239         GOTO    _00126_DS_
+                      00240 ;       .line   78; "MODE_int.c"        PreviousState = LEFT_BLINK;
+007E   3002           00241         MOVLW   0x02
+007F   ???? ????      00242         BANKSEL _MODE_vidTask_PreviousState_1_18
+0081   00??           00243         MOVWF   _MODE_vidTask_PreviousState_1_18
+                      00244 ;       .line   79; "MODE_int.c"        ModeState = HAZZARD_BLINK;
+0082   3003           00245         MOVLW   0x03
+0083   ???? ????      00246         BANKSEL _ModeState
+0085   00??           00247         MOVWF   _ModeState
+0086                  00248 _00126_DS_
+                      00249 ;       .line   85; "MODE_int.c"        HIF_vidSetMode(HIF_OFF_MODE);
+0086   3000           00250         MOVLW   0x00
+0087   ???? ????      00251         PAGESEL _HIF_vidSetMode
+0089   2???           00252         CALL    _HIF_vidSetMode
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\M   11-10-2022  17:40:19        PAGE  6
+
+
+LOC    OBJECT CODE    LINE  SOURCE TEXT
+  VALUE
+
+008A   ???? ????      00253         PAGESEL $
+                      00254 ;       .line   86; "MODE_int.c"        TIF_vidSetMode(TIF_LEFT_BLINK_MODE);
+008C   3002           00255         MOVLW   0x02
+008D   ???? ????      00256         PAGESEL _TIF_vidSetMode
+008F   2???           00257         CALL    _TIF_vidSetMode
+0090   ???? ????      00258         PAGESEL $
+                      00259 ;       .line   88; "MODE_int.c"        break;
+0092   2???           00260         GOTO    _00146_DS_
+0093                  00261 _00127_DS_
+                      00262 ;       .line   90; "MODE_int.c"        if(ButtonStateUP == PBD_PUSHED)
+0093   ???? ????      00263         BANKSEL r0x1003
+0095   08??           00264         MOVF    r0x1003,W
+0096   3A01           00265         XORLW   0x01
+0097   1D03           00266         BTFSS   STATUS,2
+0098   2???           00267         GOTO    _00134_DS_
+                      00268 ;       .line   92; "MODE_int.c"        ModeState = RIGHT_BLINK;
+0099   3001           00269         MOVLW   0x01
+009A   ???? ????      00270         BANKSEL _ModeState
+009C   00??           00271         MOVWF   _ModeState
+009D   2???           00272         GOTO    _00135_DS_
+009E                  00273 _00134_DS_
+                      00274 ;       .line   94; "MODE_int.c"        else if(ButtonStateDown == PBD_PUSHED)
+009E   ???? ????      00275         BANKSEL r0x1002
+00A0   08??           00276         MOVF    r0x1002,W
+00A1   3A01           00277         XORLW   0x01
+00A2   1D03           00278         BTFSS   STATUS,2
+00A3   2???           00279         GOTO    _00131_DS_
+                      00280 ;       .line   96; "MODE_int.c"        ModeState = IDLE;
+00A4   ???? ????      00281         BANKSEL _ModeState
+00A6   01??           00282         CLRF    _ModeState
+00A7   2???           00283         GOTO    _00135_DS_
+00A8                  00284 _00131_DS_
+                      00285 ;       .line   98; "MODE_int.c"        else if(ButtonStateHazzard == PBD_PUSHED)
+00A8   ???? ????      00286         BANKSEL r0x1004
+00AA   08??           00287         MOVF    r0x1004,W
+00AB   3A01           00288         XORLW   0x01
+00AC   1D03           00289         BTFSS   STATUS,2
+00AD   2???           00290         GOTO    _00135_DS_
+                      00291 ;       .line   100; "MODE_int.c"       PreviousState = RIGHT_BLINK;
+00AE   3001           00292         MOVLW   0x01
+00AF   ???? ????      00293         BANKSEL _MODE_vidTask_PreviousState_1_18
+00B1   00??           00294         MOVWF   _MODE_vidTask_PreviousState_1_18
+                      00295 ;       .line   101; "MODE_int.c"       ModeState = HAZZARD_BLINK;
+00B2   3003           00296         MOVLW   0x03
+00B3   ???? ????      00297         BANKSEL _ModeState
+00B5   00??           00298         MOVWF   _ModeState
+00B6                  00299 _00135_DS_
+                      00300 ;       .line   107; "MODE_int.c"       HIF_vidSetMode(HIF_OFF_MODE);
+00B6   3000           00301         MOVLW   0x00
+00B7   ???? ????      00302         PAGESEL _HIF_vidSetMode
+00B9   2???           00303         CALL    _HIF_vidSetMode
+00BA   ???? ????      00304         PAGESEL $
+                      00305 ;       .line   108; "MODE_int.c"       TIF_vidSetMode(TIF_RIGHT_BLINK_MODE);
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\M   11-10-2022  17:40:19        PAGE  7
+
+
+LOC    OBJECT CODE    LINE  SOURCE TEXT
+  VALUE
+
+00BC   3001           00306         MOVLW   0x01
+00BD   ???? ????      00307         PAGESEL _TIF_vidSetMode
+00BF   2???           00308         CALL    _TIF_vidSetMode
+00C0   ???? ????      00309         PAGESEL $
+                      00310 ;       .line   110; "MODE_int.c"       break;
+00C2   2???           00311         GOTO    _00146_DS_
+00C3                  00312 _00136_DS_
+                      00313 ;       .line   112; "MODE_int.c"       if(ButtonStateUP == PBD_PUSHED)
+00C3   ???? ????      00314         BANKSEL r0x1003
+00C5   08??           00315         MOVF    r0x1003,W
+00C6   3A01           00316         XORLW   0x01
+00C7   1D03           00317         BTFSS   STATUS,2
+00C8   2???           00318         GOTO    _00143_DS_
+                      00319 ;       .line   114; "MODE_int.c"       ModeState = HAZZARD_BLINK;
+00C9   3003           00320         MOVLW   0x03
+00CA   ???? ????      00321         BANKSEL _ModeState
+00CC   00??           00322         MOVWF   _ModeState
+00CD   2???           00323         GOTO    _00144_DS_
+00CE                  00324 _00143_DS_
+                      00325 ;       .line   116; "MODE_int.c"       else if(ButtonStateDown == PBD_PUSHED)
+00CE   ???? ????      00326         BANKSEL r0x1002
+00D0   08??           00327         MOVF    r0x1002,W
+00D1   3A01           00328         XORLW   0x01
+00D2   1D03           00329         BTFSS   STATUS,2
+00D3   2???           00330         GOTO    _00140_DS_
+                      00331 ;       .line   118; "MODE_int.c"       ModeState = HAZZARD_BLINK;
+00D4   3003           00332         MOVLW   0x03
+00D5   ???? ????      00333         BANKSEL _ModeState
+00D7   00??           00334         MOVWF   _ModeState
+00D8   2???           00335         GOTO    _00144_DS_
+00D9                  00336 _00140_DS_
+                      00337 ;       .line   120; "MODE_int.c"       else if(ButtonStateHazzard == PBD_PUSHED)
+00D9   ???? ????      00338         BANKSEL r0x1004
+00DB   08??           00339         MOVF    r0x1004,W
+00DC   3A01           00340         XORLW   0x01
+00DD   1D03           00341         BTFSS   STATUS,2
+00DE   2???           00342         GOTO    _00144_DS_
+                      00343 ;       .line   122; "MODE_int.c"       ModeState = PreviousState;
+00DF   ???? ????      00344         BANKSEL _MODE_vidTask_PreviousState_1_18
+00E1   08??           00345         MOVF    _MODE_vidTask_PreviousState_1_18,W
+00E2   ???? ????      00346         BANKSEL _ModeState
+00E4   00??           00347         MOVWF   _ModeState
+00E5                  00348 _00144_DS_
+                      00349 ;       .line   128; "MODE_int.c"       HIF_vidSetMode(HIF_ON_MODE);
+00E5   3001           00350         MOVLW   0x01
+00E6   ???? ????      00351         PAGESEL _HIF_vidSetMode
+00E8   2???           00352         CALL    _HIF_vidSetMode
+00E9   ???? ????      00353         PAGESEL $
+                      00354 ;       .line   129; "MODE_int.c"       TIF_vidSetMode(TIF_OFF_MODE);
+00EB   3000           00355         MOVLW   0x00
+00EC   ???? ????      00356         PAGESEL _TIF_vidSetMode
+00EE   2???           00357         CALL    _TIF_vidSetMode
+00EF   ???? ????      00358         PAGESEL $
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\M   11-10-2022  17:40:19        PAGE  8
+
+
+LOC    OBJECT CODE    LINE  SOURCE TEXT
+  VALUE
+
+00F1                  00359 _00146_DS_
+                      00360 ;       .line   133; "MODE_int.c"       }
+00F1   0008           00361         RETURN  
+                      00362 ; exit point of _MODE_vidTask
+                      00363 
+                      00364 ;***
+                      00365 ;  pBlock Stats: dbName = C
+                      00366 ;***
+                      00367 ;entry:  _MODE_vidInit  ;Function start
+                      00368 ; 2 exit points
+                      00369 ;has an exit
+                      00370 ;functions called:
+                      00371 ;   _HIF_vidSetMode
+                      00372 ;   _TIF_vidSetMode
+                      00373 ;   _HIF_vidSetMode
+                      00374 ;   _TIF_vidSetMode
+                      00375 ;; Starting pCode block
+00F2                  00376 _MODE_vidInit   ;Function start
+                      00377 ; 2 exit points
+                      00378 ;       .line   25; "MODE_int.c"        ModeState = IDLE;
+00F2   ???? ????      00379         BANKSEL _ModeState
+00F4   01??           00380         CLRF    _ModeState
+                      00381 ;       .line   29; "MODE_int.c"        HIF_vidSetMode(HIF_UNDEFINED_MODE);
+00F5   3002           00382         MOVLW   0x02
+00F6   ???? ????      00383         PAGESEL _HIF_vidSetMode
+00F8   2???           00384         CALL    _HIF_vidSetMode
+00F9   ???? ????      00385         PAGESEL $
+                      00386 ;       .line   30; "MODE_int.c"        TIF_vidSetMode(TIF_UNDEFINED_MODE);
+00FB   3003           00387         MOVLW   0x03
+00FC   ???? ????      00388         PAGESEL _TIF_vidSetMode
+00FE   2???           00389         CALL    _TIF_vidSetMode
+00FF   ???? ????      00390         PAGESEL $
+0101   0008           00391         RETURN  
+                      00392 ; exit point of _MODE_vidInit
+                      00393 
+                      00394 
+                      00395 ;       code size estimation:
+                      00396 ;         134+   62 =   196 instructions (  516 byte)
+                      00397 
+                      00398         end
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\M   11-10-2022  17:40:19        PAGE  9
+
+
+SYMBOL TABLE
+  LABEL                             VALUE
+
+ACKDT                             00000005
+ACKEN                             00000004
+ACKSTAT                           00000006
+ADCON0                            0000001F
+ADCON1                            0000009F
+ADCS0                             00000006
+ADCS1                             00000007
+ADCS2                             00000006
+ADDEN                             00000003
+ADFM                              00000007
+ADIE                              00000006
+ADIF                              00000006
+ADON                              00000000
+ADRESH                            0000001E
+ADRESL                            0000009E
+BCLIE                             00000003
+BCLIF                             00000003
+BF                                00000000
+BRGH                              00000002
+C                                 00000000
+C1INV                             00000004
+C1OUT                             00000006
+C2INV                             00000005
+C2OUT                             00000007
+CCP1CON                           00000017
+CCP1IE                            00000002
+CCP1IF                            00000002
+CCP1M0                            00000000
+CCP1M1                            00000001
+CCP1M2                            00000002
+CCP1M3                            00000003
+CCP1X                             00000005
+CCP1Y                             00000004
+CCP2CON                           0000001D
+CCP2IE                            00000000
+CCP2IF                            00000000
+CCP2M0                            00000000
+CCP2M1                            00000001
+CCP2M2                            00000002
+CCP2M3                            00000003
+CCP2X                             00000005
+CCP2Y                             00000004
+CCPR1                             00000015
+CCPR1H                            00000016
+CCPR1L                            00000015
+CCPR2                             0000001B
+CCPR2H                            0000001C
+CCPR2L                            0000001B
+CHS0                              00000003
+CHS1                              00000004
+CHS2                              00000005
+CIS                               00000003
+CKE                               00000006
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\M   11-10-2022  17:40:19        PAGE 10
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+CKP                               00000004
+CM0                               00000000
+CM1                               00000001
+CM2                               00000002
+CMCON                             0000009C
+CMIE                              00000006
+CMIF                              00000006
+CREN                              00000004
+CSRC                              00000007
+CVR0                              00000000
+CVR1                              00000001
+CVR2                              00000002
+CVR3                              00000003
+CVRCON                            0000009D
+CVREN                             00000007
+CVROE                             00000006
+CVRR                              00000005
+D                                 00000005
+DATA_ADDRESS                      00000005
+DC                                00000001
+D_A                               00000005
+D_NOT_A                           00000005
+EEADR                             0000010D
+EEADRH                            0000010F
+EECON1                            0000018C
+EECON2                            0000018D
+EEDATA                            0000010C
+EEDATH                            0000010E
+EEIE                              00000004
+EEIF                              00000004
+EEPGD                             00000007
+F                                 00000001
+FERR                              00000002
+FSR                               00000004
+GCEN                              00000007
+GIE                               00000007
+GO                                00000002
+GO_DONE                           00000002
+GO_NOT_DONE                       00000002
+I2C_DATA                          00000005
+I2C_READ                          00000002
+I2C_START                         00000003
+I2C_STOP                          00000004
+IBF                               00000007
+IBOV                              00000005
+INDF                              00000000
+INTCON                            0000000B
+INTE                              00000004
+INTEDG                            00000006
+INTF                              00000001
+IRP                               00000007
+NOT_A                             00000005
+NOT_ADDRESS                       00000005
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\M   11-10-2022  17:40:19        PAGE 11
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+NOT_BO                            00000000
+NOT_BOR                           00000000
+NOT_DONE                          00000002
+NOT_PD                            00000003
+NOT_POR                           00000001
+NOT_RBPU                          00000007
+NOT_RC8                           00000006
+NOT_T1SYNC                        00000002
+NOT_TO                            00000004
+NOT_TX8                           00000006
+NOT_W                             00000002
+NOT_WRITE                         00000002
+OBF                               00000006
+OERR                              00000001
+OPTION_REG                        00000081
+P                                 00000004
+PCFG0                             00000000
+PCFG1                             00000001
+PCFG2                             00000002
+PCFG3                             00000003
+PCL                               00000002
+PCLATH                            0000000A
+PCON                              0000008E
+PEIE                              00000006
+PEN                               00000002
+PIE1                              0000008C
+PIE2                              0000008D
+PIR1                              0000000C
+PIR2                              0000000D
+PORTA                             00000005
+PORTB                             00000006
+PORTC                             00000007
+PORTD                             00000008
+PORTE                             00000009
+PR2                               00000092
+PS0                               00000000
+PS1                               00000001
+PS2                               00000002
+PSA                               00000003
+PSAVE                             00000000
+PSPIE                             00000007
+PSPIF                             00000007
+PSPMODE                           00000004
+R                                 00000002
+RA0                               00000000
+RA1                               00000001
+RA2                               00000002
+RA3                               00000003
+RA4                               00000004
+RA5                               00000005
+RB0                               00000000
+RB1                               00000001
+RB2                               00000002
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\M   11-10-2022  17:40:19        PAGE 12
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+RB3                               00000003
+RB4                               00000004
+RB5                               00000005
+RB6                               00000006
+RB7                               00000007
+RBIE                              00000003
+RBIF                              00000000
+RC0                               00000000
+RC1                               00000001
+RC2                               00000002
+RC3                               00000003
+RC4                               00000004
+RC5                               00000005
+RC6                               00000006
+RC7                               00000007
+RC8_9                             00000006
+RC9                               00000006
+RCD8                              00000000
+RCEN                              00000003
+RCIE                              00000005
+RCIF                              00000005
+RCREG                             0000001A
+RCSTA                             00000018
+RD                                00000000
+RD0                               00000000
+RD1                               00000001
+RD2                               00000002
+RD3                               00000003
+RD4                               00000004
+RD5                               00000005
+RD6                               00000006
+RD7                               00000007
+RE0                               00000000
+RE1                               00000001
+RE2                               00000002
+READ_WRITE                        00000002
+RP0                               00000005
+RP1                               00000006
+RSEN                              00000001
+RX9                               00000006
+RX9D                              00000000
+R_NOT_W                           00000002
+R_W                               00000002
+S                                 00000003
+SEN                               00000000
+SMP                               00000007
+SPBRG                             00000099
+SPEN                              00000007
+SREN                              00000005
+SSAVE                             00000000
+SSPADD                            00000093
+SSPBUF                            00000013
+SSPCON                            00000014
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\M   11-10-2022  17:40:19        PAGE 13
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+SSPCON2                           00000091
+SSPEN                             00000005
+SSPIE                             00000003
+SSPIF                             00000003
+SSPM0                             00000000
+SSPM1                             00000001
+SSPM2                             00000002
+SSPM3                             00000003
+SSPOV                             00000006
+SSPSTAT                           00000094
+STATUS                            00000003
+STK00                             00000000
+STK01                             00000000
+STK02                             00000000
+STK03                             00000000
+STK04                             00000000
+STK05                             00000000
+STK06                             00000000
+STK07                             00000000
+STK08                             00000000
+STK09                             00000000
+STK10                             00000000
+STK11                             00000000
+STK12                             00000000
+SYNC                              00000004
+T0CS                              00000005
+T0IE                              00000005
+T0IF                              00000002
+T0SE                              00000004
+T1CKPS0                           00000004
+T1CKPS1                           00000005
+T1CON                             00000010
+T1INSYNC                          00000002
+T1OSCEN                           00000003
+T1SYNC                            00000002
+T2CKPS0                           00000000
+T2CKPS1                           00000001
+T2CON                             00000012
+TMR0                              00000001
+TMR0IE                            00000005
+TMR0IF                            00000002
+TMR1                              0000000E
+TMR1CS                            00000001
+TMR1H                             0000000F
+TMR1IE                            00000000
+TMR1IF                            00000000
+TMR1L                             0000000E
+TMR1ON                            00000000
+TMR2                              00000011
+TMR2IE                            00000001
+TMR2IF                            00000001
+TMR2ON                            00000002
+TOUTPS0                           00000003
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\M   11-10-2022  17:40:19        PAGE 14
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+TOUTPS1                           00000004
+TOUTPS2                           00000005
+TOUTPS3                           00000006
+TRISA                             00000085
+TRISA0                            00000000
+TRISA1                            00000001
+TRISA2                            00000002
+TRISA3                            00000003
+TRISA4                            00000004
+TRISA5                            00000005
+TRISB                             00000086
+TRISB0                            00000000
+TRISB1                            00000001
+TRISB2                            00000002
+TRISB3                            00000003
+TRISB4                            00000004
+TRISB5                            00000005
+TRISB6                            00000006
+TRISB7                            00000007
+TRISC                             00000087
+TRISC0                            00000000
+TRISC1                            00000001
+TRISC2                            00000002
+TRISC3                            00000003
+TRISC4                            00000004
+TRISC5                            00000005
+TRISC6                            00000006
+TRISC7                            00000007
+TRISD                             00000088
+TRISD0                            00000000
+TRISD1                            00000001
+TRISD2                            00000002
+TRISD3                            00000003
+TRISD4                            00000004
+TRISD5                            00000005
+TRISD6                            00000006
+TRISD7                            00000007
+TRISE                             00000089
+TRISE0                            00000000
+TRISE1                            00000001
+TRISE2                            00000002
+TRMT                              00000001
+TX8_9                             00000006
+TX9                               00000006
+TX9D                              00000000
+TXD8                              00000000
+TXEN                              00000005
+TXIE                              00000004
+TXIF                              00000004
+TXREG                             00000019
+TXSTA                             00000098
+UA                                00000001
+W                                 00000000
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\M   11-10-2022  17:40:19        PAGE 15
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+WCOL                              00000007
+WR                                00000001
+WREN                              00000002
+WRERR                             00000003
+WSAVE                             00000000
+Z                                 00000002
+_00001_DS_                        0000002E
+_00109_DS_                        00000033
+_00113_DS_                        00000049
+_00116_DS_                        0000003E
+_00117_DS_                        00000056
+_00118_DS_                        00000063
+_00122_DS_                        00000078
+_00125_DS_                        0000006D
+_00126_DS_                        00000086
+_00127_DS_                        00000093
+_00131_DS_                        000000A8
+_00134_DS_                        0000009E
+_00135_DS_                        000000B6
+_00136_DS_                        000000C3
+_00140_DS_                        000000D9
+_00143_DS_                        000000CE
+_00144_DS_                        000000E5
+_00146_DS_                        000000F1
+_00188_DS_                        0000002F
+_BODEN_OFF                        00003FBF
+_BODEN_ON                         00003FFF
+_BOREN_OFF                        00003FBF
+_BOREN_ON                         00003FFF
+_CONFIG                           00002007
+_CPD_OFF                          00003FFF
+_CPD_ON                           00003EFF
+_CP_ALL                           00001FFF
+_CP_OFF                           00003FFF
+_CP_ON                            00001FFF
+_DEBUG_OFF                        00003FFF
+_DEBUG_ON                         000037FF
+_DEVID1                           00002006
+_DIO_u8ReadChannel                00000000
+_DIO_vidWriteChannel              00000000
+_DIO_vidWritePort                 00000000
+_FOSC_EXTRC                       00003FFF
+_FOSC_HS                          00003FFE
+_FOSC_LP                          00003FFC
+_FOSC_XT                          00003FFD
+_HIF_vidInit                      00000000
+_HIF_vidSetMode                   00000000
+_HIF_vidTask                      00000000
+_HS_OSC                           00003FFE
+_IDLOC0                           00002000
+_IDLOC1                           00002001
+_IDLOC2                           00002002
+_IDLOC3                           00002003
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\M   11-10-2022  17:40:19        PAGE 16
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+_LP_OSC                           00003FFC
+_LVP_OFF                          00003F7F
+_LVP_ON                           00003FFF
+_MODE_vidInit                     000000F2
+_MODE_vidTask                     00000000
+_MODE_vidTask_PreviousState_1_18  00000004
+_ModeState                        00000003
+_PBD_enuGetButtonState            00000000
+_PBD_vidInit                      00000000
+_PBD_vidTask                      00000000
+_PWRTE_OFF                        00003FFF
+_PWRTE_ON                         00003FF7
+_RC_OSC                           00003FFF
+_TIF_vidInit                      00000000
+_TIF_vidSetMode                   00000000
+_TIF_vidTask                      00000000
+_WDTE_OFF                         00003FFB
+_WDTE_ON                          00003FFF
+_WDT_OFF                          00003FFB
+_WDT_ON                           00003FFF
+_WRT_1FOURTH                      00003BFF
+_WRT_256                          00003DFF
+_WRT_HALF                         000039FF
+_WRT_OFF                          00003FFF
+_XT_OSC                           00003FFD
+__16F877A                         00000001
+__CODE_END                        00001FFF
+__CODE_START                      00000000
+__COMMON_RAM_END                  0000007F
+__COMMON_RAM_START                00000070
+__EEPROM_END                      000021FF
+__EEPROM_START                    00002100
+__VECTOR_INT                      00000004
+__VECTOR_RESET                    00000000
+_code_MODE_int_0004               00000004
+_code_MODE_int_000D               0000000D
+_code_MODE_int_0016               00000016
+_code_MODE_int_005A               0000005A
+_code_MODE_int_0060               00000060
+_code_MODE_int_008A               0000008A
+_code_MODE_int_0090               00000090
+_code_MODE_int_00BA               000000BA
+_code_MODE_int_00C0               000000C0
+_code_MODE_int_00E9               000000E9
+_code_MODE_int_00EF               000000EF
+_code_MODE_int_00F9               000000F9
+_code_MODE_int_00FF               000000FF
+r0x1002                           00000000
+r0x1003                           00000001
+r0x1004                           00000002
+
+Errors   :     0
+Warnings :     0 reported,     0 suppressed
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\M   11-10-2022  17:40:19        PAGE 17
+
+
+
+
+Messages :     0 reported,     0 suppressed
+
+

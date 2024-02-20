@@ -1,0 +1,970 @@
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\s   11-10-2022  14:55:39        PAGE  1
+
+
+LOC    OBJECT CODE    LINE  SOURCE TEXT
+  VALUE
+
+                      00001 ;--------------------------------------------------------
+                      00002 ; File Created by SDCC : free open source ANSI-C Compiler
+                      00003 ; Version 3.5.0 #9253 (Jun 20 2015) (MINGW64)
+                      00004 ; This file was generated Thu Nov 10 14:55:39 2022
+                      00005 ;--------------------------------------------------------
+                      00006 ; PIC port for the 14-bit core
+                      00007 ;--------------------------------------------------------
+                      00008 ;       .file   "sched_prg.c"
+                      00009         list    p=16f877a
+                      00010         radix dec
+                      00011         include "p16f877a.inc"
+                      00001         LIST
+                      00002 
+                      00003 ;==========================================================================
+                      00004 ; Build date : Aug 07 2014
+                      00005 ;  MPASM PIC16F877A processor include
+                      00006 ; 
+                      00007 ;  (c) Copyright 1999-2014 Microchip Technology, All rights reserved
+                      00008 ;==========================================================================
+                      00009 
+                      00567         LIST
+                      00012 ;--------------------------------------------------------
+                      00013 ; external declarations
+                      00014 ;--------------------------------------------------------
+  0000                00015         extern  _MCU_vidInit
+  0000                00016         extern  _SCHED_astrTCBConfig
+  0000                00017         extern  __mulchar
+                      00018 
+  0000                00019         extern PSAVE
+  0000                00020         extern SSAVE
+  0000                00021         extern WSAVE
+  0000                00022         extern STK12
+  0000                00023         extern STK11
+  0000                00024         extern STK10
+  0000                00025         extern STK09
+  0000                00026         extern STK08
+  0000                00027         extern STK07
+  0000                00028         extern STK06
+  0000                00029         extern STK05
+  0000                00030         extern STK04
+  0000                00031         extern STK03
+  0000                00032         extern STK02
+  0000                00033         extern STK01
+  0000                00034         extern STK00
+                      00035 ;--------------------------------------------------------
+                      00036 ; global declarations
+                      00037 ;--------------------------------------------------------
+  0000                00038         global  _SCHED_vidRtcInterrupt
+  0000                00039         global  _SCHED_vidStartScheduler
+  0000                00040         global  _SCHED_vidInit
+                      00041 
+                      00042 ;--------------------------------------------------------
+                      00043 ; global definitions
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\s   11-10-2022  14:55:39        PAGE  2
+
+
+LOC    OBJECT CODE    LINE  SOURCE TEXT
+  VALUE
+
+                      00044 ;--------------------------------------------------------
+                      00045 ;--------------------------------------------------------
+                      00046 ; absolute symbol definitions
+                      00047 ;--------------------------------------------------------
+                      00048 ;--------------------------------------------------------
+                      00049 ; compiler-defined variables
+                      00050 ;--------------------------------------------------------
+                      00051 UDL_sched_prg_0 udata
+0000                  00052 r0x1027 res     1
+0001                  00053 r0x1028 res     1
+0002                  00054 r0x1029 res     1
+0003                  00055 r0x102A res     1
+0004                  00056 r0x102B res     1
+0005                  00057 r0x102C res     1
+0006                  00058 r0x102D res     1
+0007                  00059 r0x102E res     1
+0008                  00060 r0x101F res     1
+0009                  00061 r0x1020 res     1
+000A                  00062 r0x1021 res     1
+000B                  00063 r0x1022 res     1
+000C                  00064 r0x1023 res     1
+000D                  00065 r0x1024 res     1
+000E                  00066 r0x1025 res     1
+000F                  00067 r0x1026 res     1
+0010                  00068 _astrTCB        res     10
+001A                  00069 _u8TickCounter  res     1
+                      00070 ;--------------------------------------------------------
+                      00071 ; initialized data
+                      00072 ;--------------------------------------------------------
+                      00073 ;--------------------------------------------------------
+                      00074 ; overlayable items in internal ram 
+                      00075 ;--------------------------------------------------------
+                      00076 ;       udata_ovr
+                      00077 ;--------------------------------------------------------
+                      00078 ; code
+                      00079 ;--------------------------------------------------------
+                      00080 code_sched_prg  code
+                      00081 ;***
+                      00082 ;  pBlock Stats: dbName = C
+                      00083 ;***
+                      00084 ;entry:  _SCHED_vidRtcInterrupt ;Function start
+                      00085 ; 0 exit points
+                      00086 ;; Starting pCode block
+0000                  00087 _SCHED_vidRtcInterrupt  ;Function start
+                      00088 ; 0 exit points
+                      00089 ;       .line   117; "sched_prg.c"      u8TickCounter++;
+0000   ???? ????      00090         BANKSEL _u8TickCounter
+0002   0A??           00091         INCF    _u8TickCounter,F
+                      00092 ;       .line   121; "sched_prg.c"      if(u8TickCounter == SCHED_u8MAX_TASK_DURATION)
+0003   08??           00093         MOVF    _u8TickCounter,W
+0004   3A0A           00094         XORLW   0x0a
+0005   1903           00095         BTFSC   STATUS,2
+0006                  00096 _00149_DS_
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\s   11-10-2022  14:55:39        PAGE  3
+
+
+LOC    OBJECT CODE    LINE  SOURCE TEXT
+  VALUE
+
+0006   2???           00097         GOTO    _00149_DS_
+0007   0008           00098         RETURN  
+                      00099 
+                      00100 ;***
+                      00101 ;  pBlock Stats: dbName = C
+                      00102 ;***
+                      00103 ;entry:  _vidManageTemporalTasks        ;Function start
+                      00104 ; 2 exit points
+                      00105 ;has an exit
+                      00106 ;functions called:
+                      00107 ;   __mulchar
+                      00108 ;   __mulchar
+                      00109 ;   _00139_DS_
+                      00110 ;   __mulchar
+                      00111 ;   __mulchar
+                      00112 ;   _00139_DS_
+                      00113 ;9 compiler assigned registers:
+                      00114 ;   r0x101F
+                      00115 ;   STK00
+                      00116 ;   r0x1020
+                      00117 ;   r0x1021
+                      00118 ;   r0x1022
+                      00119 ;   r0x1023
+                      00120 ;   r0x1024
+                      00121 ;   r0x1025
+                      00122 ;   r0x1026
+                      00123 ;; Starting pCode block
+0008                  00124 _vidManageTemporalTasks ;Function start
+                      00125 ; 2 exit points
+                      00126 ;       .line   89; "sched_prg.c"       for(u8Index=0; u8Index<SCHED_TASKS_NUMBER; u8Index++)
+0008   ???? ????      00127         BANKSEL r0x101F
+000A   01??           00128         CLRF    r0x101F
+000B                  00129 _00125_DS_
+                      00130 ;       .line   91; "sched_prg.c"       if(astrTCB[u8Index].enuTaskStatus == SCHED_TASK_ACTIVE)
+000B   3002           00131         MOVLW   0x02
+000C   00??           00132         MOVWF   STK00
+000D   ???? ????      00133         BANKSEL r0x101F
+000F   08??           00134         MOVF    r0x101F,W
+0010   ???? ????      00135         PAGESEL __mulchar
+0012   2???           00136         CALL    __mulchar
+0013   ???? ????      00137         PAGESEL $
+0015   ???? ????      00138         BANKSEL r0x1020
+0017   00??           00139         MOVWF   r0x1020
+0018   01??           00140         CLRF    r0x1021
+0019   08??           00141         MOVF    r0x1020,W
+001A   3E??           00142         ADDLW   (_astrTCB + 0)
+001B   00??           00143         MOVWF   r0x1022
+001C   30??           00144         MOVLW   high (_astrTCB + 0)
+001D   00??           00145         MOVWF   r0x1023
+001E   3000           00146         MOVLW   0x00
+001F   1803           00147         BTFSC   STATUS,0
+0020   0F??           00148         INCFSZ  r0x1021,W
+0021   07??           00149         ADDWF   r0x1023,F
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\s   11-10-2022  14:55:39        PAGE  4
+
+
+LOC    OBJECT CODE    LINE  SOURCE TEXT
+  VALUE
+
+0022   08??           00150         MOVF    r0x1022,W
+0023   1283 1303      00151         BANKSEL FSR
+0025   0084           00152         MOVWF   FSR
+0026   1383           00153         BCF     STATUS,7
+0027   ???? ????      00154         BANKSEL r0x1023
+0029   18??           00155         BTFSC   r0x1023,0
+002A   1783           00156         BSF     STATUS,7
+002B   1283 1303      00157         BANKSEL INDF
+002D   0800           00158         MOVF    INDF,W
+002E   ???? ????      00159         BANKSEL r0x1024
+0030   00??           00160         MOVWF   r0x1024
+0031   08??           00161         MOVF    r0x1024,W
+0032   1D03           00162         BTFSS   STATUS,2
+0033   2???           00163         GOTO    _00126_DS_
+                      00164 ;       .line   93; "sched_prg.c"       if(astrTCB[u8Index].u8TaskCounter > BTY_u8ZERO)
+0034   08??           00165         MOVF    r0x1020,W
+0035   3E??           00166         ADDLW   (_astrTCB + 0)
+0036   00??           00167         MOVWF   r0x1020
+0037   08??           00168         MOVF    r0x1021,W
+0038   1803           00169         BTFSC   STATUS,0
+0039   0F??           00170         INCFSZ  r0x1021,W
+003A   3E??           00171         ADDLW   high (_astrTCB + 0)
+003B   00??           00172         MOVWF   r0x1021
+003C   0A??           00173         INCF    r0x1020,F
+003D   1903           00174         BTFSC   STATUS,2
+003E   0A??           00175         INCF    r0x1021,F
+003F   08??           00176         MOVF    r0x1020,W
+0040   1283 1303      00177         BANKSEL FSR
+0042   0084           00178         MOVWF   FSR
+0043   1383           00179         BCF     STATUS,7
+0044   ???? ????      00180         BANKSEL r0x1021
+0046   18??           00181         BTFSC   r0x1021,0
+0047   1783           00182         BSF     STATUS,7
+0048   1283 1303      00183         BANKSEL INDF
+004A   0800           00184         MOVF    INDF,W
+004B   ???? ????      00185         BANKSEL r0x1022
+004D   00??           00186         MOVWF   r0x1022
+004E   08??           00187         MOVF    r0x1022,W
+004F   1903           00188         BTFSC   STATUS,2
+0050   2???           00189         GOTO    _00120_DS_
+                      00190 ;       .line   95; "sched_prg.c"       astrTCB[u8Index].u8TaskCounter--;
+0051   03??           00191         DECF    r0x1022,F
+0052   08??           00192         MOVF    r0x1020,W
+0053   1283 1303      00193         BANKSEL FSR
+0055   0084           00194         MOVWF   FSR
+0056   1383           00195         BCF     STATUS,7
+0057   ???? ????      00196         BANKSEL r0x1021
+0059   18??           00197         BTFSC   r0x1021,0
+005A   1783           00198         BSF     STATUS,7
+005B   08??           00199         MOVF    r0x1022,W
+005C   1283 1303      00200         BANKSEL INDF
+005E   0080           00201         MOVWF   INDF
+005F   2???           00202         GOTO    _00126_DS_
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\s   11-10-2022  14:55:39        PAGE  5
+
+
+LOC    OBJECT CODE    LINE  SOURCE TEXT
+  VALUE
+
+0060                  00203 _00120_DS_
+                      00204 ;       .line   100; "sched_prg.c"      SCHED_astrTCBConfig[u8Index].u8TaskPeriod;
+0060   3004           00205         MOVLW   0x04
+0061   00??           00206         MOVWF   STK00
+0062   ???? ????      00207         BANKSEL r0x101F
+0064   08??           00208         MOVF    r0x101F,W
+0065   ???? ????      00209         PAGESEL __mulchar
+0067   2???           00210         CALL    __mulchar
+0068   ???? ????      00211         PAGESEL $
+006A   ???? ????      00212         BANKSEL r0x1022
+006C   00??           00213         MOVWF   r0x1022
+006D   01??           00214         CLRF    r0x1023
+006E   08??           00215         MOVF    r0x1022,W
+006F   3E??           00216         ADDLW   (_SCHED_astrTCBConfig + 0)
+0070   00??           00217         MOVWF   r0x1022
+0071   3000           00218         MOVLW   0x00
+0072   1803           00219         BTFSC   STATUS,0
+0073   0F??           00220         INCFSZ  r0x1023,W
+0074   3E??           00221         ADDLW   high (_SCHED_astrTCBConfig + 0)
+0075   00??           00222         MOVWF   r0x1023
+0076   3003           00223         MOVLW   0x03
+0077   07??           00224         ADDWF   r0x1022,W
+0078   00??           00225         MOVWF   r0x1024
+0079   01??           00226         CLRF    r0x1025
+007A   0D??           00227         RLF     r0x1025,F
+007B   08??           00228         MOVF    r0x1023,W
+007C   07??           00229         ADDWF   r0x1025,F
+007D   08??           00230         MOVF    r0x1024,W
+007E   1283 1303      00231         BANKSEL FSR
+0080   0084           00232         MOVWF   FSR
+0081   1383           00233         BCF     STATUS,7
+0082   ???? ????      00234         BANKSEL r0x1025
+0084   18??           00235         BTFSC   r0x1025,0
+0085   1783           00236         BSF     STATUS,7
+0086   1283 1303      00237         BANKSEL INDF
+0088   0800           00238         MOVF    INDF,W
+0089   ???? ????      00239         BANKSEL r0x1026
+008B   00??           00240         MOVWF   r0x1026
+008C   08??           00241         MOVF    r0x1020,W
+008D   1283 1303      00242         BANKSEL FSR
+008F   0084           00243         MOVWF   FSR
+0090   1383           00244         BCF     STATUS,7
+0091   ???? ????      00245         BANKSEL r0x1021
+0093   18??           00246         BTFSC   r0x1021,0
+0094   1783           00247         BSF     STATUS,7
+0095   08??           00248         MOVF    r0x1026,W
+0096   1283 1303      00249         BANKSEL INDF
+0098   0080           00250         MOVWF   INDF
+                      00251 ;       .line   102; "sched_prg.c"      (*SCHED_astrTCBConfig[u8Index].pfTask)();
+0099   ???? ????      00252         BANKSEL r0x1022
+009B   08??           00253         MOVF    r0x1022,W
+009C   1283 1303      00254         BANKSEL FSR
+009E   0084           00255         MOVWF   FSR
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\s   11-10-2022  14:55:39        PAGE  6
+
+
+LOC    OBJECT CODE    LINE  SOURCE TEXT
+  VALUE
+
+009F   1383           00256         BCF     STATUS,7
+00A0   ???? ????      00257         BANKSEL r0x1023
+00A2   18??           00258         BTFSC   r0x1023,0
+00A3   1783           00259         BSF     STATUS,7
+00A4   1283 1303      00260         BANKSEL INDF
+00A6   0800           00261         MOVF    INDF,W
+00A7   ???? ????      00262         BANKSEL r0x1020
+00A9   00??           00263         MOVWF   r0x1020
+00AA   1283 1303      00264         BANKSEL FSR
+00AC   0A84           00265         INCF    FSR,F
+00AD   0800           00266         MOVF    INDF,W
+00AE   ???? ????      00267         BANKSEL r0x1021
+00B0   00??           00268         MOVWF   r0x1021
+00B1   2???           00269         CALL    _00139_DS_
+00B2   ???? ????      00270         PAGESEL _00126_DS_
+00B4   2???           00271         GOTO    _00126_DS_
+00B5                  00272 _00139_DS_
+00B5   ???? ????      00273         BANKSEL r0x1021
+00B7   08??           00274         MOVF    r0x1021,W
+00B8   1283 1303      00275         BANKSEL PCLATH
+00BA   008A           00276         MOVWF   PCLATH
+00BB   ???? ????      00277         BANKSEL r0x1020
+00BD   08??           00278         MOVF    r0x1020,W
+00BE   1283 1303      00279         BANKSEL PCL
+00C0   0082           00280         MOVWF   PCL
+00C1                  00281 _00126_DS_
+                      00282 ;       .line   89; "sched_prg.c"       for(u8Index=0; u8Index<SCHED_TASKS_NUMBER; u8Index++)
+00C1   ???? ????      00283         BANKSEL r0x101F
+00C3   0A??           00284         INCF    r0x101F,F
+                      00285 ;;unsigned compare: left < lit(0x5=5), size=1
+00C4   3005           00286         MOVLW   0x05
+00C5   02??           00287         SUBWF   r0x101F,W
+00C6   1C03           00288         BTFSS   STATUS,0
+00C7   2???           00289         GOTO    _00125_DS_
+                      00290 ;;genSkipc:3247: created from rifx:00000000047558B0
+00C8   0008           00291         RETURN  
+                      00292 ; exit point of _vidManageTemporalTasks
+                      00293 
+                      00294 ;***
+                      00295 ;  pBlock Stats: dbName = C
+                      00296 ;***
+                      00297 ;entry:  _SCHED_vidStartScheduler       ;Function start
+                      00298 ; 2 exit points
+                      00299 ;has an exit
+                      00300 ;functions called:
+                      00301 ;   _vidManageTemporalTasks
+                      00302 ;   _vidManageTemporalTasks
+                      00303 ;; Starting pCode block
+00C9                  00304 _SCHED_vidStartScheduler        ;Function start
+                      00305 ; 2 exit points
+00C9                  00306 _00114_DS_
+                      00307 ;       .line   71; "sched_prg.c"       if(u8TickCounter > BTY_u8ZERO)
+00C9   3000           00308         MOVLW   0x00
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\s   11-10-2022  14:55:39        PAGE  7
+
+
+LOC    OBJECT CODE    LINE  SOURCE TEXT
+  VALUE
+
+00CA   ???? ????      00309         BANKSEL _u8TickCounter
+00CC   04??           00310         IORWF   _u8TickCounter,W
+00CD   1903           00311         BTFSC   STATUS,2
+00CE   2???           00312         GOTO    _00114_DS_
+                      00313 ;       .line   74; "sched_prg.c"       u8TickCounter--;
+00CF   03??           00314         DECF    _u8TickCounter,F
+                      00315 ;       .line   76; "sched_prg.c"       vidManageTemporalTasks();
+00D0   2???           00316         CALL    _vidManageTemporalTasks
+00D1   2???           00317         GOTO    _00114_DS_
+00D2   0008           00318         RETURN  
+                      00319 ; exit point of _SCHED_vidStartScheduler
+                      00320 
+                      00321 ;***
+                      00322 ;  pBlock Stats: dbName = C
+                      00323 ;***
+                      00324 ;entry:  _SCHED_vidInit ;Function start
+                      00325 ; 2 exit points
+                      00326 ;has an exit
+                      00327 ;functions called:
+                      00328 ;   __mulchar
+                      00329 ;   __mulchar
+                      00330 ;   __mulchar
+                      00331 ;   __mulchar
+                      00332 ;9 compiler assigned registers:
+                      00333 ;   r0x1027
+                      00334 ;   STK00
+                      00335 ;   r0x1028
+                      00336 ;   r0x1029
+                      00337 ;   r0x102A
+                      00338 ;   r0x102B
+                      00339 ;   r0x102C
+                      00340 ;   r0x102D
+                      00341 ;   r0x102E
+                      00342 ;; Starting pCode block
+00D3                  00343 _SCHED_vidInit  ;Function start
+                      00344 ; 2 exit points
+                      00345 ;       .line   54; "sched_prg.c"       for(u8Index=0; u8Index<SCHED_TASKS_NUMBER; u8Index++)
+00D3   ???? ????      00346         BANKSEL r0x1027
+00D5   01??           00347         CLRF    r0x1027
+00D6                  00348 _00106_DS_
+                      00349 ;       .line   56; "sched_prg.c"       astrTCB[u8Index].u8TaskCounter = 
+00D6   3002           00350         MOVLW   0x02
+00D7   00??           00351         MOVWF   STK00
+00D8   ???? ????      00352         BANKSEL r0x1027
+00DA   08??           00353         MOVF    r0x1027,W
+00DB   ???? ????      00354         PAGESEL __mulchar
+00DD   2???           00355         CALL    __mulchar
+00DE   ???? ????      00356         PAGESEL $
+00E0   ???? ????      00357         BANKSEL r0x1028
+00E2   00??           00358         MOVWF   r0x1028
+00E3   01??           00359         CLRF    r0x1029
+00E4   08??           00360         MOVF    r0x1028,W
+00E5   3E??           00361         ADDLW   (_astrTCB + 0)
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\s   11-10-2022  14:55:39        PAGE  8
+
+
+LOC    OBJECT CODE    LINE  SOURCE TEXT
+  VALUE
+
+00E6   00??           00362         MOVWF   r0x1028
+00E7   3000           00363         MOVLW   0x00
+00E8   1803           00364         BTFSC   STATUS,0
+00E9   0F??           00365         INCFSZ  r0x1029,W
+00EA   3E??           00366         ADDLW   high (_astrTCB + 0)
+00EB   00??           00367         MOVWF   r0x1029
+00EC   3001           00368         MOVLW   0x01
+00ED   07??           00369         ADDWF   r0x1028,W
+00EE   00??           00370         MOVWF   r0x102A
+00EF   01??           00371         CLRF    r0x102B
+00F0   0D??           00372         RLF     r0x102B,F
+00F1   08??           00373         MOVF    r0x1029,W
+00F2   07??           00374         ADDWF   r0x102B,F
+                      00375 ;       .line   57; "sched_prg.c"       SCHED_astrTCBConfig[u8Index].u8TaskDelay;
+00F3   3004           00376         MOVLW   0x04
+00F4   00??           00377         MOVWF   STK00
+00F5   08??           00378         MOVF    r0x1027,W
+00F6   ???? ????      00379         PAGESEL __mulchar
+00F8   2???           00380         CALL    __mulchar
+00F9   ???? ????      00381         PAGESEL $
+00FB   ???? ????      00382         BANKSEL r0x102C
+00FD   00??           00383         MOVWF   r0x102C
+00FE   01??           00384         CLRF    r0x102D
+00FF   08??           00385         MOVF    r0x102C,W
+0100   3E??           00386         ADDLW   (_SCHED_astrTCBConfig + 0)
+0101   00??           00387         MOVWF   r0x102C
+0102   3000           00388         MOVLW   0x00
+0103   1803           00389         BTFSC   STATUS,0
+0104   0F??           00390         INCFSZ  r0x102D,W
+0105   3E??           00391         ADDLW   high (_SCHED_astrTCBConfig + 0)
+0106   00??           00392         MOVWF   r0x102D
+0107   3002           00393         MOVLW   0x02
+0108   07??           00394         ADDWF   r0x102C,F
+0109   1803           00395         BTFSC   STATUS,0
+010A   0A??           00396         INCF    r0x102D,F
+010B   08??           00397         MOVF    r0x102C,W
+010C   1283 1303      00398         BANKSEL FSR
+010E   0084           00399         MOVWF   FSR
+010F   1383           00400         BCF     STATUS,7
+0110   ???? ????      00401         BANKSEL r0x102D
+0112   18??           00402         BTFSC   r0x102D,0
+0113   1783           00403         BSF     STATUS,7
+0114   1283 1303      00404         BANKSEL INDF
+0116   0800           00405         MOVF    INDF,W
+0117   ???? ????      00406         BANKSEL r0x102E
+0119   00??           00407         MOVWF   r0x102E
+011A   08??           00408         MOVF    r0x102A,W
+011B   1283 1303      00409         BANKSEL FSR
+011D   0084           00410         MOVWF   FSR
+011E   1383           00411         BCF     STATUS,7
+011F   ???? ????      00412         BANKSEL r0x102B
+0121   18??           00413         BTFSC   r0x102B,0
+0122   1783           00414         BSF     STATUS,7
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\s   11-10-2022  14:55:39        PAGE  9
+
+
+LOC    OBJECT CODE    LINE  SOURCE TEXT
+  VALUE
+
+0123   08??           00415         MOVF    r0x102E,W
+0124   1283 1303      00416         BANKSEL INDF
+0126   0080           00417         MOVWF   INDF
+                      00418 ;       .line   59; "sched_prg.c"       astrTCB[u8Index].enuTaskStatus = SCHED_TASK_ACTIVE;
+0127   ???? ????      00419         BANKSEL r0x1028
+0129   08??           00420         MOVF    r0x1028,W
+012A   1283 1303      00421         BANKSEL FSR
+012C   0084           00422         MOVWF   FSR
+012D   1383           00423         BCF     STATUS,7
+012E   ???? ????      00424         BANKSEL r0x1029
+0130   18??           00425         BTFSC   r0x1029,0
+0131   1783           00426         BSF     STATUS,7
+0132   3000           00427         MOVLW   0x00
+0133   1283 1303      00428         BANKSEL INDF
+0135   0080           00429         MOVWF   INDF
+                      00430 ;       .line   54; "sched_prg.c"       for(u8Index=0; u8Index<SCHED_TASKS_NUMBER; u8Index++)
+0136   ???? ????      00431         BANKSEL r0x1027
+0138   0A??           00432         INCF    r0x1027,F
+                      00433 ;;unsigned compare: left < lit(0x5=5), size=1
+0139   3005           00434         MOVLW   0x05
+013A   02??           00435         SUBWF   r0x1027,W
+013B   1C03           00436         BTFSS   STATUS,0
+013C   2???           00437         GOTO    _00106_DS_
+                      00438 ;;genSkipc:3247: created from rifx:00000000047558B0
+013D   0008           00439         RETURN  
+                      00440 ; exit point of _SCHED_vidInit
+                      00441 
+                      00442 
+                      00443 ;       code size estimation:
+                      00444 ;         194+   62 =   256 instructions (  636 byte)
+                      00445 
+                      00446         end
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\s   11-10-2022  14:55:39        PAGE 10
+
+
+SYMBOL TABLE
+  LABEL                             VALUE
+
+ACKDT                             00000005
+ACKEN                             00000004
+ACKSTAT                           00000006
+ADCON0                            0000001F
+ADCON1                            0000009F
+ADCS0                             00000006
+ADCS1                             00000007
+ADCS2                             00000006
+ADDEN                             00000003
+ADFM                              00000007
+ADIE                              00000006
+ADIF                              00000006
+ADON                              00000000
+ADRESH                            0000001E
+ADRESL                            0000009E
+BCLIE                             00000003
+BCLIF                             00000003
+BF                                00000000
+BRGH                              00000002
+C                                 00000000
+C1INV                             00000004
+C1OUT                             00000006
+C2INV                             00000005
+C2OUT                             00000007
+CCP1CON                           00000017
+CCP1IE                            00000002
+CCP1IF                            00000002
+CCP1M0                            00000000
+CCP1M1                            00000001
+CCP1M2                            00000002
+CCP1M3                            00000003
+CCP1X                             00000005
+CCP1Y                             00000004
+CCP2CON                           0000001D
+CCP2IE                            00000000
+CCP2IF                            00000000
+CCP2M0                            00000000
+CCP2M1                            00000001
+CCP2M2                            00000002
+CCP2M3                            00000003
+CCP2X                             00000005
+CCP2Y                             00000004
+CCPR1                             00000015
+CCPR1H                            00000016
+CCPR1L                            00000015
+CCPR2                             0000001B
+CCPR2H                            0000001C
+CCPR2L                            0000001B
+CHS0                              00000003
+CHS1                              00000004
+CHS2                              00000005
+CIS                               00000003
+CKE                               00000006
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\s   11-10-2022  14:55:39        PAGE 11
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+CKP                               00000004
+CM0                               00000000
+CM1                               00000001
+CM2                               00000002
+CMCON                             0000009C
+CMIE                              00000006
+CMIF                              00000006
+CREN                              00000004
+CSRC                              00000007
+CVR0                              00000000
+CVR1                              00000001
+CVR2                              00000002
+CVR3                              00000003
+CVRCON                            0000009D
+CVREN                             00000007
+CVROE                             00000006
+CVRR                              00000005
+D                                 00000005
+DATA_ADDRESS                      00000005
+DC                                00000001
+D_A                               00000005
+D_NOT_A                           00000005
+EEADR                             0000010D
+EEADRH                            0000010F
+EECON1                            0000018C
+EECON2                            0000018D
+EEDATA                            0000010C
+EEDATH                            0000010E
+EEIE                              00000004
+EEIF                              00000004
+EEPGD                             00000007
+F                                 00000001
+FERR                              00000002
+FSR                               00000004
+GCEN                              00000007
+GIE                               00000007
+GO                                00000002
+GO_DONE                           00000002
+GO_NOT_DONE                       00000002
+I2C_DATA                          00000005
+I2C_READ                          00000002
+I2C_START                         00000003
+I2C_STOP                          00000004
+IBF                               00000007
+IBOV                              00000005
+INDF                              00000000
+INTCON                            0000000B
+INTE                              00000004
+INTEDG                            00000006
+INTF                              00000001
+IRP                               00000007
+NOT_A                             00000005
+NOT_ADDRESS                       00000005
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\s   11-10-2022  14:55:39        PAGE 12
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+NOT_BO                            00000000
+NOT_BOR                           00000000
+NOT_DONE                          00000002
+NOT_PD                            00000003
+NOT_POR                           00000001
+NOT_RBPU                          00000007
+NOT_RC8                           00000006
+NOT_T1SYNC                        00000002
+NOT_TO                            00000004
+NOT_TX8                           00000006
+NOT_W                             00000002
+NOT_WRITE                         00000002
+OBF                               00000006
+OERR                              00000001
+OPTION_REG                        00000081
+P                                 00000004
+PCFG0                             00000000
+PCFG1                             00000001
+PCFG2                             00000002
+PCFG3                             00000003
+PCL                               00000002
+PCLATH                            0000000A
+PCON                              0000008E
+PEIE                              00000006
+PEN                               00000002
+PIE1                              0000008C
+PIE2                              0000008D
+PIR1                              0000000C
+PIR2                              0000000D
+PORTA                             00000005
+PORTB                             00000006
+PORTC                             00000007
+PORTD                             00000008
+PORTE                             00000009
+PR2                               00000092
+PS0                               00000000
+PS1                               00000001
+PS2                               00000002
+PSA                               00000003
+PSAVE                             00000000
+PSPIE                             00000007
+PSPIF                             00000007
+PSPMODE                           00000004
+R                                 00000002
+RA0                               00000000
+RA1                               00000001
+RA2                               00000002
+RA3                               00000003
+RA4                               00000004
+RA5                               00000005
+RB0                               00000000
+RB1                               00000001
+RB2                               00000002
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\s   11-10-2022  14:55:39        PAGE 13
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+RB3                               00000003
+RB4                               00000004
+RB5                               00000005
+RB6                               00000006
+RB7                               00000007
+RBIE                              00000003
+RBIF                              00000000
+RC0                               00000000
+RC1                               00000001
+RC2                               00000002
+RC3                               00000003
+RC4                               00000004
+RC5                               00000005
+RC6                               00000006
+RC7                               00000007
+RC8_9                             00000006
+RC9                               00000006
+RCD8                              00000000
+RCEN                              00000003
+RCIE                              00000005
+RCIF                              00000005
+RCREG                             0000001A
+RCSTA                             00000018
+RD                                00000000
+RD0                               00000000
+RD1                               00000001
+RD2                               00000002
+RD3                               00000003
+RD4                               00000004
+RD5                               00000005
+RD6                               00000006
+RD7                               00000007
+RE0                               00000000
+RE1                               00000001
+RE2                               00000002
+READ_WRITE                        00000002
+RP0                               00000005
+RP1                               00000006
+RSEN                              00000001
+RX9                               00000006
+RX9D                              00000000
+R_NOT_W                           00000002
+R_W                               00000002
+S                                 00000003
+SEN                               00000000
+SMP                               00000007
+SPBRG                             00000099
+SPEN                              00000007
+SREN                              00000005
+SSAVE                             00000000
+SSPADD                            00000093
+SSPBUF                            00000013
+SSPCON                            00000014
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\s   11-10-2022  14:55:39        PAGE 14
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+SSPCON2                           00000091
+SSPEN                             00000005
+SSPIE                             00000003
+SSPIF                             00000003
+SSPM0                             00000000
+SSPM1                             00000001
+SSPM2                             00000002
+SSPM3                             00000003
+SSPOV                             00000006
+SSPSTAT                           00000094
+STATUS                            00000003
+STK00                             00000000
+STK01                             00000000
+STK02                             00000000
+STK03                             00000000
+STK04                             00000000
+STK05                             00000000
+STK06                             00000000
+STK07                             00000000
+STK08                             00000000
+STK09                             00000000
+STK10                             00000000
+STK11                             00000000
+STK12                             00000000
+SYNC                              00000004
+T0CS                              00000005
+T0IE                              00000005
+T0IF                              00000002
+T0SE                              00000004
+T1CKPS0                           00000004
+T1CKPS1                           00000005
+T1CON                             00000010
+T1INSYNC                          00000002
+T1OSCEN                           00000003
+T1SYNC                            00000002
+T2CKPS0                           00000000
+T2CKPS1                           00000001
+T2CON                             00000012
+TMR0                              00000001
+TMR0IE                            00000005
+TMR0IF                            00000002
+TMR1                              0000000E
+TMR1CS                            00000001
+TMR1H                             0000000F
+TMR1IE                            00000000
+TMR1IF                            00000000
+TMR1L                             0000000E
+TMR1ON                            00000000
+TMR2                              00000011
+TMR2IE                            00000001
+TMR2IF                            00000001
+TMR2ON                            00000002
+TOUTPS0                           00000003
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\s   11-10-2022  14:55:39        PAGE 15
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+TOUTPS1                           00000004
+TOUTPS2                           00000005
+TOUTPS3                           00000006
+TRISA                             00000085
+TRISA0                            00000000
+TRISA1                            00000001
+TRISA2                            00000002
+TRISA3                            00000003
+TRISA4                            00000004
+TRISA5                            00000005
+TRISB                             00000086
+TRISB0                            00000000
+TRISB1                            00000001
+TRISB2                            00000002
+TRISB3                            00000003
+TRISB4                            00000004
+TRISB5                            00000005
+TRISB6                            00000006
+TRISB7                            00000007
+TRISC                             00000087
+TRISC0                            00000000
+TRISC1                            00000001
+TRISC2                            00000002
+TRISC3                            00000003
+TRISC4                            00000004
+TRISC5                            00000005
+TRISC6                            00000006
+TRISC7                            00000007
+TRISD                             00000088
+TRISD0                            00000000
+TRISD1                            00000001
+TRISD2                            00000002
+TRISD3                            00000003
+TRISD4                            00000004
+TRISD5                            00000005
+TRISD6                            00000006
+TRISD7                            00000007
+TRISE                             00000089
+TRISE0                            00000000
+TRISE1                            00000001
+TRISE2                            00000002
+TRMT                              00000001
+TX8_9                             00000006
+TX9                               00000006
+TX9D                              00000000
+TXD8                              00000000
+TXEN                              00000005
+TXIE                              00000004
+TXIF                              00000004
+TXREG                             00000019
+TXSTA                             00000098
+UA                                00000001
+W                                 00000000
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\s   11-10-2022  14:55:39        PAGE 16
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+WCOL                              00000007
+WR                                00000001
+WREN                              00000002
+WRERR                             00000003
+WSAVE                             00000000
+Z                                 00000002
+_00106_DS_                        000000D6
+_00114_DS_                        000000C9
+_00120_DS_                        00000060
+_00125_DS_                        0000000B
+_00126_DS_                        000000C1
+_00139_DS_                        000000B5
+_00149_DS_                        00000006
+_BODEN_OFF                        00003FBF
+_BODEN_ON                         00003FFF
+_BOREN_OFF                        00003FBF
+_BOREN_ON                         00003FFF
+_CONFIG                           00002007
+_CPD_OFF                          00003FFF
+_CPD_ON                           00003EFF
+_CP_ALL                           00001FFF
+_CP_OFF                           00003FFF
+_CP_ON                            00001FFF
+_DEBUG_OFF                        00003FFF
+_DEBUG_ON                         000037FF
+_DEVID1                           00002006
+_FOSC_EXTRC                       00003FFF
+_FOSC_HS                          00003FFE
+_FOSC_LP                          00003FFC
+_FOSC_XT                          00003FFD
+_HS_OSC                           00003FFE
+_IDLOC0                           00002000
+_IDLOC1                           00002001
+_IDLOC2                           00002002
+_IDLOC3                           00002003
+_LP_OSC                           00003FFC
+_LVP_OFF                          00003F7F
+_LVP_ON                           00003FFF
+_MCU_vidInit                      00000000
+_PWRTE_OFF                        00003FFF
+_PWRTE_ON                         00003FF7
+_RC_OSC                           00003FFF
+_SCHED_astrTCBConfig              00000000
+_SCHED_vidInit                    000000D3
+_SCHED_vidRtcInterrupt            00000000
+_SCHED_vidStartScheduler          000000C9
+_WDTE_OFF                         00003FFB
+_WDTE_ON                          00003FFF
+_WDT_OFF                          00003FFB
+_WDT_ON                           00003FFF
+_WRT_1FOURTH                      00003BFF
+_WRT_256                          00003DFF
+_WRT_HALF                         000039FF
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\s   11-10-2022  14:55:39        PAGE 17
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+_WRT_OFF                          00003FFF
+_XT_OSC                           00003FFD
+__16F877A                         00000001
+__CODE_END                        00001FFF
+__CODE_START                      00000000
+__COMMON_RAM_END                  0000007F
+__COMMON_RAM_START                00000070
+__EEPROM_END                      000021FF
+__EEPROM_START                    00002100
+__VECTOR_INT                      00000004
+__VECTOR_RESET                    00000000
+__mulchar                         00000000
+_astrTCB                          00000010
+_code_sched_prg_0013              00000013
+_code_sched_prg_0068              00000068
+_code_sched_prg_00DE              000000DE
+_code_sched_prg_00F9              000000F9
+_u8TickCounter                    0000001A
+_vidManageTemporalTasks           00000008
+r0x101F                           00000008
+r0x1020                           00000009
+r0x1021                           0000000A
+r0x1022                           0000000B
+r0x1023                           0000000C
+r0x1024                           0000000D
+r0x1025                           0000000E
+r0x1026                           0000000F
+r0x1027                           00000000
+r0x1028                           00000001
+r0x1029                           00000002
+r0x102A                           00000003
+r0x102B                           00000004
+r0x102C                           00000005
+r0x102D                           00000006
+r0x102E                           00000007
+
+Errors   :     0
+Warnings :     0 reported,     0 suppressed
+Messages :     0 reported,     0 suppressed
+
+

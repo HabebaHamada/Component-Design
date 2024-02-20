@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="InductionExercise" />
+		<Option pch_mode="2" />
+		<Option compiler="sdcc" />
+		<Build>
+			<Target title="Release">
+				<Option output="bin/Release/InductionExercise" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="sdcc" />
+				<Compiler>
+					<Add option="--opt-code-size" />
+					<Add option="-p16f877a" />
+				</Compiler>
+			</Target>
+		</Build>
+		<Unit filename="MODE_int.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="MODE_int.h" />
+		<Unit filename="Platform_Types.h" />
+		<Unit filename="Std_Types.h" />
+		<Unit filename="bty_int.h" />
+		<Unit filename="dio_int.h" />
+		<Unit filename="dio_prg.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hif_int.h" />
+		<Unit filename="hif_prg.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="main.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="mcu_int.h" />
+		<Unit filename="mcu_prg.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="pbd_cfg.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="pbd_cfg.h" />
+		<Unit filename="pbd_int.h" />
+		<Unit filename="pbd_prg.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="pbd_types.h" />
+		<Unit filename="pic16f877a.h" />
+		<Unit filename="port_cfg.h" />
+		<Unit filename="port_int.h" />
+		<Unit filename="port_prg.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="sched_cfg.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="sched_cfg.h" />
+		<Unit filename="sched_int.h" />
+		<Unit filename="sched_prg.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="sched_types.h" />
+		<Unit filename="ssd_int.h" />
+		<Unit filename="ssd_prg.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="tif_int.h" />
+		<Unit filename="tif_prg.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

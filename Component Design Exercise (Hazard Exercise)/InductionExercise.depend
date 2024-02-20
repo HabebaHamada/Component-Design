@@ -1,0 +1,316 @@
+# depslib dependency file v1.0
+1437321070 source:e:\manuals\induction training\codeblocks\inductionexercise\dio_prg.c
+	"BTY_int.h"
+	"DIO_int.h"
+	"pic16f877a.h"
+
+1335958800 e:\manuals\induction training\codeblocks\inductionexercise\bty_int.h
+
+1437321166 e:\manuals\induction training\codeblocks\inductionexercise\dio_int.h
+	"BTY_int.h"
+
+1434761748 e:\manuals\induction training\codeblocks\inductionexercise\pic16f877a.h
+
+1336265640 source:e:\manuals\induction training\codeblocks\inductionexercise\hif_prg.c
+	"HIF_int.h"
+	"SSD_int.h"
+
+1336267440 e:\manuals\induction training\codeblocks\inductionexercise\hif_int.h
+	"BTY_int.h"
+
+1437321589 e:\manuals\induction training\codeblocks\inductionexercise\ssd_int.h
+	"BTY_int.h"
+	"DIO_int.h"
+
+1437321845 source:e:\manuals\induction training\codeblocks\inductionexercise\main.c
+	"PORT_int.h"
+	"DIO_int.h"
+	"MCU_int.h"
+	"SSD_int.h"
+	"PBD_int.h"
+	"TIF_int.h"
+	"HIF_int.h"
+	"MODE_int.h"
+	"SCHED_int.h"
+
+1437258855 e:\manuals\induction training\codeblocks\inductionexercise\port_int.h
+
+1437321221 e:\manuals\induction training\codeblocks\inductionexercise\mcu_int.h
+
+1437321550 e:\manuals\induction training\codeblocks\inductionexercise\pbd_int.h
+	"pbd_types.h"
+
+1336131720 e:\manuals\induction training\codeblocks\inductionexercise\pbd_types.h
+	"BTY_int.h"
+	"DIO_int.h"
+
+1336267320 e:\manuals\induction training\codeblocks\inductionexercise\tif_int.h
+
+1405260328 e:\manuals\induction training\codeblocks\inductionexercise\mode_int.h
+	"BTY_int.h"
+	"pbd_types.h"
+	"pbd_int.h"
+	"hif_int.h"
+	"tif_int.h"
+
+1437475362 e:\manuals\induction training\codeblocks\inductionexercise\sched_int.h
+	"SCHED_types.h"
+
+1336060680 e:\manuals\induction training\codeblocks\inductionexercise\sched_types.h
+	"BTY_int.h"
+
+1437321367 source:e:\manuals\induction training\codeblocks\inductionexercise\mcu_prg.c
+	"MCU_int.h"
+	"pic16f877a.h"
+	"SCHED_int.h"
+
+1437476800 source:e:\manuals\induction training\codeblocks\inductionexercise\mode_prg.c
+	"MODE_int.h"
+
+1437321523 source:e:\manuals\induction training\codeblocks\inductionexercise\pbd_cfg.c
+	"PBD_cfg.h"
+
+1437321517 e:\manuals\induction training\codeblocks\inductionexercise\pbd_cfg.h
+	"pbd_types.h"
+
+1437321531 source:e:\manuals\induction training\codeblocks\inductionexercise\pbd_prg.c
+	"PBD_int.h"
+	"PBD_cfg.h"
+	"DIO_int.h"
+
+1437321450 source:e:\manuals\induction training\codeblocks\inductionexercise\port_prg.c
+	"PORT_int.h"
+	"PORT_cfg.h"
+	"pic16f877a.h"
+
+1437259577 e:\manuals\induction training\codeblocks\inductionexercise\port_cfg.h
+
+1336060680 source:e:\manuals\induction training\codeblocks\inductionexercise\sched_cfg.c
+	"SCHED_cfg.h"
+	"SSD_int.h"
+	"PBD_int.h"
+	"MODE_int.h"
+	"TIF_int.h"
+	"HIF_int.h"
+
+1335893280 e:\manuals\induction training\codeblocks\inductionexercise\sched_cfg.h
+	"SCHED_types.h"
+
+1437262851 source:e:\manuals\induction training\codeblocks\inductionexercise\sched_prg.c
+	"SCHED_int.h"
+	"SCHED_cfg.h"
+	"MCU_int.h"
+
+1437321596 source:e:\manuals\induction training\codeblocks\inductionexercise\ssd_prg.c
+	"BTY_int.h"
+	"SSD_int.h"
+
+1336267260 source:e:\manuals\induction training\codeblocks\inductionexercise\tif_prg.c
+	"TIF_int.h"
+	"SSD_int.h"
+
+1437321070 source:c:\projects\induction material\cairo induction c exercises\q4-turn_hazard ex (25)\inputs\inductionexercise_turn_hazard_trainee\dio_prg.c
+	"BTY_int.h"
+	"DIO_int.h"
+	"pic16f877a.h"
+
+1335958800 c:\projects\induction material\cairo induction c exercises\q4-turn_hazard ex (25)\inputs\inductionexercise_turn_hazard_trainee\bty_int.h
+
+1437321166 c:\projects\induction material\cairo induction c exercises\q4-turn_hazard ex (25)\inputs\inductionexercise_turn_hazard_trainee\dio_int.h
+	"BTY_int.h"
+
+1434761748 c:\projects\induction material\cairo induction c exercises\q4-turn_hazard ex (25)\inputs\inductionexercise_turn_hazard_trainee\pic16f877a.h
+
+1336265640 source:c:\projects\induction material\cairo induction c exercises\q4-turn_hazard ex (25)\inputs\inductionexercise_turn_hazard_trainee\hif_prg.c
+	"HIF_int.h"
+	"SSD_int.h"
+
+1336267440 c:\projects\induction material\cairo induction c exercises\q4-turn_hazard ex (25)\inputs\inductionexercise_turn_hazard_trainee\hif_int.h
+	"BTY_int.h"
+
+1437321589 c:\projects\induction material\cairo induction c exercises\q4-turn_hazard ex (25)\inputs\inductionexercise_turn_hazard_trainee\ssd_int.h
+	"BTY_int.h"
+	"DIO_int.h"
+
+1437321845 source:c:\projects\induction material\cairo induction c exercises\q4-turn_hazard ex (25)\inputs\inductionexercise_turn_hazard_trainee\main.c
+	"PORT_int.h"
+	"DIO_int.h"
+	"MCU_int.h"
+	"SSD_int.h"
+	"PBD_int.h"
+	"TIF_int.h"
+	"HIF_int.h"
+	"MODE_int.h"
+	"SCHED_int.h"
+
+1437258855 c:\projects\induction material\cairo induction c exercises\q4-turn_hazard ex (25)\inputs\inductionexercise_turn_hazard_trainee\port_int.h
+
+1437321221 c:\projects\induction material\cairo induction c exercises\q4-turn_hazard ex (25)\inputs\inductionexercise_turn_hazard_trainee\mcu_int.h
+
+1437321550 c:\projects\induction material\cairo induction c exercises\q4-turn_hazard ex (25)\inputs\inductionexercise_turn_hazard_trainee\pbd_int.h
+	"pbd_types.h"
+
+1336131720 c:\projects\induction material\cairo induction c exercises\q4-turn_hazard ex (25)\inputs\inductionexercise_turn_hazard_trainee\pbd_types.h
+	"BTY_int.h"
+	"DIO_int.h"
+
+1336267320 c:\projects\induction material\cairo induction c exercises\q4-turn_hazard ex (25)\inputs\inductionexercise_turn_hazard_trainee\tif_int.h
+
+1437475362 c:\projects\induction material\cairo induction c exercises\q4-turn_hazard ex (25)\inputs\inductionexercise_turn_hazard_trainee\sched_int.h
+	"SCHED_types.h"
+
+1336060680 c:\projects\induction material\cairo induction c exercises\q4-turn_hazard ex (25)\inputs\inductionexercise_turn_hazard_trainee\sched_types.h
+	"BTY_int.h"
+
+1437321367 source:c:\projects\induction material\cairo induction c exercises\q4-turn_hazard ex (25)\inputs\inductionexercise_turn_hazard_trainee\mcu_prg.c
+	"MCU_int.h"
+	"pic16f877a.h"
+	"SCHED_int.h"
+
+1437321523 source:c:\projects\induction material\cairo induction c exercises\q4-turn_hazard ex (25)\inputs\inductionexercise_turn_hazard_trainee\pbd_cfg.c
+	"PBD_cfg.h"
+
+1437321517 c:\projects\induction material\cairo induction c exercises\q4-turn_hazard ex (25)\inputs\inductionexercise_turn_hazard_trainee\pbd_cfg.h
+	"pbd_types.h"
+
+1437321531 source:c:\projects\induction material\cairo induction c exercises\q4-turn_hazard ex (25)\inputs\inductionexercise_turn_hazard_trainee\pbd_prg.c
+	"PBD_int.h"
+	"PBD_cfg.h"
+	"DIO_int.h"
+
+1437321450 source:c:\projects\induction material\cairo induction c exercises\q4-turn_hazard ex (25)\inputs\inductionexercise_turn_hazard_trainee\port_prg.c
+	"PORT_int.h"
+	"PORT_cfg.h"
+	"pic16f877a.h"
+
+1437259577 c:\projects\induction material\cairo induction c exercises\q4-turn_hazard ex (25)\inputs\inductionexercise_turn_hazard_trainee\port_cfg.h
+
+1336060680 source:c:\projects\induction material\cairo induction c exercises\q4-turn_hazard ex (25)\inputs\inductionexercise_turn_hazard_trainee\sched_cfg.c
+	"SCHED_cfg.h"
+	"SSD_int.h"
+	"PBD_int.h"
+	"MODE_int.h"
+	"TIF_int.h"
+	"HIF_int.h"
+
+1335893280 c:\projects\induction material\cairo induction c exercises\q4-turn_hazard ex (25)\inputs\inductionexercise_turn_hazard_trainee\sched_cfg.h
+	"SCHED_types.h"
+
+1437262851 source:c:\projects\induction material\cairo induction c exercises\q4-turn_hazard ex (25)\inputs\inductionexercise_turn_hazard_trainee\sched_prg.c
+	"SCHED_int.h"
+	"SCHED_cfg.h"
+	"MCU_int.h"
+
+1437321596 source:c:\projects\induction material\cairo induction c exercises\q4-turn_hazard ex (25)\inputs\inductionexercise_turn_hazard_trainee\ssd_prg.c
+	"BTY_int.h"
+	"SSD_int.h"
+
+1336267260 source:c:\projects\induction material\cairo induction c exercises\q4-turn_hazard ex (25)\inputs\inductionexercise_turn_hazard_trainee\tif_prg.c
+	"TIF_int.h"
+	"SSD_int.h"
+
+1437321070 source:d:\courses\gear-up-academy-valeo\code_gear\[trainee input] component design exercise (hazard exercise)\[trainee input] component design exercise (hazard exercise)\dio_prg.c
+	"BTY_int.h"
+	"DIO_int.h"
+	"pic16f877a.h"
+
+1335958800 d:\courses\gear-up-academy-valeo\code_gear\[trainee input] component design exercise (hazard exercise)\[trainee input] component design exercise (hazard exercise)\bty_int.h
+
+1437321166 d:\courses\gear-up-academy-valeo\code_gear\[trainee input] component design exercise (hazard exercise)\[trainee input] component design exercise (hazard exercise)\dio_int.h
+	"BTY_int.h"
+
+1434761748 d:\courses\gear-up-academy-valeo\code_gear\[trainee input] component design exercise (hazard exercise)\[trainee input] component design exercise (hazard exercise)\pic16f877a.h
+
+1336265640 source:d:\courses\gear-up-academy-valeo\code_gear\[trainee input] component design exercise (hazard exercise)\[trainee input] component design exercise (hazard exercise)\hif_prg.c
+	"HIF_int.h"
+	"SSD_int.h"
+
+1336267440 d:\courses\gear-up-academy-valeo\code_gear\[trainee input] component design exercise (hazard exercise)\[trainee input] component design exercise (hazard exercise)\hif_int.h
+	"BTY_int.h"
+
+1437321589 d:\courses\gear-up-academy-valeo\code_gear\[trainee input] component design exercise (hazard exercise)\[trainee input] component design exercise (hazard exercise)\ssd_int.h
+	"BTY_int.h"
+	"DIO_int.h"
+
+1437321845 source:d:\courses\gear-up-academy-valeo\code_gear\[trainee input] component design exercise (hazard exercise)\[trainee input] component design exercise (hazard exercise)\main.c
+	"PORT_int.h"
+	"DIO_int.h"
+	"MCU_int.h"
+	"SSD_int.h"
+	"PBD_int.h"
+	"TIF_int.h"
+	"HIF_int.h"
+	"MODE_int.h"
+	"SCHED_int.h"
+
+1437258855 d:\courses\gear-up-academy-valeo\code_gear\[trainee input] component design exercise (hazard exercise)\[trainee input] component design exercise (hazard exercise)\port_int.h
+
+1437321221 d:\courses\gear-up-academy-valeo\code_gear\[trainee input] component design exercise (hazard exercise)\[trainee input] component design exercise (hazard exercise)\mcu_int.h
+
+1437321550 d:\courses\gear-up-academy-valeo\code_gear\[trainee input] component design exercise (hazard exercise)\[trainee input] component design exercise (hazard exercise)\pbd_int.h
+	"pbd_types.h"
+
+1336131720 d:\courses\gear-up-academy-valeo\code_gear\[trainee input] component design exercise (hazard exercise)\[trainee input] component design exercise (hazard exercise)\pbd_types.h
+	"BTY_int.h"
+	"DIO_int.h"
+
+1336267320 d:\courses\gear-up-academy-valeo\code_gear\[trainee input] component design exercise (hazard exercise)\[trainee input] component design exercise (hazard exercise)\tif_int.h
+
+1668093331 d:\courses\gear-up-academy-valeo\code_gear\[trainee input] component design exercise (hazard exercise)\[trainee input] component design exercise (hazard exercise)\mode_int.h
+	"tif_int.h"
+	"hif_int.h"
+	"pbd_int.h"
+
+1437475362 d:\courses\gear-up-academy-valeo\code_gear\[trainee input] component design exercise (hazard exercise)\[trainee input] component design exercise (hazard exercise)\sched_int.h
+	"SCHED_types.h"
+
+1336060680 d:\courses\gear-up-academy-valeo\code_gear\[trainee input] component design exercise (hazard exercise)\[trainee input] component design exercise (hazard exercise)\sched_types.h
+	"BTY_int.h"
+
+1437321367 source:d:\courses\gear-up-academy-valeo\code_gear\[trainee input] component design exercise (hazard exercise)\[trainee input] component design exercise (hazard exercise)\mcu_prg.c
+	"MCU_int.h"
+	"pic16f877a.h"
+	"SCHED_int.h"
+
+1437321523 source:d:\courses\gear-up-academy-valeo\code_gear\[trainee input] component design exercise (hazard exercise)\[trainee input] component design exercise (hazard exercise)\pbd_cfg.c
+	"PBD_cfg.h"
+
+1437321517 d:\courses\gear-up-academy-valeo\code_gear\[trainee input] component design exercise (hazard exercise)\[trainee input] component design exercise (hazard exercise)\pbd_cfg.h
+	"pbd_types.h"
+
+1437321531 source:d:\courses\gear-up-academy-valeo\code_gear\[trainee input] component design exercise (hazard exercise)\[trainee input] component design exercise (hazard exercise)\pbd_prg.c
+	"PBD_int.h"
+	"PBD_cfg.h"
+	"DIO_int.h"
+
+1437321450 source:d:\courses\gear-up-academy-valeo\code_gear\[trainee input] component design exercise (hazard exercise)\[trainee input] component design exercise (hazard exercise)\port_prg.c
+	"PORT_int.h"
+	"PORT_cfg.h"
+	"pic16f877a.h"
+
+1437259577 d:\courses\gear-up-academy-valeo\code_gear\[trainee input] component design exercise (hazard exercise)\[trainee input] component design exercise (hazard exercise)\port_cfg.h
+
+1336060680 source:d:\courses\gear-up-academy-valeo\code_gear\[trainee input] component design exercise (hazard exercise)\[trainee input] component design exercise (hazard exercise)\sched_cfg.c
+	"SCHED_cfg.h"
+	"SSD_int.h"
+	"PBD_int.h"
+	"MODE_int.h"
+	"TIF_int.h"
+	"HIF_int.h"
+
+1335893280 d:\courses\gear-up-academy-valeo\code_gear\[trainee input] component design exercise (hazard exercise)\[trainee input] component design exercise (hazard exercise)\sched_cfg.h
+	"SCHED_types.h"
+
+1437262851 source:d:\courses\gear-up-academy-valeo\code_gear\[trainee input] component design exercise (hazard exercise)\[trainee input] component design exercise (hazard exercise)\sched_prg.c
+	"SCHED_int.h"
+	"SCHED_cfg.h"
+	"MCU_int.h"
+
+1437321596 source:d:\courses\gear-up-academy-valeo\code_gear\[trainee input] component design exercise (hazard exercise)\[trainee input] component design exercise (hazard exercise)\ssd_prg.c
+	"BTY_int.h"
+	"SSD_int.h"
+
+1336267260 source:d:\courses\gear-up-academy-valeo\code_gear\[trainee input] component design exercise (hazard exercise)\[trainee input] component design exercise (hazard exercise)\tif_prg.c
+	"TIF_int.h"
+	"SSD_int.h"
+

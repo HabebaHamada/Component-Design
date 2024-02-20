@@ -1,0 +1,800 @@
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\h   9-20-2022  01:35:01         PAGE  1
+
+
+LOC    OBJECT CODE    LINE  SOURCE TEXT
+  VALUE
+
+                      00001 ;--------------------------------------------------------
+                      00002 ; File Created by SDCC : free open source ANSI-C Compiler
+                      00003 ; Version 3.5.0 #9253 (Jun 20 2015) (MINGW64)
+                      00004 ; This file was generated Tue Sep 20 01:35:01 2022
+                      00005 ;--------------------------------------------------------
+                      00006 ; PIC port for the 14-bit core
+                      00007 ;--------------------------------------------------------
+                      00008 ;       .file   "hif_prg.c"
+                      00009         list    p=16f877a
+                      00010         radix dec
+                      00011         include "p16f877a.inc"
+                      00001         LIST
+                      00002 
+                      00003 ;==========================================================================
+                      00004 ; Build date : Aug 07 2014
+                      00005 ;  MPASM PIC16F877A processor include
+                      00006 ; 
+                      00007 ;  (c) Copyright 1999-2014 Microchip Technology, All rights reserved
+                      00008 ;==========================================================================
+                      00009 
+                      00567         LIST
+                      00012 ;--------------------------------------------------------
+                      00013 ; external declarations
+                      00014 ;--------------------------------------------------------
+  0000                00015         extern  _DIO_u8ReadChannel
+  0000                00016         extern  _DIO_vidWriteChannel
+  0000                00017         extern  _DIO_vidWritePort
+  0000                00018         extern  _SSD_vidInit
+  0000                00019         extern  _SSD_vidTask
+  0000                00020         extern  _SSD_SetDisplayedNumber
+                      00021 
+  0000                00022         extern PSAVE
+  0000                00023         extern SSAVE
+  0000                00024         extern WSAVE
+  0000                00025         extern STK12
+  0000                00026         extern STK11
+  0000                00027         extern STK10
+  0000                00028         extern STK09
+  0000                00029         extern STK08
+  0000                00030         extern STK07
+  0000                00031         extern STK06
+  0000                00032         extern STK05
+  0000                00033         extern STK04
+  0000                00034         extern STK03
+  0000                00035         extern STK02
+  0000                00036         extern STK01
+  0000                00037         extern STK00
+                      00038 ;--------------------------------------------------------
+                      00039 ; global declarations
+                      00040 ;--------------------------------------------------------
+  0000                00041         global  _HIF_vidSetMode
+  0000                00042         global  _HIF_vidTask
+  0000                00043         global  _HIF_vidInit
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\h   9-20-2022  01:35:01         PAGE  2
+
+
+LOC    OBJECT CODE    LINE  SOURCE TEXT
+  VALUE
+
+                      00044 
+                      00045 ;--------------------------------------------------------
+                      00046 ; global definitions
+                      00047 ;--------------------------------------------------------
+                      00048 ;--------------------------------------------------------
+                      00049 ; absolute symbol definitions
+                      00050 ;--------------------------------------------------------
+                      00051 ;--------------------------------------------------------
+                      00052 ; compiler-defined variables
+                      00053 ;--------------------------------------------------------
+                      00054 UDL_hif_prg_0   udata
+0000                  00055 r0x1004 res     1
+0001                  00056 _enuHifMode     res     1
+0002                  00057 _enuHifOldMode  res     1
+0003                  00058 _u8HifCounter   res     1
+0004                  00059 _enuHifBlinkState       res     1
+                      00060 ;--------------------------------------------------------
+                      00061 ; initialized data
+                      00062 ;--------------------------------------------------------
+                      00063 ;--------------------------------------------------------
+                      00064 ; overlayable items in internal ram 
+                      00065 ;--------------------------------------------------------
+                      00066 ;       udata_ovr
+                      00067 ;--------------------------------------------------------
+                      00068 ; code
+                      00069 ;--------------------------------------------------------
+                      00070 code_hif_prg    code
+                      00071 ;***
+                      00072 ;  pBlock Stats: dbName = C
+                      00073 ;***
+                      00074 ;entry:  _vidHazzardBlink       ;Function start
+                      00075 ; 2 exit points
+                      00076 ;has an exit
+                      00077 ;functions called:
+                      00078 ;   _SSD_SetDisplayedNumber
+                      00079 ;   _SSD_SetDisplayedNumber
+                      00080 ;   _SSD_SetDisplayedNumber
+                      00081 ;   _SSD_SetDisplayedNumber
+                      00082 ;   _SSD_SetDisplayedNumber
+                      00083 ;   _SSD_SetDisplayedNumber
+                      00084 ;   _SSD_SetDisplayedNumber
+                      00085 ;   _SSD_SetDisplayedNumber
+                      00086 ;1 compiler assigned register :
+                      00087 ;   STK00
+                      00088 ;; Starting pCode block
+0000                  00089 _vidHazzardBlink        ;Function start
+                      00090 ; 2 exit points
+                      00091 ;       .line   162; "hif_prg.c"        u8HifCounter++;
+0000   ???? ????      00092         BANKSEL _u8HifCounter
+0002   0A??           00093         INCF    _u8HifCounter,F
+                      00094 ;       .line   164; "hif_prg.c"        if(enuHifBlinkState == BLINK_OFF)
+0003   ???? ????      00095         BANKSEL _enuHifBlinkState
+0005   08??           00096         MOVF    _enuHifBlinkState,W
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\h   9-20-2022  01:35:01         PAGE  3
+
+
+LOC    OBJECT CODE    LINE  SOURCE TEXT
+  VALUE
+
+0006   1D03           00097         BTFSS   STATUS,2
+0007   2???           00098         GOTO    _00155_DS_
+                      00099 ;;unsigned compare: left < lit(0x28=40), size=1
+                      00100 ;       .line   166; "hif_prg.c"        if(u8HifCounter >= HIF_u8BLINK_OFF_THRESHOLD)
+0008   3028           00101         MOVLW   0x28
+0009   ???? ????      00102         BANKSEL _u8HifCounter
+000B   02??           00103         SUBWF   _u8HifCounter,W
+000C   1C03           00104         BTFSS   STATUS,0
+000D   2???           00105         GOTO    _00157_DS_
+                      00106 ;;genSkipc:3247: created from rifx:00000000047558B0
+                      00107 ;       .line   168; "hif_prg.c"        SSD_SetDisplayedNumber(SSD_SEGMENT_LEFT, 0x08);
+000E   3008           00108         MOVLW   0x08
+000F   00??           00109         MOVWF   STK00
+0010   3001           00110         MOVLW   0x01
+0011   ???? ????      00111         PAGESEL _SSD_SetDisplayedNumber
+0013   2???           00112         CALL    _SSD_SetDisplayedNumber
+0014   ???? ????      00113         PAGESEL $
+                      00114 ;       .line   169; "hif_prg.c"        SSD_SetDisplayedNumber(SSD_SEGMENT_RIGHT, 0x08);
+0016   3008           00115         MOVLW   0x08
+0017   00??           00116         MOVWF   STK00
+0018   3000           00117         MOVLW   0x00
+0019   ???? ????      00118         PAGESEL _SSD_SetDisplayedNumber
+001B   2???           00119         CALL    _SSD_SetDisplayedNumber
+001C   ???? ????      00120         PAGESEL $
+                      00121 ;       .line   170; "hif_prg.c"        enuHifBlinkState = BLINK_ON;
+001E   3001           00122         MOVLW   0x01
+001F   ???? ????      00123         BANKSEL _enuHifBlinkState
+0021   00??           00124         MOVWF   _enuHifBlinkState
+                      00125 ;       .line   171; "hif_prg.c"        u8HifCounter     = BTY_u8ZERO;
+0022   ???? ????      00126         BANKSEL _u8HifCounter
+0024   01??           00127         CLRF    _u8HifCounter
+0025   2???           00128         GOTO    _00157_DS_
+                      00129 ;;unsigned compare: left < lit(0x14=20), size=1
+0026                  00130 _00155_DS_
+                      00131 ;       .line   179; "hif_prg.c"        if(u8HifCounter >= HIF_u8BLINK_ON_THRESHOLD)
+0026   3014           00132         MOVLW   0x14
+0027   ???? ????      00133         BANKSEL _u8HifCounter
+0029   02??           00134         SUBWF   _u8HifCounter,W
+002A   1C03           00135         BTFSS   STATUS,0
+002B   2???           00136         GOTO    _00157_DS_
+                      00137 ;;genSkipc:3247: created from rifx:00000000047558B0
+                      00138 ;       .line   181; "hif_prg.c"        SSD_SetDisplayedNumber(SSD_SEGMENT_LEFT, 18);
+002C   3012           00139         MOVLW   0x12
+002D   00??           00140         MOVWF   STK00
+002E   3001           00141         MOVLW   0x01
+002F   ???? ????      00142         PAGESEL _SSD_SetDisplayedNumber
+0031   2???           00143         CALL    _SSD_SetDisplayedNumber
+0032   ???? ????      00144         PAGESEL $
+                      00145 ;       .line   182; "hif_prg.c"        SSD_SetDisplayedNumber(SSD_SEGMENT_RIGHT, 18);
+0034   3012           00146         MOVLW   0x12
+0035   00??           00147         MOVWF   STK00
+0036   3000           00148         MOVLW   0x00
+0037   ???? ????      00149         PAGESEL _SSD_SetDisplayedNumber
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\h   9-20-2022  01:35:01         PAGE  4
+
+
+LOC    OBJECT CODE    LINE  SOURCE TEXT
+  VALUE
+
+0039   2???           00150         CALL    _SSD_SetDisplayedNumber
+003A   ???? ????      00151         PAGESEL $
+                      00152 ;       .line   183; "hif_prg.c"        enuHifBlinkState = BLINK_OFF;
+003C   ???? ????      00153         BANKSEL _enuHifBlinkState
+003E   01??           00154         CLRF    _enuHifBlinkState
+                      00155 ;       .line   184; "hif_prg.c"        u8HifCounter     = BTY_u8ZERO;
+003F   ???? ????      00156         BANKSEL _u8HifCounter
+0041   01??           00157         CLRF    _u8HifCounter
+0042                  00158 _00157_DS_
+0042   0008           00159         RETURN  
+                      00160 ; exit point of _vidHazzardBlink
+                      00161 
+                      00162 ;***
+                      00163 ;  pBlock Stats: dbName = C
+                      00164 ;***
+                      00165 ;entry:  _HIF_vidSetMode        ;Function start
+                      00166 ; 2 exit points
+                      00167 ;has an exit
+                      00168 ;1 compiler assigned register :
+                      00169 ;   r0x1004
+                      00170 ;; Starting pCode block
+0043                  00171 _HIF_vidSetMode ;Function start
+                      00172 ; 2 exit points
+                      00173 ;       .line   135; "hif_prg.c"        void HIF_vidSetMode(HIF_tenuMode enuHifSetMode)
+0043   ???? ????      00174         BANKSEL r0x1004
+0045   00??           00175         MOVWF   r0x1004
+                      00176 ;;unsigned compare: left < lit(0x2=2), size=1
+                      00177 ;       .line   137; "hif_prg.c"        if((enuHifSetMode < HIF_UNDEFINED_MODE) &&
+0046   3002           00178         MOVLW   0x02
+0047   02??           00179         SUBWF   r0x1004,W
+0048   1803           00180         BTFSC   STATUS,0
+0049   2???           00181         GOTO    _00136_DS_
+                      00182 ;;genSkipc:3247: created from rifx:00000000047558B0
+                      00183 ;       .line   138; "hif_prg.c"        (enuHifSetMode != enuHifMode))
+004A   ???? ????      00184         BANKSEL _enuHifMode
+004C   08??           00185         MOVF    _enuHifMode,W
+                      00186 ;       .line   140; "hif_prg.c"        enuHifOldMode = enuHifMode;
+004D   ???? ????      00187         BANKSEL r0x1004
+004F   06??           00188         XORWF   r0x1004,W
+0050   1903           00189         BTFSC   STATUS,2
+0051   2???           00190         GOTO    _00136_DS_
+0052   ???? ????      00191         BANKSEL _enuHifMode
+0054   08??           00192         MOVF    _enuHifMode,W
+0055   ???? ????      00193         BANKSEL _enuHifOldMode
+0057   00??           00194         MOVWF   _enuHifOldMode
+                      00195 ;       .line   141; "hif_prg.c"        u8HifCounter  = BTY_u8ZERO;
+0058   ???? ????      00196         BANKSEL _u8HifCounter
+005A   01??           00197         CLRF    _u8HifCounter
+                      00198 ;       .line   142; "hif_prg.c"        enuHifBlinkState = BLINK_OFF;
+005B   ???? ????      00199         BANKSEL _enuHifBlinkState
+005D   01??           00200         CLRF    _enuHifBlinkState
+                      00201 ;       .line   143; "hif_prg.c"        enuHifMode    = enuHifSetMode;
+005E   ???? ????      00202         BANKSEL r0x1004
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\h   9-20-2022  01:35:01         PAGE  5
+
+
+LOC    OBJECT CODE    LINE  SOURCE TEXT
+  VALUE
+
+0060   08??           00203         MOVF    r0x1004,W
+0061   ???? ????      00204         BANKSEL _enuHifMode
+0063   00??           00205         MOVWF   _enuHifMode
+0064                  00206 _00136_DS_
+0064   0008           00207         RETURN  
+                      00208 ; exit point of _HIF_vidSetMode
+                      00209 
+                      00210 ;***
+                      00211 ;  pBlock Stats: dbName = C
+                      00212 ;***
+                      00213 ;entry:  _HIF_vidTask   ;Function start
+                      00214 ; 2 exit points
+                      00215 ;has an exit
+                      00216 ;functions called:
+                      00217 ;   _SSD_SetDisplayedNumber
+                      00218 ;   _SSD_SetDisplayedNumber
+                      00219 ;   _vidHazzardBlink
+                      00220 ;   _SSD_SetDisplayedNumber
+                      00221 ;   _SSD_SetDisplayedNumber
+                      00222 ;   _vidHazzardBlink
+                      00223 ;1 compiler assigned register :
+                      00224 ;   STK00
+                      00225 ;; Starting pCode block
+0065                  00226 _HIF_vidTask    ;Function start
+                      00227 ; 2 exit points
+                      00228 ;       .line   106; "hif_prg.c"        switch(enuHifMode)
+0065   ???? ????      00229         BANKSEL _enuHifMode
+0067   08??           00230         MOVF    _enuHifMode,W
+0068   1903           00231         BTFSC   STATUS,2
+0069   2???           00232         GOTO    _00109_DS_
+006A   08??           00233         MOVF    _enuHifMode,W
+006B   3A01           00234         XORLW   0x01
+006C   1903           00235         BTFSC   STATUS,2
+006D   2???           00236         GOTO    _00112_DS_
+006E   2???           00237         GOTO    _00115_DS_
+006F                  00238 _00109_DS_
+                      00239 ;       .line   109; "hif_prg.c"        if(enuHifMode != enuHifOldMode)
+006F   ???? ????      00240         BANKSEL _enuHifOldMode
+0071   08??           00241         MOVF    _enuHifOldMode,W
+                      00242 ;       .line   111; "hif_prg.c"        SSD_SetDisplayedNumber(SSD_SEGMENT_LEFT, 18);
+0072   ???? ????      00243         BANKSEL _enuHifMode
+0074   06??           00244         XORWF   _enuHifMode,W
+0075   1903           00245         BTFSC   STATUS,2
+0076   2???           00246         GOTO    _00115_DS_
+0077   3012           00247         MOVLW   0x12
+0078   00??           00248         MOVWF   STK00
+0079   3001           00249         MOVLW   0x01
+007A   ???? ????      00250         PAGESEL _SSD_SetDisplayedNumber
+007C   2???           00251         CALL    _SSD_SetDisplayedNumber
+007D   ???? ????      00252         PAGESEL $
+                      00253 ;       .line   112; "hif_prg.c"        SSD_SetDisplayedNumber(SSD_SEGMENT_RIGHT, 18);
+007F   3012           00254         MOVLW   0x12
+0080   00??           00255         MOVWF   STK00
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\h   9-20-2022  01:35:01         PAGE  6
+
+
+LOC    OBJECT CODE    LINE  SOURCE TEXT
+  VALUE
+
+0081   3000           00256         MOVLW   0x00
+0082   ???? ????      00257         PAGESEL _SSD_SetDisplayedNumber
+0084   2???           00258         CALL    _SSD_SetDisplayedNumber
+0085   ???? ????      00259         PAGESEL $
+                      00260 ;       .line   113; "hif_prg.c"        enuHifOldMode = enuHifMode;
+0087   ???? ????      00261         BANKSEL _enuHifMode
+0089   08??           00262         MOVF    _enuHifMode,W
+008A   ???? ????      00263         BANKSEL _enuHifOldMode
+008C   00??           00264         MOVWF   _enuHifOldMode
+                      00265 ;       .line   119; "hif_prg.c"        break;
+008D   2???           00266         GOTO    _00115_DS_
+008E                  00267 _00112_DS_
+                      00268 ;       .line   122; "hif_prg.c"        vidHazzardBlink();
+008E   2???           00269         CALL    _vidHazzardBlink
+008F                  00270 _00115_DS_
+                      00271 ;       .line   127; "hif_prg.c"        }
+008F   0008           00272         RETURN  
+                      00273 ; exit point of _HIF_vidTask
+                      00274 
+                      00275 ;***
+                      00276 ;  pBlock Stats: dbName = C
+                      00277 ;***
+                      00278 ;entry:  _HIF_vidInit   ;Function start
+                      00279 ; 2 exit points
+                      00280 ;has an exit
+                      00281 ;; Starting pCode block
+0090                  00282 _HIF_vidInit    ;Function start
+                      00283 ; 2 exit points
+                      00284 ;       .line   93; "hif_prg.c" enuHifMode       = HIF_OFF_MODE;
+0090   ???? ????      00285         BANKSEL _enuHifMode
+0092   01??           00286         CLRF    _enuHifMode
+                      00287 ;       .line   94; "hif_prg.c" enuHifOldMode    = HIF_OFF_MODE;
+0093   ???? ????      00288         BANKSEL _enuHifOldMode
+0095   01??           00289         CLRF    _enuHifOldMode
+                      00290 ;       .line   95; "hif_prg.c" u8HifCounter     = BTY_u8ZERO;
+0096   ???? ????      00291         BANKSEL _u8HifCounter
+0098   01??           00292         CLRF    _u8HifCounter
+                      00293 ;       .line   96; "hif_prg.c" enuHifBlinkState = BLINK_OFF;
+0099   ???? ????      00294         BANKSEL _enuHifBlinkState
+009B   01??           00295         CLRF    _enuHifBlinkState
+009C   0008           00296         RETURN  
+                      00297 ; exit point of _HIF_vidInit
+                      00298 
+                      00299 
+                      00300 ;       code size estimation:
+                      00301 ;          81+   38 =   119 instructions (  314 byte)
+                      00302 
+                      00303         end
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\h   9-20-2022  01:35:01         PAGE  7
+
+
+SYMBOL TABLE
+  LABEL                             VALUE
+
+ACKDT                             00000005
+ACKEN                             00000004
+ACKSTAT                           00000006
+ADCON0                            0000001F
+ADCON1                            0000009F
+ADCS0                             00000006
+ADCS1                             00000007
+ADCS2                             00000006
+ADDEN                             00000003
+ADFM                              00000007
+ADIE                              00000006
+ADIF                              00000006
+ADON                              00000000
+ADRESH                            0000001E
+ADRESL                            0000009E
+BCLIE                             00000003
+BCLIF                             00000003
+BF                                00000000
+BRGH                              00000002
+C                                 00000000
+C1INV                             00000004
+C1OUT                             00000006
+C2INV                             00000005
+C2OUT                             00000007
+CCP1CON                           00000017
+CCP1IE                            00000002
+CCP1IF                            00000002
+CCP1M0                            00000000
+CCP1M1                            00000001
+CCP1M2                            00000002
+CCP1M3                            00000003
+CCP1X                             00000005
+CCP1Y                             00000004
+CCP2CON                           0000001D
+CCP2IE                            00000000
+CCP2IF                            00000000
+CCP2M0                            00000000
+CCP2M1                            00000001
+CCP2M2                            00000002
+CCP2M3                            00000003
+CCP2X                             00000005
+CCP2Y                             00000004
+CCPR1                             00000015
+CCPR1H                            00000016
+CCPR1L                            00000015
+CCPR2                             0000001B
+CCPR2H                            0000001C
+CCPR2L                            0000001B
+CHS0                              00000003
+CHS1                              00000004
+CHS2                              00000005
+CIS                               00000003
+CKE                               00000006
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\h   9-20-2022  01:35:01         PAGE  8
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+CKP                               00000004
+CM0                               00000000
+CM1                               00000001
+CM2                               00000002
+CMCON                             0000009C
+CMIE                              00000006
+CMIF                              00000006
+CREN                              00000004
+CSRC                              00000007
+CVR0                              00000000
+CVR1                              00000001
+CVR2                              00000002
+CVR3                              00000003
+CVRCON                            0000009D
+CVREN                             00000007
+CVROE                             00000006
+CVRR                              00000005
+D                                 00000005
+DATA_ADDRESS                      00000005
+DC                                00000001
+D_A                               00000005
+D_NOT_A                           00000005
+EEADR                             0000010D
+EEADRH                            0000010F
+EECON1                            0000018C
+EECON2                            0000018D
+EEDATA                            0000010C
+EEDATH                            0000010E
+EEIE                              00000004
+EEIF                              00000004
+EEPGD                             00000007
+F                                 00000001
+FERR                              00000002
+FSR                               00000004
+GCEN                              00000007
+GIE                               00000007
+GO                                00000002
+GO_DONE                           00000002
+GO_NOT_DONE                       00000002
+I2C_DATA                          00000005
+I2C_READ                          00000002
+I2C_START                         00000003
+I2C_STOP                          00000004
+IBF                               00000007
+IBOV                              00000005
+INDF                              00000000
+INTCON                            0000000B
+INTE                              00000004
+INTEDG                            00000006
+INTF                              00000001
+IRP                               00000007
+NOT_A                             00000005
+NOT_ADDRESS                       00000005
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\h   9-20-2022  01:35:01         PAGE  9
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+NOT_BO                            00000000
+NOT_BOR                           00000000
+NOT_DONE                          00000002
+NOT_PD                            00000003
+NOT_POR                           00000001
+NOT_RBPU                          00000007
+NOT_RC8                           00000006
+NOT_T1SYNC                        00000002
+NOT_TO                            00000004
+NOT_TX8                           00000006
+NOT_W                             00000002
+NOT_WRITE                         00000002
+OBF                               00000006
+OERR                              00000001
+OPTION_REG                        00000081
+P                                 00000004
+PCFG0                             00000000
+PCFG1                             00000001
+PCFG2                             00000002
+PCFG3                             00000003
+PCL                               00000002
+PCLATH                            0000000A
+PCON                              0000008E
+PEIE                              00000006
+PEN                               00000002
+PIE1                              0000008C
+PIE2                              0000008D
+PIR1                              0000000C
+PIR2                              0000000D
+PORTA                             00000005
+PORTB                             00000006
+PORTC                             00000007
+PORTD                             00000008
+PORTE                             00000009
+PR2                               00000092
+PS0                               00000000
+PS1                               00000001
+PS2                               00000002
+PSA                               00000003
+PSAVE                             00000000
+PSPIE                             00000007
+PSPIF                             00000007
+PSPMODE                           00000004
+R                                 00000002
+RA0                               00000000
+RA1                               00000001
+RA2                               00000002
+RA3                               00000003
+RA4                               00000004
+RA5                               00000005
+RB0                               00000000
+RB1                               00000001
+RB2                               00000002
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\h   9-20-2022  01:35:01         PAGE 10
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+RB3                               00000003
+RB4                               00000004
+RB5                               00000005
+RB6                               00000006
+RB7                               00000007
+RBIE                              00000003
+RBIF                              00000000
+RC0                               00000000
+RC1                               00000001
+RC2                               00000002
+RC3                               00000003
+RC4                               00000004
+RC5                               00000005
+RC6                               00000006
+RC7                               00000007
+RC8_9                             00000006
+RC9                               00000006
+RCD8                              00000000
+RCEN                              00000003
+RCIE                              00000005
+RCIF                              00000005
+RCREG                             0000001A
+RCSTA                             00000018
+RD                                00000000
+RD0                               00000000
+RD1                               00000001
+RD2                               00000002
+RD3                               00000003
+RD4                               00000004
+RD5                               00000005
+RD6                               00000006
+RD7                               00000007
+RE0                               00000000
+RE1                               00000001
+RE2                               00000002
+READ_WRITE                        00000002
+RP0                               00000005
+RP1                               00000006
+RSEN                              00000001
+RX9                               00000006
+RX9D                              00000000
+R_NOT_W                           00000002
+R_W                               00000002
+S                                 00000003
+SEN                               00000000
+SMP                               00000007
+SPBRG                             00000099
+SPEN                              00000007
+SREN                              00000005
+SSAVE                             00000000
+SSPADD                            00000093
+SSPBUF                            00000013
+SSPCON                            00000014
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\h   9-20-2022  01:35:01         PAGE 11
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+SSPCON2                           00000091
+SSPEN                             00000005
+SSPIE                             00000003
+SSPIF                             00000003
+SSPM0                             00000000
+SSPM1                             00000001
+SSPM2                             00000002
+SSPM3                             00000003
+SSPOV                             00000006
+SSPSTAT                           00000094
+STATUS                            00000003
+STK00                             00000000
+STK01                             00000000
+STK02                             00000000
+STK03                             00000000
+STK04                             00000000
+STK05                             00000000
+STK06                             00000000
+STK07                             00000000
+STK08                             00000000
+STK09                             00000000
+STK10                             00000000
+STK11                             00000000
+STK12                             00000000
+SYNC                              00000004
+T0CS                              00000005
+T0IE                              00000005
+T0IF                              00000002
+T0SE                              00000004
+T1CKPS0                           00000004
+T1CKPS1                           00000005
+T1CON                             00000010
+T1INSYNC                          00000002
+T1OSCEN                           00000003
+T1SYNC                            00000002
+T2CKPS0                           00000000
+T2CKPS1                           00000001
+T2CON                             00000012
+TMR0                              00000001
+TMR0IE                            00000005
+TMR0IF                            00000002
+TMR1                              0000000E
+TMR1CS                            00000001
+TMR1H                             0000000F
+TMR1IE                            00000000
+TMR1IF                            00000000
+TMR1L                             0000000E
+TMR1ON                            00000000
+TMR2                              00000011
+TMR2IE                            00000001
+TMR2IF                            00000001
+TMR2ON                            00000002
+TOUTPS0                           00000003
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\h   9-20-2022  01:35:01         PAGE 12
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+TOUTPS1                           00000004
+TOUTPS2                           00000005
+TOUTPS3                           00000006
+TRISA                             00000085
+TRISA0                            00000000
+TRISA1                            00000001
+TRISA2                            00000002
+TRISA3                            00000003
+TRISA4                            00000004
+TRISA5                            00000005
+TRISB                             00000086
+TRISB0                            00000000
+TRISB1                            00000001
+TRISB2                            00000002
+TRISB3                            00000003
+TRISB4                            00000004
+TRISB5                            00000005
+TRISB6                            00000006
+TRISB7                            00000007
+TRISC                             00000087
+TRISC0                            00000000
+TRISC1                            00000001
+TRISC2                            00000002
+TRISC3                            00000003
+TRISC4                            00000004
+TRISC5                            00000005
+TRISC6                            00000006
+TRISC7                            00000007
+TRISD                             00000088
+TRISD0                            00000000
+TRISD1                            00000001
+TRISD2                            00000002
+TRISD3                            00000003
+TRISD4                            00000004
+TRISD5                            00000005
+TRISD6                            00000006
+TRISD7                            00000007
+TRISE                             00000089
+TRISE0                            00000000
+TRISE1                            00000001
+TRISE2                            00000002
+TRMT                              00000001
+TX8_9                             00000006
+TX9                               00000006
+TX9D                              00000000
+TXD8                              00000000
+TXEN                              00000005
+TXIE                              00000004
+TXIF                              00000004
+TXREG                             00000019
+TXSTA                             00000098
+UA                                00000001
+W                                 00000000
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\h   9-20-2022  01:35:01         PAGE 13
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+WCOL                              00000007
+WR                                00000001
+WREN                              00000002
+WRERR                             00000003
+WSAVE                             00000000
+Z                                 00000002
+_00109_DS_                        0000006F
+_00112_DS_                        0000008E
+_00115_DS_                        0000008F
+_00136_DS_                        00000064
+_00155_DS_                        00000026
+_00157_DS_                        00000042
+_BODEN_OFF                        00003FBF
+_BODEN_ON                         00003FFF
+_BOREN_OFF                        00003FBF
+_BOREN_ON                         00003FFF
+_CONFIG                           00002007
+_CPD_OFF                          00003FFF
+_CPD_ON                           00003EFF
+_CP_ALL                           00001FFF
+_CP_OFF                           00003FFF
+_CP_ON                            00001FFF
+_DEBUG_OFF                        00003FFF
+_DEBUG_ON                         000037FF
+_DEVID1                           00002006
+_DIO_u8ReadChannel                00000000
+_DIO_vidWriteChannel              00000000
+_DIO_vidWritePort                 00000000
+_FOSC_EXTRC                       00003FFF
+_FOSC_HS                          00003FFE
+_FOSC_LP                          00003FFC
+_FOSC_XT                          00003FFD
+_HIF_vidInit                      00000090
+_HIF_vidSetMode                   00000043
+_HIF_vidTask                      00000065
+_HS_OSC                           00003FFE
+_IDLOC0                           00002000
+_IDLOC1                           00002001
+_IDLOC2                           00002002
+_IDLOC3                           00002003
+_LP_OSC                           00003FFC
+_LVP_OFF                          00003F7F
+_LVP_ON                           00003FFF
+_PWRTE_OFF                        00003FFF
+_PWRTE_ON                         00003FF7
+_RC_OSC                           00003FFF
+_SSD_SetDisplayedNumber           00000000
+_SSD_vidInit                      00000000
+_SSD_vidTask                      00000000
+_WDTE_OFF                         00003FFB
+_WDTE_ON                          00003FFF
+_WDT_OFF                          00003FFB
+_WDT_ON                           00003FFF
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\h   9-20-2022  01:35:01         PAGE 14
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+_WRT_1FOURTH                      00003BFF
+_WRT_256                          00003DFF
+_WRT_HALF                         000039FF
+_WRT_OFF                          00003FFF
+_XT_OSC                           00003FFD
+__16F877A                         00000001
+__CODE_END                        00001FFF
+__CODE_START                      00000000
+__COMMON_RAM_END                  0000007F
+__COMMON_RAM_START                00000070
+__EEPROM_END                      000021FF
+__EEPROM_START                    00002100
+__VECTOR_INT                      00000004
+__VECTOR_RESET                    00000000
+_code_hif_prg_0014                00000014
+_code_hif_prg_001C                0000001C
+_code_hif_prg_0032                00000032
+_code_hif_prg_003A                0000003A
+_code_hif_prg_007D                0000007D
+_code_hif_prg_0085                00000085
+_enuHifBlinkState                 00000004
+_enuHifMode                       00000001
+_enuHifOldMode                    00000002
+_u8HifCounter                     00000003
+_vidHazzardBlink                  00000000
+r0x1004                           00000000
+
+Errors   :     0
+Warnings :     0 reported,     0 suppressed
+Messages :     0 reported,     0 suppressed
+
+

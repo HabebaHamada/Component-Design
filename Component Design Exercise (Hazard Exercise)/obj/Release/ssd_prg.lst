@@ -1,0 +1,869 @@
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\s   11-10-2022  14:55:40        PAGE  1
+
+
+LOC    OBJECT CODE    LINE  SOURCE TEXT
+  VALUE
+
+                      00001 ;--------------------------------------------------------
+                      00002 ; File Created by SDCC : free open source ANSI-C Compiler
+                      00003 ; Version 3.5.0 #9253 (Jun 20 2015) (MINGW64)
+                      00004 ; This file was generated Thu Nov 10 14:55:40 2022
+                      00005 ;--------------------------------------------------------
+                      00006 ; PIC port for the 14-bit core
+                      00007 ;--------------------------------------------------------
+                      00008 ;       .file   "ssd_prg.c"
+                      00009         list    p=16f877a
+                      00010         radix dec
+                      00011         include "p16f877a.inc"
+                      00001         LIST
+                      00002 
+                      00003 ;==========================================================================
+                      00004 ; Build date : Aug 07 2014
+                      00005 ;  MPASM PIC16F877A processor include
+                      00006 ; 
+                      00007 ;  (c) Copyright 1999-2014 Microchip Technology, All rights reserved
+                      00008 ;==========================================================================
+                      00009 
+                      00567         LIST
+                      00012 ;--------------------------------------------------------
+                      00013 ; external declarations
+                      00014 ;--------------------------------------------------------
+  0000                00015         extern  _DIO_u8ReadChannel
+  0000                00016         extern  _DIO_vidWriteChannel
+  0000                00017         extern  _DIO_vidWritePort
+  0000                00018         extern  __gptrget1
+                      00019 
+  0000                00020         extern PSAVE
+  0000                00021         extern SSAVE
+  0000                00022         extern WSAVE
+  0000                00023         extern STK12
+  0000                00024         extern STK11
+  0000                00025         extern STK10
+  0000                00026         extern STK09
+  0000                00027         extern STK08
+  0000                00028         extern STK07
+  0000                00029         extern STK06
+  0000                00030         extern STK05
+  0000                00031         extern STK04
+  0000                00032         extern STK03
+  0000                00033         extern STK02
+  0000                00034         extern STK01
+  0000                00035         extern STK00
+                      00036 ;--------------------------------------------------------
+                      00037 ; global declarations
+                      00038 ;--------------------------------------------------------
+  0000                00039         global  _SSD_SetDisplayedNumber
+  0000                00040         global  _SSD_vidTask
+  0000                00041         global  _SSD_vidInit
+                      00042 
+                      00043 ;--------------------------------------------------------
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\s   11-10-2022  14:55:40        PAGE  2
+
+
+LOC    OBJECT CODE    LINE  SOURCE TEXT
+  VALUE
+
+                      00044 ; global definitions
+                      00045 ;--------------------------------------------------------
+                      00046 ;--------------------------------------------------------
+                      00047 ; absolute symbol definitions
+                      00048 ;--------------------------------------------------------
+                      00049 ;--------------------------------------------------------
+                      00050 ; compiler-defined variables
+                      00051 ;--------------------------------------------------------
+                      00052 UDL_ssd_prg_0   udata
+0000                  00053 r0x1009 res     1
+0001                  00054 r0x100A res     1
+0002                  00055 r0x100B res     1
+0003                  00056 r0x100C res     1
+0004                  00057 r0x1008 res     1
+0005                  00058 r0x1003 res     1
+0006                  00059 r0x1004 res     1
+0007                  00060 r0x1005 res     1
+0008                  00061 r0x1006 res     1
+0009                  00062 r0x1007 res     1
+000A                  00063 _enuCurrSegment res     1
+000B                  00064 _au8SegmentNumber       res     2
+                      00065 ;--------------------------------------------------------
+                      00066 ; initialized data
+                      00067 ;--------------------------------------------------------
+                      00068 
+                      00069 ID_ssd_prg_0    code
+0000                  00070 _ku8CharacterTable
+0000   34FC           00071         retlw 0xfc
+0001   3460           00072         retlw 0x60
+0002   34DA           00073         retlw 0xda
+0003   34F2           00074         retlw 0xf2
+0004   3466           00075         retlw 0x66
+0005   34B6           00076         retlw 0xb6
+0006   34BE           00077         retlw 0xbe
+0007   34E0           00078         retlw 0xe0
+0008   347F           00079         retlw 0x7f
+0009   34F6           00080         retlw 0xf6
+000A   34EE           00081         retlw 0xee
+000B   34FF           00082         retlw 0xff
+000C   349C           00083         retlw 0x9c
+000D   34FD           00084         retlw 0xfd
+000E   349E           00085         retlw 0x9e
+000F   348E           00086         retlw 0x8e
+0010   34C6           00087         retlw 0xc6
+0011   343A           00088         retlw 0x3a
+0012   3400           00089         retlw 0x00
+                      00090 
+                      00091 ;--------------------------------------------------------
+                      00092 ; overlayable items in internal ram 
+                      00093 ;--------------------------------------------------------
+                      00094 ;       udata_ovr
+                      00095 ;--------------------------------------------------------
+                      00096 ; code
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\s   11-10-2022  14:55:40        PAGE  3
+
+
+LOC    OBJECT CODE    LINE  SOURCE TEXT
+  VALUE
+
+                      00097 ;--------------------------------------------------------
+                      00098 code_ssd_prg    code
+                      00099 ;***
+                      00100 ;  pBlock Stats: dbName = C
+                      00101 ;***
+                      00102 ;entry:  _SSD_SetDisplayedNumber        ;Function start
+                      00103 ; 2 exit points
+                      00104 ;has an exit
+                      00105 ;functions called:
+                      00106 ;   __gptrget1
+                      00107 ;   __gptrget1
+                      00108 ;7 compiler assigned registers:
+                      00109 ;   r0x1003
+                      00110 ;   STK00
+                      00111 ;   r0x1004
+                      00112 ;   r0x1005
+                      00113 ;   r0x1006
+                      00114 ;   STK01
+                      00115 ;   r0x1007
+                      00116 ;; Starting pCode block
+0000                  00117 _SSD_SetDisplayedNumber ;Function start
+                      00118 ; 2 exit points
+                      00119 ;       .line   134; "ssd_prg.c"        void SSD_SetDisplayedNumber(SSD_tenuSegmentId enuSegmentId, uint
+                            8 u8Number)
+0000   ???? ????      00120         BANKSEL r0x1003
+0002   00??           00121         MOVWF   r0x1003
+0003   08??           00122         MOVF    STK00,W
+0004   00??           00123         MOVWF   r0x1004
+                      00124 ;;unsigned compare: left < lit(0x2=2), size=1
+                      00125 ;       .line   136; "ssd_prg.c"        if((enuSegmentId<SSD_SEGMENT_NUMBER) && (u8Number<u8SEG_TABLE_SI
+                            ZE))
+0005   3002           00126         MOVLW   0x02
+0006   02??           00127         SUBWF   r0x1003,W
+0007   1803           00128         BTFSC   STATUS,0
+0008   2???           00129         GOTO    _00132_DS_
+                      00130 ;;genSkipc:3247: created from rifx:00000000047558B0
+                      00131 ;;unsigned compare: left < lit(0x13=19), size=1
+0009   3013           00132         MOVLW   0x13
+000A   02??           00133         SUBWF   r0x1004,W
+000B   1803           00134         BTFSC   STATUS,0
+000C   2???           00135         GOTO    _00132_DS_
+                      00136 ;;genSkipc:3247: created from rifx:00000000047558B0
+                      00137 ;       .line   138; "ssd_prg.c"        au8SegmentNumber[enuSegmentId] = ku8CharacterTable[u8Number];
+000D   08??           00138         MOVF    r0x1003,W
+000E   3E??           00139         ADDLW   (_au8SegmentNumber + 0)
+000F   00??           00140         MOVWF   r0x1003
+0010   30??           00141         MOVLW   high (_au8SegmentNumber + 0)
+0011   1803           00142         BTFSC   STATUS,0
+0012   3E01           00143         ADDLW   0x01
+0013   00??           00144         MOVWF   r0x1005
+0014   08??           00145         MOVF    r0x1004,W
+0015   3E??           00146         ADDLW   (_ku8CharacterTable + 0)
+0016   00??           00147         MOVWF   r0x1004
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\s   11-10-2022  14:55:40        PAGE  4
+
+
+LOC    OBJECT CODE    LINE  SOURCE TEXT
+  VALUE
+
+0017   30??           00148         MOVLW   high (_ku8CharacterTable + 0)
+0018   1803           00149         BTFSC   STATUS,0
+0019   3E01           00150         ADDLW   0x01
+001A   00??           00151         MOVWF   r0x1006
+001B   08??           00152         MOVF    r0x1004,W
+001C   00??           00153         MOVWF   STK01
+001D   08??           00154         MOVF    r0x1006,W
+001E   00??           00155         MOVWF   STK00
+001F   3080           00156         MOVLW   0x80
+0020   ???? ????      00157         PAGESEL __gptrget1
+0022   2???           00158         CALL    __gptrget1
+0023   ???? ????      00159         PAGESEL $
+0025   ???? ????      00160         BANKSEL r0x1007
+0027   00??           00161         MOVWF   r0x1007
+0028   08??           00162         MOVF    r0x1003,W
+0029   1283 1303      00163         BANKSEL FSR
+002B   0084           00164         MOVWF   FSR
+002C   1383           00165         BCF     STATUS,7
+002D   ???? ????      00166         BANKSEL r0x1005
+002F   18??           00167         BTFSC   r0x1005,0
+0030   1783           00168         BSF     STATUS,7
+0031   08??           00169         MOVF    r0x1007,W
+0032   1283 1303      00170         BANKSEL INDF
+0034   0080           00171         MOVWF   INDF
+0035                  00172 _00132_DS_
+0035   0008           00173         RETURN  
+                      00174 ; exit point of _SSD_SetDisplayedNumber
+                      00175 
+                      00176 ;***
+                      00177 ;  pBlock Stats: dbName = C
+                      00178 ;***
+                      00179 ;entry:  _SSD_vidTask   ;Function start
+                      00180 ; 2 exit points
+                      00181 ;has an exit
+                      00182 ;functions called:
+                      00183 ;   _DIO_vidWriteChannel
+                      00184 ;   _DIO_vidWritePort
+                      00185 ;   _DIO_vidWriteChannel
+                      00186 ;   _DIO_vidWriteChannel
+                      00187 ;   _DIO_vidWritePort
+                      00188 ;   _DIO_vidWriteChannel
+                      00189 ;   _DIO_vidWriteChannel
+                      00190 ;   _DIO_vidWritePort
+                      00191 ;   _DIO_vidWriteChannel
+                      00192 ;   _DIO_vidWriteChannel
+                      00193 ;   _DIO_vidWritePort
+                      00194 ;   _DIO_vidWriteChannel
+                      00195 ;2 compiler assigned registers:
+                      00196 ;   r0x1008
+                      00197 ;   STK00
+                      00198 ;; Starting pCode block
+0036                  00199 _SSD_vidTask    ;Function start
+                      00200 ; 2 exit points
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\s   11-10-2022  14:55:40        PAGE  5
+
+
+LOC    OBJECT CODE    LINE  SOURCE TEXT
+  VALUE
+
+                      00201 ;       .line   101; "ssd_prg.c"        switch(enuCurrSegment)
+0036   ???? ????      00202         BANKSEL _enuCurrSegment
+0038   08??           00203         MOVF    _enuCurrSegment,W
+0039   ???? ????      00204         BANKSEL r0x1008
+003B   00??           00205         MOVWF   r0x1008
+003C   1903           00206         BTFSC   STATUS,2
+003D   2???           00207         GOTO    _00111_DS_
+003E   ???? ????      00208         BANKSEL _enuCurrSegment
+0040   08??           00209         MOVF    _enuCurrSegment,W
+0041   3A01           00210         XORLW   0x01
+0042   1903           00211         BTFSC   STATUS,2
+0043   2???           00212         GOTO    _00112_DS_
+0044   2???           00213         GOTO    _00113_DS_
+0045                  00214 _00111_DS_
+                      00215 ;       .line   105; "ssd_prg.c"        DIO_vidWriteChannel(SSD_u8SSEG2_EN_CHANNEL, DIO_LEVEL_LOW);
+0045   3000           00216         MOVLW   0x00
+0046   00??           00217         MOVWF   STK00
+0047   300B           00218         MOVLW   0x0b
+0048   ???? ????      00219         PAGESEL _DIO_vidWriteChannel
+004A   2???           00220         CALL    _DIO_vidWriteChannel
+004B   ???? ????      00221         PAGESEL $
+                      00222 ;       .line   106; "ssd_prg.c"        u8DisplayValue  = au8SegmentNumber[SSD_SEGMENT_RIGHT];
+004D   ???? ????      00223         BANKSEL _au8SegmentNumber
+004F   08??           00224         MOVF    (_au8SegmentNumber + 0),W
+                      00225 ;       .line   109; "ssd_prg.c"        DIO_vidWritePort(DIO_PORTD, u8DisplayValue);
+0050   ???? ????      00226         BANKSEL r0x1008
+0052   00??           00227         MOVWF   r0x1008
+0053   00??           00228         MOVWF   STK00
+0054   3003           00229         MOVLW   0x03
+0055   ???? ????      00230         PAGESEL _DIO_vidWritePort
+0057   2???           00231         CALL    _DIO_vidWritePort
+0058   ???? ????      00232         PAGESEL $
+                      00233 ;       .line   110; "ssd_prg.c"        DIO_vidWriteChannel(SSD_u8SSEG1_EN_CHANNEL, DIO_LEVEL_HIGH);
+005A   3001           00234         MOVLW   0x01
+005B   00??           00235         MOVWF   STK00
+005C   300A           00236         MOVLW   0x0a
+005D   ???? ????      00237         PAGESEL _DIO_vidWriteChannel
+005F   2???           00238         CALL    _DIO_vidWriteChannel
+0060   ???? ????      00239         PAGESEL $
+                      00240 ;       .line   111; "ssd_prg.c"        enuCurrSegment = SSD_SEGMENT_LEFT;
+0062   3001           00241         MOVLW   0x01
+0063   ???? ????      00242         BANKSEL _enuCurrSegment
+0065   00??           00243         MOVWF   _enuCurrSegment
+                      00244 ;       .line   112; "ssd_prg.c"        break;
+0066   2???           00245         GOTO    _00115_DS_
+0067                  00246 _00112_DS_
+                      00247 ;       .line   116; "ssd_prg.c"        DIO_vidWriteChannel(SSD_u8SSEG1_EN_CHANNEL, DIO_LEVEL_LOW);
+0067   3000           00248         MOVLW   0x00
+0068   00??           00249         MOVWF   STK00
+0069   300A           00250         MOVLW   0x0a
+006A   ???? ????      00251         PAGESEL _DIO_vidWriteChannel
+006C   2???           00252         CALL    _DIO_vidWriteChannel
+006D   ???? ????      00253         PAGESEL $
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\s   11-10-2022  14:55:40        PAGE  6
+
+
+LOC    OBJECT CODE    LINE  SOURCE TEXT
+  VALUE
+
+                      00254 ;       .line   117; "ssd_prg.c"        u8DisplayValue  = au8SegmentNumber[SSD_SEGMENT_LEFT];
+006F   ???? ????      00255         BANKSEL _au8SegmentNumber
+0071   08??           00256         MOVF    (_au8SegmentNumber + 1),W
+                      00257 ;       .line   120; "ssd_prg.c"        DIO_vidWritePort(DIO_PORTD, u8DisplayValue);
+0072   ???? ????      00258         BANKSEL r0x1008
+0074   00??           00259         MOVWF   r0x1008
+0075   00??           00260         MOVWF   STK00
+0076   3003           00261         MOVLW   0x03
+0077   ???? ????      00262         PAGESEL _DIO_vidWritePort
+0079   2???           00263         CALL    _DIO_vidWritePort
+007A   ???? ????      00264         PAGESEL $
+                      00265 ;       .line   121; "ssd_prg.c"        DIO_vidWriteChannel(SSD_u8SSEG2_EN_CHANNEL, DIO_LEVEL_HIGH);
+007C   3001           00266         MOVLW   0x01
+007D   00??           00267         MOVWF   STK00
+007E   300B           00268         MOVLW   0x0b
+007F   ???? ????      00269         PAGESEL _DIO_vidWriteChannel
+0081   2???           00270         CALL    _DIO_vidWriteChannel
+0082   ???? ????      00271         PAGESEL $
+                      00272 ;       .line   122; "ssd_prg.c"        enuCurrSegment = SSD_SEGMENT_RIGHT;
+0084   ???? ????      00273         BANKSEL _enuCurrSegment
+0086   01??           00274         CLRF    _enuCurrSegment
+                      00275 ;       .line   123; "ssd_prg.c"        break;
+0087   2???           00276         GOTO    _00115_DS_
+0088                  00277 _00113_DS_
+                      00278 ;       .line   126; "ssd_prg.c"        enuCurrSegment = SSD_SEGMENT_RIGHT;
+0088   ???? ????      00279         BANKSEL _enuCurrSegment
+008A   01??           00280         CLRF    _enuCurrSegment
+008B                  00281 _00115_DS_
+                      00282 ;       .line   128; "ssd_prg.c"        }
+008B   0008           00283         RETURN  
+                      00284 ; exit point of _SSD_vidTask
+                      00285 
+                      00286 ;***
+                      00287 ;  pBlock Stats: dbName = C
+                      00288 ;***
+                      00289 ;entry:  _SSD_vidInit   ;Function start
+                      00290 ; 2 exit points
+                      00291 ;has an exit
+                      00292 ;functions called:
+                      00293 ;   __gptrget1
+                      00294 ;   __gptrget1
+                      00295 ;6 compiler assigned registers:
+                      00296 ;   r0x1009
+                      00297 ;   r0x100A
+                      00298 ;   r0x100B
+                      00299 ;   STK01
+                      00300 ;   STK00
+                      00301 ;   r0x100C
+                      00302 ;; Starting pCode block
+008C                  00303 _SSD_vidInit    ;Function start
+                      00304 ; 2 exit points
+                      00305 ;       .line   85; "ssd_prg.c" for(u8Index=0; u8Index<SSD_SEGMENT_NUMBER; u8Index++)
+008C   ???? ????      00306         BANKSEL r0x1009
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\s   11-10-2022  14:55:40        PAGE  7
+
+
+LOC    OBJECT CODE    LINE  SOURCE TEXT
+  VALUE
+
+008E   01??           00307         CLRF    r0x1009
+008F                  00308 _00106_DS_
+                      00309 ;       .line   87; "ssd_prg.c" au8SegmentNumber[u8Index] = ku8CharacterTable[SSD_u8DISPLAY_INIT_ID];
+008F   ???? ????      00310         BANKSEL r0x1009
+0091   08??           00311         MOVF    r0x1009,W
+0092   3E??           00312         ADDLW   (_au8SegmentNumber + 0)
+0093   00??           00313         MOVWF   r0x100A
+0094   30??           00314         MOVLW   high (_au8SegmentNumber + 0)
+0095   1803           00315         BTFSC   STATUS,0
+0096   3E01           00316         ADDLW   0x01
+0097   00??           00317         MOVWF   r0x100B
+0098   30??           00318         MOVLW   (_ku8CharacterTable + 18)
+0099   00??           00319         MOVWF   STK01
+009A   30??           00320         MOVLW   high (_ku8CharacterTable + 18)
+009B   00??           00321         MOVWF   STK00
+009C   3080           00322         MOVLW   0x80
+009D   ???? ????      00323         PAGESEL __gptrget1
+009F   2???           00324         CALL    __gptrget1
+00A0   ???? ????      00325         PAGESEL $
+00A2   ???? ????      00326         BANKSEL r0x100C
+00A4   00??           00327         MOVWF   r0x100C
+00A5   08??           00328         MOVF    r0x100A,W
+00A6   1283 1303      00329         BANKSEL FSR
+00A8   0084           00330         MOVWF   FSR
+00A9   1383           00331         BCF     STATUS,7
+00AA   ???? ????      00332         BANKSEL r0x100B
+00AC   18??           00333         BTFSC   r0x100B,0
+00AD   1783           00334         BSF     STATUS,7
+00AE   08??           00335         MOVF    r0x100C,W
+00AF   1283 1303      00336         BANKSEL INDF
+00B1   0080           00337         MOVWF   INDF
+                      00338 ;       .line   85; "ssd_prg.c" for(u8Index=0; u8Index<SSD_SEGMENT_NUMBER; u8Index++)
+00B2   ???? ????      00339         BANKSEL r0x1009
+00B4   0A??           00340         INCF    r0x1009,F
+                      00341 ;;unsigned compare: left < lit(0x2=2), size=1
+00B5   3002           00342         MOVLW   0x02
+00B6   02??           00343         SUBWF   r0x1009,W
+00B7   1C03           00344         BTFSS   STATUS,0
+00B8   2???           00345         GOTO    _00106_DS_
+                      00346 ;;genSkipc:3247: created from rifx:00000000047558B0
+                      00347 ;       .line   90; "ssd_prg.c" enuCurrSegment = SSD_SEGMENT_RIGHT;
+00B9   ???? ????      00348         BANKSEL _enuCurrSegment
+00BB   01??           00349         CLRF    _enuCurrSegment
+00BC   0008           00350         RETURN  
+                      00351 ; exit point of _SSD_vidInit
+                      00352 
+                      00353 
+                      00354 ;       code size estimation:
+                      00355 ;         111+   39 =   150 instructions (  378 byte)
+                      00356 
+                      00357         end
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\s   11-10-2022  14:55:40        PAGE  8
+
+
+SYMBOL TABLE
+  LABEL                             VALUE
+
+ACKDT                             00000005
+ACKEN                             00000004
+ACKSTAT                           00000006
+ADCON0                            0000001F
+ADCON1                            0000009F
+ADCS0                             00000006
+ADCS1                             00000007
+ADCS2                             00000006
+ADDEN                             00000003
+ADFM                              00000007
+ADIE                              00000006
+ADIF                              00000006
+ADON                              00000000
+ADRESH                            0000001E
+ADRESL                            0000009E
+BCLIE                             00000003
+BCLIF                             00000003
+BF                                00000000
+BRGH                              00000002
+C                                 00000000
+C1INV                             00000004
+C1OUT                             00000006
+C2INV                             00000005
+C2OUT                             00000007
+CCP1CON                           00000017
+CCP1IE                            00000002
+CCP1IF                            00000002
+CCP1M0                            00000000
+CCP1M1                            00000001
+CCP1M2                            00000002
+CCP1M3                            00000003
+CCP1X                             00000005
+CCP1Y                             00000004
+CCP2CON                           0000001D
+CCP2IE                            00000000
+CCP2IF                            00000000
+CCP2M0                            00000000
+CCP2M1                            00000001
+CCP2M2                            00000002
+CCP2M3                            00000003
+CCP2X                             00000005
+CCP2Y                             00000004
+CCPR1                             00000015
+CCPR1H                            00000016
+CCPR1L                            00000015
+CCPR2                             0000001B
+CCPR2H                            0000001C
+CCPR2L                            0000001B
+CHS0                              00000003
+CHS1                              00000004
+CHS2                              00000005
+CIS                               00000003
+CKE                               00000006
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\s   11-10-2022  14:55:40        PAGE  9
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+CKP                               00000004
+CM0                               00000000
+CM1                               00000001
+CM2                               00000002
+CMCON                             0000009C
+CMIE                              00000006
+CMIF                              00000006
+CREN                              00000004
+CSRC                              00000007
+CVR0                              00000000
+CVR1                              00000001
+CVR2                              00000002
+CVR3                              00000003
+CVRCON                            0000009D
+CVREN                             00000007
+CVROE                             00000006
+CVRR                              00000005
+D                                 00000005
+DATA_ADDRESS                      00000005
+DC                                00000001
+D_A                               00000005
+D_NOT_A                           00000005
+EEADR                             0000010D
+EEADRH                            0000010F
+EECON1                            0000018C
+EECON2                            0000018D
+EEDATA                            0000010C
+EEDATH                            0000010E
+EEIE                              00000004
+EEIF                              00000004
+EEPGD                             00000007
+F                                 00000001
+FERR                              00000002
+FSR                               00000004
+GCEN                              00000007
+GIE                               00000007
+GO                                00000002
+GO_DONE                           00000002
+GO_NOT_DONE                       00000002
+I2C_DATA                          00000005
+I2C_READ                          00000002
+I2C_START                         00000003
+I2C_STOP                          00000004
+IBF                               00000007
+IBOV                              00000005
+INDF                              00000000
+INTCON                            0000000B
+INTE                              00000004
+INTEDG                            00000006
+INTF                              00000001
+IRP                               00000007
+NOT_A                             00000005
+NOT_ADDRESS                       00000005
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\s   11-10-2022  14:55:40        PAGE 10
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+NOT_BO                            00000000
+NOT_BOR                           00000000
+NOT_DONE                          00000002
+NOT_PD                            00000003
+NOT_POR                           00000001
+NOT_RBPU                          00000007
+NOT_RC8                           00000006
+NOT_T1SYNC                        00000002
+NOT_TO                            00000004
+NOT_TX8                           00000006
+NOT_W                             00000002
+NOT_WRITE                         00000002
+OBF                               00000006
+OERR                              00000001
+OPTION_REG                        00000081
+P                                 00000004
+PCFG0                             00000000
+PCFG1                             00000001
+PCFG2                             00000002
+PCFG3                             00000003
+PCL                               00000002
+PCLATH                            0000000A
+PCON                              0000008E
+PEIE                              00000006
+PEN                               00000002
+PIE1                              0000008C
+PIE2                              0000008D
+PIR1                              0000000C
+PIR2                              0000000D
+PORTA                             00000005
+PORTB                             00000006
+PORTC                             00000007
+PORTD                             00000008
+PORTE                             00000009
+PR2                               00000092
+PS0                               00000000
+PS1                               00000001
+PS2                               00000002
+PSA                               00000003
+PSAVE                             00000000
+PSPIE                             00000007
+PSPIF                             00000007
+PSPMODE                           00000004
+R                                 00000002
+RA0                               00000000
+RA1                               00000001
+RA2                               00000002
+RA3                               00000003
+RA4                               00000004
+RA5                               00000005
+RB0                               00000000
+RB1                               00000001
+RB2                               00000002
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\s   11-10-2022  14:55:40        PAGE 11
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+RB3                               00000003
+RB4                               00000004
+RB5                               00000005
+RB6                               00000006
+RB7                               00000007
+RBIE                              00000003
+RBIF                              00000000
+RC0                               00000000
+RC1                               00000001
+RC2                               00000002
+RC3                               00000003
+RC4                               00000004
+RC5                               00000005
+RC6                               00000006
+RC7                               00000007
+RC8_9                             00000006
+RC9                               00000006
+RCD8                              00000000
+RCEN                              00000003
+RCIE                              00000005
+RCIF                              00000005
+RCREG                             0000001A
+RCSTA                             00000018
+RD                                00000000
+RD0                               00000000
+RD1                               00000001
+RD2                               00000002
+RD3                               00000003
+RD4                               00000004
+RD5                               00000005
+RD6                               00000006
+RD7                               00000007
+RE0                               00000000
+RE1                               00000001
+RE2                               00000002
+READ_WRITE                        00000002
+RP0                               00000005
+RP1                               00000006
+RSEN                              00000001
+RX9                               00000006
+RX9D                              00000000
+R_NOT_W                           00000002
+R_W                               00000002
+S                                 00000003
+SEN                               00000000
+SMP                               00000007
+SPBRG                             00000099
+SPEN                              00000007
+SREN                              00000005
+SSAVE                             00000000
+SSPADD                            00000093
+SSPBUF                            00000013
+SSPCON                            00000014
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\s   11-10-2022  14:55:40        PAGE 12
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+SSPCON2                           00000091
+SSPEN                             00000005
+SSPIE                             00000003
+SSPIF                             00000003
+SSPM0                             00000000
+SSPM1                             00000001
+SSPM2                             00000002
+SSPM3                             00000003
+SSPOV                             00000006
+SSPSTAT                           00000094
+STATUS                            00000003
+STK00                             00000000
+STK01                             00000000
+STK02                             00000000
+STK03                             00000000
+STK04                             00000000
+STK05                             00000000
+STK06                             00000000
+STK07                             00000000
+STK08                             00000000
+STK09                             00000000
+STK10                             00000000
+STK11                             00000000
+STK12                             00000000
+SYNC                              00000004
+T0CS                              00000005
+T0IE                              00000005
+T0IF                              00000002
+T0SE                              00000004
+T1CKPS0                           00000004
+T1CKPS1                           00000005
+T1CON                             00000010
+T1INSYNC                          00000002
+T1OSCEN                           00000003
+T1SYNC                            00000002
+T2CKPS0                           00000000
+T2CKPS1                           00000001
+T2CON                             00000012
+TMR0                              00000001
+TMR0IE                            00000005
+TMR0IF                            00000002
+TMR1                              0000000E
+TMR1CS                            00000001
+TMR1H                             0000000F
+TMR1IE                            00000000
+TMR1IF                            00000000
+TMR1L                             0000000E
+TMR1ON                            00000000
+TMR2                              00000011
+TMR2IE                            00000001
+TMR2IF                            00000001
+TMR2ON                            00000002
+TOUTPS0                           00000003
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\s   11-10-2022  14:55:40        PAGE 13
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+TOUTPS1                           00000004
+TOUTPS2                           00000005
+TOUTPS3                           00000006
+TRISA                             00000085
+TRISA0                            00000000
+TRISA1                            00000001
+TRISA2                            00000002
+TRISA3                            00000003
+TRISA4                            00000004
+TRISA5                            00000005
+TRISB                             00000086
+TRISB0                            00000000
+TRISB1                            00000001
+TRISB2                            00000002
+TRISB3                            00000003
+TRISB4                            00000004
+TRISB5                            00000005
+TRISB6                            00000006
+TRISB7                            00000007
+TRISC                             00000087
+TRISC0                            00000000
+TRISC1                            00000001
+TRISC2                            00000002
+TRISC3                            00000003
+TRISC4                            00000004
+TRISC5                            00000005
+TRISC6                            00000006
+TRISC7                            00000007
+TRISD                             00000088
+TRISD0                            00000000
+TRISD1                            00000001
+TRISD2                            00000002
+TRISD3                            00000003
+TRISD4                            00000004
+TRISD5                            00000005
+TRISD6                            00000006
+TRISD7                            00000007
+TRISE                             00000089
+TRISE0                            00000000
+TRISE1                            00000001
+TRISE2                            00000002
+TRMT                              00000001
+TX8_9                             00000006
+TX9                               00000006
+TX9D                              00000000
+TXD8                              00000000
+TXEN                              00000005
+TXIE                              00000004
+TXIF                              00000004
+TXREG                             00000019
+TXSTA                             00000098
+UA                                00000001
+W                                 00000000
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\s   11-10-2022  14:55:40        PAGE 14
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+WCOL                              00000007
+WR                                00000001
+WREN                              00000002
+WRERR                             00000003
+WSAVE                             00000000
+Z                                 00000002
+_00106_DS_                        0000008F
+_00111_DS_                        00000045
+_00112_DS_                        00000067
+_00113_DS_                        00000088
+_00115_DS_                        0000008B
+_00132_DS_                        00000035
+_BODEN_OFF                        00003FBF
+_BODEN_ON                         00003FFF
+_BOREN_OFF                        00003FBF
+_BOREN_ON                         00003FFF
+_CONFIG                           00002007
+_CPD_OFF                          00003FFF
+_CPD_ON                           00003EFF
+_CP_ALL                           00001FFF
+_CP_OFF                           00003FFF
+_CP_ON                            00001FFF
+_DEBUG_OFF                        00003FFF
+_DEBUG_ON                         000037FF
+_DEVID1                           00002006
+_DIO_u8ReadChannel                00000000
+_DIO_vidWriteChannel              00000000
+_DIO_vidWritePort                 00000000
+_FOSC_EXTRC                       00003FFF
+_FOSC_HS                          00003FFE
+_FOSC_LP                          00003FFC
+_FOSC_XT                          00003FFD
+_HS_OSC                           00003FFE
+_IDLOC0                           00002000
+_IDLOC1                           00002001
+_IDLOC2                           00002002
+_IDLOC3                           00002003
+_LP_OSC                           00003FFC
+_LVP_OFF                          00003F7F
+_LVP_ON                           00003FFF
+_PWRTE_OFF                        00003FFF
+_PWRTE_ON                         00003FF7
+_RC_OSC                           00003FFF
+_SSD_SetDisplayedNumber           00000000
+_SSD_vidInit                      0000008C
+_SSD_vidTask                      00000036
+_WDTE_OFF                         00003FFB
+_WDTE_ON                          00003FFF
+_WDT_OFF                          00003FFB
+_WDT_ON                           00003FFF
+_WRT_1FOURTH                      00003BFF
+_WRT_256                          00003DFF
+_WRT_HALF                         000039FF
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\s   11-10-2022  14:55:40        PAGE 15
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+_WRT_OFF                          00003FFF
+_XT_OSC                           00003FFD
+__16F877A                         00000001
+__CODE_END                        00001FFF
+__CODE_START                      00000000
+__COMMON_RAM_END                  0000007F
+__COMMON_RAM_START                00000070
+__EEPROM_END                      000021FF
+__EEPROM_START                    00002100
+__VECTOR_INT                      00000004
+__VECTOR_RESET                    00000000
+__gptrget1                        00000000
+_au8SegmentNumber                 0000000B
+_code_ssd_prg_0023                00000023
+_code_ssd_prg_004B                0000004B
+_code_ssd_prg_0058                00000058
+_code_ssd_prg_0060                00000060
+_code_ssd_prg_006D                0000006D
+_code_ssd_prg_007A                0000007A
+_code_ssd_prg_0082                00000082
+_code_ssd_prg_00A0                000000A0
+_enuCurrSegment                   0000000A
+_ku8CharacterTable                00000000
+r0x1003                           00000005
+r0x1004                           00000006
+r0x1005                           00000007
+r0x1006                           00000008
+r0x1007                           00000009
+r0x1008                           00000004
+r0x1009                           00000000
+r0x100A                           00000001
+r0x100B                           00000002
+r0x100C                           00000003
+
+Errors   :     0
+Warnings :     0 reported,     0 suppressed
+Messages :     0 reported,     0 suppressed
+
+

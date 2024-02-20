@@ -1,0 +1,2134 @@
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\p   11-10-2022  14:55:37        PAGE  1
+
+
+LOC    OBJECT CODE    LINE  SOURCE TEXT
+  VALUE
+
+                      00001 ;--------------------------------------------------------
+                      00002 ; File Created by SDCC : free open source ANSI-C Compiler
+                      00003 ; Version 3.5.0 #9253 (Jun 20 2015) (MINGW64)
+                      00004 ; This file was generated Thu Nov 10 14:55:37 2022
+                      00005 ;--------------------------------------------------------
+                      00006 ; PIC port for the 14-bit core
+                      00007 ;--------------------------------------------------------
+                      00008 ;       .file   "pbd_prg.c"
+                      00009         list    p=16f877a
+                      00010         radix dec
+                      00011         include "p16f877a.inc"
+                      00001         LIST
+                      00002 
+                      00003 ;==========================================================================
+                      00004 ; Build date : Aug 07 2014
+                      00005 ;  MPASM PIC16F877A processor include
+                      00006 ; 
+                      00007 ;  (c) Copyright 1999-2014 Microchip Technology, All rights reserved
+                      00008 ;==========================================================================
+                      00009 
+                      00567         LIST
+                      00012 ;--------------------------------------------------------
+                      00013 ; external declarations
+                      00014 ;--------------------------------------------------------
+  0000                00015         extern  _DIO_u8ReadChannel
+  0000                00016         extern  _DIO_vidWriteChannel
+  0000                00017         extern  _DIO_vidWritePort
+  0000                00018         extern  _PBD_enuBtnChannelId
+  0000                00019         extern  _PBD_enuBtnConfig
+  0000                00020         extern  __mulchar
+  0000                00021         extern  __gptrget1
+                      00022 
+  0000                00023         extern PSAVE
+  0000                00024         extern SSAVE
+  0000                00025         extern WSAVE
+  0000                00026         extern STK12
+  0000                00027         extern STK11
+  0000                00028         extern STK10
+  0000                00029         extern STK09
+  0000                00030         extern STK08
+  0000                00031         extern STK07
+  0000                00032         extern STK06
+  0000                00033         extern STK05
+  0000                00034         extern STK04
+  0000                00035         extern STK03
+  0000                00036         extern STK02
+  0000                00037         extern STK01
+  0000                00038         extern STK00
+                      00039 ;--------------------------------------------------------
+                      00040 ; global declarations
+                      00041 ;--------------------------------------------------------
+  0000                00042         global  _PBD_enuGetButtonState
+  0000                00043         global  _PBD_vidTask
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\p   11-10-2022  14:55:37        PAGE  2
+
+
+LOC    OBJECT CODE    LINE  SOURCE TEXT
+  VALUE
+
+  0000                00044         global  _PBD_vidInit
+                      00045 
+                      00046 ;--------------------------------------------------------
+                      00047 ; global definitions
+                      00048 ;--------------------------------------------------------
+                      00049 ;--------------------------------------------------------
+                      00050 ; absolute symbol definitions
+                      00051 ;--------------------------------------------------------
+                      00052 ;--------------------------------------------------------
+                      00053 ; compiler-defined variables
+                      00054 ;--------------------------------------------------------
+                      00055 UDL_pbd_prg_0   udata
+0000                  00056 r0x1038 res     1
+0001                  00057 r0x1039 res     1
+0002                  00058 r0x103A res     1
+0003                  00059 r0x103B res     1
+0004                  00060 r0x103C res     1
+0005                  00061 r0x1037 res     1
+0006                  00062 r0x1033 res     1
+0007                  00063 r0x1034 res     1
+0008                  00064 r0x1035 res     1
+0009                  00065 r0x1036 res     1
+000A                  00066 r0x102F res     1
+000B                  00067 r0x1030 res     1
+000C                  00068 r0x1031 res     1
+000D                  00069 r0x1032 res     1
+000E                  00070 r0x1028 res     1
+000F                  00071 r0x1029 res     1
+0010                  00072 r0x102A res     1
+0011                  00073 r0x102B res     1
+0012                  00074 r0x102C res     1
+0013                  00075 r0x102D res     1
+0014                  00076 r0x102E res     1
+0015                  00077 r0x1022 res     1
+0016                  00078 r0x1023 res     1
+0017                  00079 r0x1024 res     1
+0018                  00080 r0x1025 res     1
+0019                  00081 r0x1026 res     1
+001A                  00082 r0x1027 res     1
+001B                  00083 r0x101B res     1
+001C                  00084 r0x101C res     1
+001D                  00085 r0x101D res     1
+001E                  00086 r0x101E res     1
+001F                  00087 r0x101F res     1
+0020                  00088 r0x1020 res     1
+0021                  00089 r0x1021 res     1
+0022                  00090 r0x1016 res     1
+0023                  00091 r0x1017 res     1
+0024                  00092 r0x1018 res     1
+0025                  00093 r0x1019 res     1
+0026                  00094 r0x100E res     1
+0027                  00095 r0x100F res     1
+0028                  00096 r0x1010 res     1
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\p   11-10-2022  14:55:37        PAGE  3
+
+
+LOC    OBJECT CODE    LINE  SOURCE TEXT
+  VALUE
+
+0029                  00097 r0x1011 res     1
+002A                  00098 r0x1012 res     1
+002B                  00099 r0x1013 res     1
+002C                  00100 r0x1014 res     1
+002D                  00101 r0x1009 res     1
+002E                  00102 r0x100A res     1
+002F                  00103 r0x100B res     1
+0030                  00104 r0x100C res     1
+0031                  00105 _strBtnInfo     res     9
+                      00106 ;--------------------------------------------------------
+                      00107 ; initialized data
+                      00108 ;--------------------------------------------------------
+                      00109 ;--------------------------------------------------------
+                      00110 ; overlayable items in internal ram 
+                      00111 ;--------------------------------------------------------
+                      00112 ;       udata_ovr
+                      00113 ;--------------------------------------------------------
+                      00114 ; code
+                      00115 ;--------------------------------------------------------
+                      00116 code_pbd_prg    code
+                      00117 ;***
+                      00118 ;  pBlock Stats: dbName = C
+                      00119 ;***
+                      00120 ;entry:  _vidReleaseState       ;Function start
+                      00121 ; 2 exit points
+                      00122 ;has an exit
+                      00123 ;functions called:
+                      00124 ;   __mulchar
+                      00125 ;   __gptrget1
+                      00126 ;   _DIO_u8ReadChannel
+                      00127 ;   __mulchar
+                      00128 ;   __gptrget1
+                      00129 ;   _DIO_u8ReadChannel
+                      00130 ;7 compiler assigned registers:
+                      00131 ;   r0x1009
+                      00132 ;   STK00
+                      00133 ;   r0x100A
+                      00134 ;   r0x100B
+                      00135 ;   r0x100C
+                      00136 ;   STK01
+                      00137 ;   r0x100D
+                      00138 ;; Starting pCode block
+0000                  00139 _vidReleaseState        ;Function start
+                      00140 ; 2 exit points
+                      00141 ;       .line   341; "pbd_prg.c"        static void vidReleaseState(PBD_tenuButtonId enuBtnId)
+0000   ???? ????      00142         BANKSEL r0x1009
+0002   00??           00143         MOVWF   r0x1009
+                      00144 ;       .line   345; "pbd_prg.c"        u8BtnValue = DIO_u8ReadChannel(PBD_enuBtnConfig[enuBtnId].enuBtn
+                            ChannelId);
+0003   3003           00145         MOVLW   0x03
+0004   00??           00146         MOVWF   STK00
+0005   08??           00147         MOVF    r0x1009,W
+0006   ???? ????      00148         PAGESEL __mulchar
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\p   11-10-2022  14:55:37        PAGE  4
+
+
+LOC    OBJECT CODE    LINE  SOURCE TEXT
+  VALUE
+
+0008   2???           00149         CALL    __mulchar
+0009   ???? ????      00150         PAGESEL $
+000B   ???? ????      00151         BANKSEL r0x100A
+000D   00??           00152         MOVWF   r0x100A
+000E   01??           00153         CLRF    r0x100B
+000F   08??           00154         MOVF    r0x100A,W
+0010   3E??           00155         ADDLW   (_PBD_enuBtnConfig + 0)
+0011   00??           00156         MOVWF   r0x1009
+0012   30??           00157         MOVLW   high (_PBD_enuBtnConfig + 0)
+0013   00??           00158         MOVWF   r0x100C
+0014   3000           00159         MOVLW   0x00
+0015   1803           00160         BTFSC   STATUS,0
+0016   0F??           00161         INCFSZ  r0x100B,W
+0017   07??           00162         ADDWF   r0x100C,F
+0018   08??           00163         MOVF    r0x1009,W
+0019   00??           00164         MOVWF   STK01
+001A   08??           00165         MOVF    r0x100C,W
+001B   00??           00166         MOVWF   STK00
+001C   3080           00167         MOVLW   0x80
+001D   ???? ????      00168         PAGESEL __gptrget1
+001F   2???           00169         CALL    __gptrget1
+0020   ???? ????      00170         PAGESEL $
+                      00171 ;;1     MOVWF   r0x100D
+0022   ???? ????      00172         PAGESEL _DIO_u8ReadChannel
+0024   2???           00173         CALL    _DIO_u8ReadChannel
+0025   ???? ????      00174         PAGESEL $
+0027   ???? ????      00175         BANKSEL r0x1009
+0029   00??           00176         MOVWF   r0x1009
+                      00177 ;       .line   347; "pbd_prg.c"        if(u8BtnValue == PBD_PUSH_LEVEL)
+002A   08??           00178         MOVF    r0x1009,W
+002B   1D03           00179         BTFSS   STATUS,2
+002C   2???           00180         GOTO    _00190_DS_
+                      00181 ;       .line   349; "pbd_prg.c"        strBtnInfo[enuBtnId].u8DebounceCntr = BTY_u8ZERO;
+002D   08??           00182         MOVF    r0x100A,W
+002E   3E??           00183         ADDLW   (_strBtnInfo + 0)
+002F   00??           00184         MOVWF   r0x100A
+0030   08??           00185         MOVF    r0x100B,W
+0031   1803           00186         BTFSC   STATUS,0
+0032   0F??           00187         INCFSZ  r0x100B,W
+0033   3E??           00188         ADDLW   high (_strBtnInfo + 0)
+0034   00??           00189         MOVWF   r0x100B
+0035   3001           00190         MOVLW   0x01
+0036   07??           00191         ADDWF   r0x100A,W
+0037   00??           00192         MOVWF   r0x1009
+0038   01??           00193         CLRF    r0x100C
+0039   0D??           00194         RLF     r0x100C,F
+003A   08??           00195         MOVF    r0x100B,W
+003B   07??           00196         ADDWF   r0x100C,F
+003C   08??           00197         MOVF    r0x1009,W
+003D   1283 1303      00198         BANKSEL FSR
+003F   0084           00199         MOVWF   FSR
+0040   1383           00200         BCF     STATUS,7
+0041   ???? ????      00201         BANKSEL r0x100C
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\p   11-10-2022  14:55:37        PAGE  5
+
+
+LOC    OBJECT CODE    LINE  SOURCE TEXT
+  VALUE
+
+0043   18??           00202         BTFSC   r0x100C,0
+0044   1783           00203         BSF     STATUS,7
+0045   3000           00204         MOVLW   0x00
+0046   1283 1303      00205         BANKSEL INDF
+0048   0080           00206         MOVWF   INDF
+                      00207 ;       .line   350; "pbd_prg.c"        strBtnInfo[enuBtnId].enuBtnState    = PBD_PRE_PUSH;
+0049   ???? ????      00208         BANKSEL r0x100A
+004B   08??           00209         MOVF    r0x100A,W
+004C   1283 1303      00210         BANKSEL FSR
+004E   0084           00211         MOVWF   FSR
+004F   1383           00212         BCF     STATUS,7
+0050   ???? ????      00213         BANKSEL r0x100B
+0052   18??           00214         BTFSC   r0x100B,0
+0053   1783           00215         BSF     STATUS,7
+0054   3000           00216         MOVLW   0x00
+0055   1283 1303      00217         BANKSEL INDF
+0057   0080           00218         MOVWF   INDF
+0058                  00219 _00190_DS_
+0058   0008           00220         RETURN  
+                      00221 ; exit point of _vidReleaseState
+                      00222 
+                      00223 ;***
+                      00224 ;  pBlock Stats: dbName = C
+                      00225 ;***
+                      00226 ;entry:  _vidPreReleaseState    ;Function start
+                      00227 ; 2 exit points
+                      00228 ;has an exit
+                      00229 ;functions called:
+                      00230 ;   __mulchar
+                      00231 ;   __gptrget1
+                      00232 ;   _DIO_u8ReadChannel
+                      00233 ;   __gptrget1
+                      00234 ;   __mulchar
+                      00235 ;   __gptrget1
+                      00236 ;   _DIO_u8ReadChannel
+                      00237 ;   __gptrget1
+                      00238 ;10 compiler assigned registers:
+                      00239 ;   r0x100E
+                      00240 ;   STK00
+                      00241 ;   r0x100F
+                      00242 ;   r0x1010
+                      00243 ;   r0x1011
+                      00244 ;   STK01
+                      00245 ;   r0x1012
+                      00246 ;   r0x1013
+                      00247 ;   r0x1014
+                      00248 ;   r0x1015
+                      00249 ;; Starting pCode block
+0059                  00250 _vidPreReleaseState     ;Function start
+                      00251 ; 2 exit points
+                      00252 ;       .line   309; "pbd_prg.c"        static void vidPreReleaseState(PBD_tenuButtonId enuBtnId)
+0059   ???? ????      00253         BANKSEL r0x100E
+005B   00??           00254         MOVWF   r0x100E
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\p   11-10-2022  14:55:37        PAGE  6
+
+
+LOC    OBJECT CODE    LINE  SOURCE TEXT
+  VALUE
+
+                      00255 ;       .line   313; "pbd_prg.c"        u8BtnValue = DIO_u8ReadChannel(PBD_enuBtnConfig[enuBtnId].enuBtn
+                            ChannelId);
+005C   3003           00256         MOVLW   0x03
+005D   00??           00257         MOVWF   STK00
+005E   08??           00258         MOVF    r0x100E,W
+005F   ???? ????      00259         PAGESEL __mulchar
+0061   2???           00260         CALL    __mulchar
+0062   ???? ????      00261         PAGESEL $
+0064   ???? ????      00262         BANKSEL r0x100F
+0066   00??           00263         MOVWF   r0x100F
+0067   01??           00264         CLRF    r0x1010
+0068   08??           00265         MOVF    r0x100F,W
+0069   3E??           00266         ADDLW   (_PBD_enuBtnConfig + 0)
+006A   00??           00267         MOVWF   r0x100E
+006B   30??           00268         MOVLW   high (_PBD_enuBtnConfig + 0)
+006C   00??           00269         MOVWF   r0x1011
+006D   3000           00270         MOVLW   0x00
+006E   1803           00271         BTFSC   STATUS,0
+006F   0F??           00272         INCFSZ  r0x1010,W
+0070   07??           00273         ADDWF   r0x1011,F
+0071   08??           00274         MOVF    r0x100E,W
+0072   00??           00275         MOVWF   STK01
+0073   08??           00276         MOVF    r0x1011,W
+0074   00??           00277         MOVWF   STK00
+0075   3080           00278         MOVLW   0x80
+0076   ???? ????      00279         PAGESEL __gptrget1
+0078   2???           00280         CALL    __gptrget1
+0079   ???? ????      00281         PAGESEL $
+007B   ???? ????      00282         BANKSEL r0x1012
+007D   00??           00283         MOVWF   r0x1012
+007E   ???? ????      00284         PAGESEL _DIO_u8ReadChannel
+0080   2???           00285         CALL    _DIO_u8ReadChannel
+0081   ???? ????      00286         PAGESEL $
+                      00287 ;       .line   315; "pbd_prg.c"        if(u8BtnValue == PBD_RELEASE_LEVEL)
+0083   ???? ????      00288         BANKSEL r0x100E
+0085   00??           00289         MOVWF   r0x100E
+0086   3A01           00290         XORLW   0x01
+0087   1D03           00291         BTFSS   STATUS,2
+0088   2???           00292         GOTO    _00181_DS_
+                      00293 ;       .line   317; "pbd_prg.c"        strBtnInfo[enuBtnId].u8DebounceCntr++;
+0089   08??           00294         MOVF    r0x100F,W
+008A   3E??           00295         ADDLW   (_strBtnInfo + 0)
+008B   00??           00296         MOVWF   r0x100E
+008C   30??           00297         MOVLW   high (_strBtnInfo + 0)
+008D   00??           00298         MOVWF   r0x1011
+008E   08??           00299         MOVF    r0x1010,W
+008F   1803           00300         BTFSC   STATUS,0
+0090   0F??           00301         INCFSZ  r0x1010,W
+0091   07??           00302         ADDWF   r0x1011,F
+0092   3001           00303         MOVLW   0x01
+0093   07??           00304         ADDWF   r0x100E,W
+0094   00??           00305         MOVWF   r0x1012
+0095   01??           00306         CLRF    r0x1013
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\p   11-10-2022  14:55:37        PAGE  7
+
+
+LOC    OBJECT CODE    LINE  SOURCE TEXT
+  VALUE
+
+0096   0D??           00307         RLF     r0x1013,F
+0097   08??           00308         MOVF    r0x1011,W
+0098   07??           00309         ADDWF   r0x1013,F
+0099   08??           00310         MOVF    r0x1012,W
+009A   1283 1303      00311         BANKSEL FSR
+009C   0084           00312         MOVWF   FSR
+009D   1383           00313         BCF     STATUS,7
+009E   ???? ????      00314         BANKSEL r0x1013
+00A0   18??           00315         BTFSC   r0x1013,0
+00A1   1783           00316         BSF     STATUS,7
+00A2   1283 1303      00317         BANKSEL INDF
+00A4   0800           00318         MOVF    INDF,W
+00A5   ???? ????      00319         BANKSEL r0x1014
+00A7   00??           00320         MOVWF   r0x1014
+00A8   0A??           00321         INCF    r0x1014,F
+00A9   08??           00322         MOVF    r0x1012,W
+00AA   1283 1303      00323         BANKSEL FSR
+00AC   0084           00324         MOVWF   FSR
+00AD   1383           00325         BCF     STATUS,7
+00AE   ???? ????      00326         BANKSEL r0x1013
+00B0   18??           00327         BTFSC   r0x1013,0
+00B1   1783           00328         BSF     STATUS,7
+00B2   08??           00329         MOVF    r0x1014,W
+00B3   1283 1303      00330         BANKSEL INDF
+00B5   0080           00331         MOVWF   INDF
+                      00332 ;       .line   320; "pbd_prg.c"        PBD_enuBtnConfig[enuBtnId].u8DebounceThreshold)
+00B6   ???? ????      00333         BANKSEL r0x100F
+00B8   08??           00334         MOVF    r0x100F,W
+00B9   3E??           00335         ADDLW   (_PBD_enuBtnConfig + 0)
+00BA   00??           00336         MOVWF   r0x1012
+00BB   30??           00337         MOVLW   high (_PBD_enuBtnConfig + 0)
+00BC   00??           00338         MOVWF   r0x1013
+00BD   08??           00339         MOVF    r0x1010,W
+00BE   1803           00340         BTFSC   STATUS,0
+00BF   0F??           00341         INCFSZ  r0x1010,W
+00C0   07??           00342         ADDWF   r0x1013,F
+00C1   0A??           00343         INCF    r0x1012,F
+00C2   1903           00344         BTFSC   STATUS,2
+00C3   0A??           00345         INCF    r0x1013,F
+00C4   08??           00346         MOVF    r0x1012,W
+00C5   00??           00347         MOVWF   STK01
+00C6   08??           00348         MOVF    r0x1013,W
+00C7   00??           00349         MOVWF   STK00
+00C8   3080           00350         MOVLW   0x80
+00C9   ???? ????      00351         PAGESEL __gptrget1
+00CB   2???           00352         CALL    __gptrget1
+00CC   ???? ????      00353         PAGESEL $
+                      00354 ;;1     MOVWF   r0x1015
+00CE   ???? ????      00355         BANKSEL r0x1014
+00D0   06??           00356         XORWF   r0x1014,W
+00D1   1D03           00357         BTFSS   STATUS,2
+00D2   2???           00358         GOTO    _00183_DS_
+                      00359 ;       .line   322; "pbd_prg.c"        strBtnInfo[enuBtnId].enuBtnState = PBD_RELEASED;
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\p   11-10-2022  14:55:37        PAGE  8
+
+
+LOC    OBJECT CODE    LINE  SOURCE TEXT
+  VALUE
+
+00D3   08??           00360         MOVF    r0x100E,W
+00D4   1283 1303      00361         BANKSEL FSR
+00D6   0084           00362         MOVWF   FSR
+00D7   1383           00363         BCF     STATUS,7
+00D8   ???? ????      00364         BANKSEL r0x1011
+00DA   18??           00365         BTFSC   r0x1011,0
+00DB   1783           00366         BSF     STATUS,7
+00DC   3005           00367         MOVLW   0x05
+00DD   1283 1303      00368         BANKSEL INDF
+00DF   0080           00369         MOVWF   INDF
+00E0   2???           00370         GOTO    _00183_DS_
+00E1                  00371 _00181_DS_
+                      00372 ;       .line   331; "pbd_prg.c"        strBtnInfo[enuBtnId].u8DebounceCntr = BTY_u8ZERO;
+00E1   ???? ????      00373         BANKSEL r0x100F
+00E3   08??           00374         MOVF    r0x100F,W
+00E4   3E??           00375         ADDLW   (_strBtnInfo + 0)
+00E5   00??           00376         MOVWF   r0x100F
+00E6   08??           00377         MOVF    r0x1010,W
+00E7   1803           00378         BTFSC   STATUS,0
+00E8   0F??           00379         INCFSZ  r0x1010,W
+00E9   3E??           00380         ADDLW   high (_strBtnInfo + 0)
+00EA   00??           00381         MOVWF   r0x1010
+00EB   3001           00382         MOVLW   0x01
+00EC   07??           00383         ADDWF   r0x100F,W
+00ED   00??           00384         MOVWF   r0x100E
+00EE   01??           00385         CLRF    r0x1011
+00EF   0D??           00386         RLF     r0x1011,F
+00F0   08??           00387         MOVF    r0x1010,W
+00F1   07??           00388         ADDWF   r0x1011,F
+00F2   08??           00389         MOVF    r0x100E,W
+00F3   1283 1303      00390         BANKSEL FSR
+00F5   0084           00391         MOVWF   FSR
+00F6   1383           00392         BCF     STATUS,7
+00F7   ???? ????      00393         BANKSEL r0x1011
+00F9   18??           00394         BTFSC   r0x1011,0
+00FA   1783           00395         BSF     STATUS,7
+00FB   3000           00396         MOVLW   0x00
+00FC   1283 1303      00397         BANKSEL INDF
+00FE   0080           00398         MOVWF   INDF
+                      00399 ;       .line   332; "pbd_prg.c"        strBtnInfo[enuBtnId].enuBtnState    = PBD_PRE_PUSH;
+00FF   ???? ????      00400         BANKSEL r0x100F
+0101   08??           00401         MOVF    r0x100F,W
+0102   1283 1303      00402         BANKSEL FSR
+0104   0084           00403         MOVWF   FSR
+0105   1383           00404         BCF     STATUS,7
+0106   ???? ????      00405         BANKSEL r0x1010
+0108   18??           00406         BTFSC   r0x1010,0
+0109   1783           00407         BSF     STATUS,7
+010A   3000           00408         MOVLW   0x00
+010B   1283 1303      00409         BANKSEL INDF
+010D   0080           00410         MOVWF   INDF
+010E                  00411 _00183_DS_
+010E   0008           00412         RETURN  
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\p   11-10-2022  14:55:37        PAGE  9
+
+
+LOC    OBJECT CODE    LINE  SOURCE TEXT
+  VALUE
+
+                      00413 ; exit point of _vidPreReleaseState
+                      00414 
+                      00415 ;***
+                      00416 ;  pBlock Stats: dbName = C
+                      00417 ;***
+                      00418 ;entry:  _vidHoldState  ;Function start
+                      00419 ; 2 exit points
+                      00420 ;has an exit
+                      00421 ;functions called:
+                      00422 ;   __mulchar
+                      00423 ;   __gptrget1
+                      00424 ;   _DIO_u8ReadChannel
+                      00425 ;   __mulchar
+                      00426 ;   __gptrget1
+                      00427 ;   _DIO_u8ReadChannel
+                      00428 ;7 compiler assigned registers:
+                      00429 ;   r0x1016
+                      00430 ;   STK00
+                      00431 ;   r0x1017
+                      00432 ;   r0x1018
+                      00433 ;   r0x1019
+                      00434 ;   STK01
+                      00435 ;   r0x101A
+                      00436 ;; Starting pCode block
+010F                  00437 _vidHoldState   ;Function start
+                      00438 ; 2 exit points
+                      00439 ;       .line   287; "pbd_prg.c"        static void vidHoldState(PBD_tenuButtonId enuBtnId)
+010F   ???? ????      00440         BANKSEL r0x1016
+0111   00??           00441         MOVWF   r0x1016
+                      00442 ;       .line   291; "pbd_prg.c"        u8BtnValue = DIO_u8ReadChannel(PBD_enuBtnConfig[enuBtnId].enuBtn
+                            ChannelId);
+0112   3003           00443         MOVLW   0x03
+0113   00??           00444         MOVWF   STK00
+0114   08??           00445         MOVF    r0x1016,W
+0115   ???? ????      00446         PAGESEL __mulchar
+0117   2???           00447         CALL    __mulchar
+0118   ???? ????      00448         PAGESEL $
+011A   ???? ????      00449         BANKSEL r0x1017
+011C   00??           00450         MOVWF   r0x1017
+011D   01??           00451         CLRF    r0x1018
+011E   08??           00452         MOVF    r0x1017,W
+011F   3E??           00453         ADDLW   (_PBD_enuBtnConfig + 0)
+0120   00??           00454         MOVWF   r0x1016
+0121   30??           00455         MOVLW   high (_PBD_enuBtnConfig + 0)
+0122   00??           00456         MOVWF   r0x1019
+0123   3000           00457         MOVLW   0x00
+0124   1803           00458         BTFSC   STATUS,0
+0125   0F??           00459         INCFSZ  r0x1018,W
+0126   07??           00460         ADDWF   r0x1019,F
+0127   08??           00461         MOVF    r0x1016,W
+0128   00??           00462         MOVWF   STK01
+0129   08??           00463         MOVF    r0x1019,W
+012A   00??           00464         MOVWF   STK00
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\p   11-10-2022  14:55:37        PAGE 10
+
+
+LOC    OBJECT CODE    LINE  SOURCE TEXT
+  VALUE
+
+012B   3080           00465         MOVLW   0x80
+012C   ???? ????      00466         PAGESEL __gptrget1
+012E   2???           00467         CALL    __gptrget1
+012F   ???? ????      00468         PAGESEL $
+                      00469 ;;1     MOVWF   r0x101A
+0131   ???? ????      00470         PAGESEL _DIO_u8ReadChannel
+0133   2???           00471         CALL    _DIO_u8ReadChannel
+0134   ???? ????      00472         PAGESEL $
+                      00473 ;       .line   293; "pbd_prg.c"        if(u8BtnValue == PBD_RELEASE_LEVEL)
+0136   ???? ????      00474         BANKSEL r0x1016
+0138   00??           00475         MOVWF   r0x1016
+0139   3A01           00476         XORLW   0x01
+013A   1D03           00477         BTFSS   STATUS,2
+013B   2???           00478         GOTO    _00173_DS_
+                      00479 ;       .line   295; "pbd_prg.c"        strBtnInfo[enuBtnId].u8DebounceCntr = BTY_u8ZERO;
+013C   08??           00480         MOVF    r0x1017,W
+013D   3E??           00481         ADDLW   (_strBtnInfo + 0)
+013E   00??           00482         MOVWF   r0x1017
+013F   08??           00483         MOVF    r0x1018,W
+0140   1803           00484         BTFSC   STATUS,0
+0141   0F??           00485         INCFSZ  r0x1018,W
+0142   3E??           00486         ADDLW   high (_strBtnInfo + 0)
+0143   00??           00487         MOVWF   r0x1018
+0144   3001           00488         MOVLW   0x01
+0145   07??           00489         ADDWF   r0x1017,W
+0146   00??           00490         MOVWF   r0x1016
+0147   01??           00491         CLRF    r0x1019
+0148   0D??           00492         RLF     r0x1019,F
+0149   08??           00493         MOVF    r0x1018,W
+014A   07??           00494         ADDWF   r0x1019,F
+014B   08??           00495         MOVF    r0x1016,W
+014C   1283 1303      00496         BANKSEL FSR
+014E   0084           00497         MOVWF   FSR
+014F   1383           00498         BCF     STATUS,7
+0150   ???? ????      00499         BANKSEL r0x1019
+0152   18??           00500         BTFSC   r0x1019,0
+0153   1783           00501         BSF     STATUS,7
+0154   3000           00502         MOVLW   0x00
+0155   1283 1303      00503         BANKSEL INDF
+0157   0080           00504         MOVWF   INDF
+                      00505 ;       .line   296; "pbd_prg.c"        strBtnInfo[enuBtnId].enuBtnState    = PBD_PRE_RELEASE;
+0158   ???? ????      00506         BANKSEL r0x1017
+015A   08??           00507         MOVF    r0x1017,W
+015B   1283 1303      00508         BANKSEL FSR
+015D   0084           00509         MOVWF   FSR
+015E   1383           00510         BCF     STATUS,7
+015F   ???? ????      00511         BANKSEL r0x1018
+0161   18??           00512         BTFSC   r0x1018,0
+0162   1783           00513         BSF     STATUS,7
+0163   3004           00514         MOVLW   0x04
+0164   1283 1303      00515         BANKSEL INDF
+0166   0080           00516         MOVWF   INDF
+0167                  00517 _00173_DS_
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\p   11-10-2022  14:55:37        PAGE 11
+
+
+LOC    OBJECT CODE    LINE  SOURCE TEXT
+  VALUE
+
+0167   0008           00518         RETURN  
+                      00519 ; exit point of _vidHoldState
+                      00520 
+                      00521 ;***
+                      00522 ;  pBlock Stats: dbName = C
+                      00523 ;***
+                      00524 ;entry:  _vidPreHoldState       ;Function start
+                      00525 ; 2 exit points
+                      00526 ;has an exit
+                      00527 ;functions called:
+                      00528 ;   __mulchar
+                      00529 ;   __gptrget1
+                      00530 ;   _DIO_u8ReadChannel
+                      00531 ;   __gptrget1
+                      00532 ;   __mulchar
+                      00533 ;   __gptrget1
+                      00534 ;   _DIO_u8ReadChannel
+                      00535 ;   __gptrget1
+                      00536 ;9 compiler assigned registers:
+                      00537 ;   r0x101B
+                      00538 ;   STK00
+                      00539 ;   r0x101C
+                      00540 ;   r0x101D
+                      00541 ;   r0x101E
+                      00542 ;   STK01
+                      00543 ;   r0x101F
+                      00544 ;   r0x1020
+                      00545 ;   r0x1021
+                      00546 ;; Starting pCode block
+0168                  00547 _vidPreHoldState        ;Function start
+                      00548 ; 2 exit points
+                      00549 ;       .line   256; "pbd_prg.c"        static void vidPreHoldState(PBD_tenuButtonId enuBtnId)
+0168   ???? ????      00550         BANKSEL r0x101B
+016A   00??           00551         MOVWF   r0x101B
+                      00552 ;       .line   260; "pbd_prg.c"        u8BtnValue = DIO_u8ReadChannel(PBD_enuBtnConfig[enuBtnId].enuBtn
+                            ChannelId);
+016B   3003           00553         MOVLW   0x03
+016C   00??           00554         MOVWF   STK00
+016D   08??           00555         MOVF    r0x101B,W
+016E   ???? ????      00556         PAGESEL __mulchar
+0170   2???           00557         CALL    __mulchar
+0171   ???? ????      00558         PAGESEL $
+0173   ???? ????      00559         BANKSEL r0x101C
+0175   00??           00560         MOVWF   r0x101C
+0176   01??           00561         CLRF    r0x101D
+0177   08??           00562         MOVF    r0x101C,W
+0178   3E??           00563         ADDLW   (_PBD_enuBtnConfig + 0)
+0179   00??           00564         MOVWF   r0x101B
+017A   30??           00565         MOVLW   high (_PBD_enuBtnConfig + 0)
+017B   00??           00566         MOVWF   r0x101E
+017C   3000           00567         MOVLW   0x00
+017D   1803           00568         BTFSC   STATUS,0
+017E   0F??           00569         INCFSZ  r0x101D,W
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\p   11-10-2022  14:55:37        PAGE 12
+
+
+LOC    OBJECT CODE    LINE  SOURCE TEXT
+  VALUE
+
+017F   07??           00570         ADDWF   r0x101E,F
+0180   08??           00571         MOVF    r0x101B,W
+0181   00??           00572         MOVWF   STK01
+0182   08??           00573         MOVF    r0x101E,W
+0183   00??           00574         MOVWF   STK00
+0184   3080           00575         MOVLW   0x80
+0185   ???? ????      00576         PAGESEL __gptrget1
+0187   2???           00577         CALL    __gptrget1
+0188   ???? ????      00578         PAGESEL $
+018A   ???? ????      00579         BANKSEL r0x101F
+018C   00??           00580         MOVWF   r0x101F
+018D   ???? ????      00581         PAGESEL _DIO_u8ReadChannel
+018F   2???           00582         CALL    _DIO_u8ReadChannel
+0190   ???? ????      00583         PAGESEL $
+                      00584 ;       .line   262; "pbd_prg.c"        if(u8BtnValue == PBD_RELEASE_LEVEL)
+0192   ???? ????      00585         BANKSEL r0x101B
+0194   00??           00586         MOVWF   r0x101B
+0195   3A01           00587         XORLW   0x01
+0196   1D03           00588         BTFSS   STATUS,2
+0197   2???           00589         GOTO    _00164_DS_
+                      00590 ;       .line   264; "pbd_prg.c"        strBtnInfo[enuBtnId].u8DebounceCntr = BTY_u8ZERO;
+0198   08??           00591         MOVF    r0x101C,W
+0199   3E??           00592         ADDLW   (_strBtnInfo + 0)
+019A   00??           00593         MOVWF   r0x101B
+019B   30??           00594         MOVLW   high (_strBtnInfo + 0)
+019C   00??           00595         MOVWF   r0x101E
+019D   08??           00596         MOVF    r0x101D,W
+019E   1803           00597         BTFSC   STATUS,0
+019F   0F??           00598         INCFSZ  r0x101D,W
+01A0   07??           00599         ADDWF   r0x101E,F
+01A1   3001           00600         MOVLW   0x01
+01A2   07??           00601         ADDWF   r0x101B,W
+01A3   00??           00602         MOVWF   r0x101F
+01A4   01??           00603         CLRF    r0x1020
+01A5   0D??           00604         RLF     r0x1020,F
+01A6   08??           00605         MOVF    r0x101E,W
+01A7   07??           00606         ADDWF   r0x1020,F
+01A8   08??           00607         MOVF    r0x101F,W
+01A9   1283 1303      00608         BANKSEL FSR
+01AB   0084           00609         MOVWF   FSR
+01AC   1383           00610         BCF     STATUS,7
+01AD   ???? ????      00611         BANKSEL r0x1020
+01AF   18??           00612         BTFSC   r0x1020,0
+01B0   1783           00613         BSF     STATUS,7
+01B1   3000           00614         MOVLW   0x00
+01B2   1283 1303      00615         BANKSEL INDF
+01B4   0080           00616         MOVWF   INDF
+                      00617 ;       .line   265; "pbd_prg.c"        strBtnInfo[enuBtnId].enuBtnState    = PBD_PRE_RELEASE;
+01B5   ???? ????      00618         BANKSEL r0x101B
+01B7   08??           00619         MOVF    r0x101B,W
+01B8   1283 1303      00620         BANKSEL FSR
+01BA   0084           00621         MOVWF   FSR
+01BB   1383           00622         BCF     STATUS,7
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\p   11-10-2022  14:55:37        PAGE 13
+
+
+LOC    OBJECT CODE    LINE  SOURCE TEXT
+  VALUE
+
+01BC   ???? ????      00623         BANKSEL r0x101E
+01BE   18??           00624         BTFSC   r0x101E,0
+01BF   1783           00625         BSF     STATUS,7
+01C0   3004           00626         MOVLW   0x04
+01C1   1283 1303      00627         BANKSEL INDF
+01C3   0080           00628         MOVWF   INDF
+01C4   2???           00629         GOTO    _00166_DS_
+01C5                  00630 _00164_DS_
+                      00631 ;       .line   269; "pbd_prg.c"        strBtnInfo[enuBtnId].u8HoldCntr++;
+01C5   ???? ????      00632         BANKSEL r0x101C
+01C7   08??           00633         MOVF    r0x101C,W
+01C8   3E??           00634         ADDLW   (_strBtnInfo + 0)
+01C9   00??           00635         MOVWF   r0x101B
+01CA   30??           00636         MOVLW   high (_strBtnInfo + 0)
+01CB   00??           00637         MOVWF   r0x101E
+01CC   08??           00638         MOVF    r0x101D,W
+01CD   1803           00639         BTFSC   STATUS,0
+01CE   0F??           00640         INCFSZ  r0x101D,W
+01CF   07??           00641         ADDWF   r0x101E,F
+01D0   3002           00642         MOVLW   0x02
+01D1   07??           00643         ADDWF   r0x101B,W
+01D2   00??           00644         MOVWF   r0x101F
+01D3   01??           00645         CLRF    r0x1020
+01D4   0D??           00646         RLF     r0x1020,F
+01D5   08??           00647         MOVF    r0x101E,W
+01D6   07??           00648         ADDWF   r0x1020,F
+01D7   08??           00649         MOVF    r0x101F,W
+01D8   1283 1303      00650         BANKSEL FSR
+01DA   0084           00651         MOVWF   FSR
+01DB   1383           00652         BCF     STATUS,7
+01DC   ???? ????      00653         BANKSEL r0x1020
+01DE   18??           00654         BTFSC   r0x1020,0
+01DF   1783           00655         BSF     STATUS,7
+01E0   1283 1303      00656         BANKSEL INDF
+01E2   0800           00657         MOVF    INDF,W
+01E3   ???? ????      00658         BANKSEL r0x1021
+01E5   00??           00659         MOVWF   r0x1021
+01E6   0A??           00660         INCF    r0x1021,F
+01E7   08??           00661         MOVF    r0x101F,W
+01E8   1283 1303      00662         BANKSEL FSR
+01EA   0084           00663         MOVWF   FSR
+01EB   1383           00664         BCF     STATUS,7
+01EC   ???? ????      00665         BANKSEL r0x1020
+01EE   18??           00666         BTFSC   r0x1020,0
+01EF   1783           00667         BSF     STATUS,7
+01F0   08??           00668         MOVF    r0x1021,W
+01F1   1283 1303      00669         BANKSEL INDF
+01F3   0080           00670         MOVWF   INDF
+                      00671 ;       .line   271; "pbd_prg.c"        PBD_enuBtnConfig[enuBtnId].u8HoldThreshold)
+01F4   ???? ????      00672         BANKSEL r0x101C
+01F6   08??           00673         MOVF    r0x101C,W
+01F7   3E??           00674         ADDLW   (_PBD_enuBtnConfig + 0)
+01F8   00??           00675         MOVWF   r0x101C
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\p   11-10-2022  14:55:37        PAGE 14
+
+
+LOC    OBJECT CODE    LINE  SOURCE TEXT
+  VALUE
+
+01F9   08??           00676         MOVF    r0x101D,W
+01FA   1803           00677         BTFSC   STATUS,0
+01FB   0F??           00678         INCFSZ  r0x101D,W
+01FC   3E??           00679         ADDLW   high (_PBD_enuBtnConfig + 0)
+01FD   00??           00680         MOVWF   r0x101D
+01FE   3002           00681         MOVLW   0x02
+01FF   07??           00682         ADDWF   r0x101C,F
+0200   1803           00683         BTFSC   STATUS,0
+0201   0A??           00684         INCF    r0x101D,F
+0202   08??           00685         MOVF    r0x101C,W
+0203   00??           00686         MOVWF   STK01
+0204   08??           00687         MOVF    r0x101D,W
+0205   00??           00688         MOVWF   STK00
+0206   3080           00689         MOVLW   0x80
+0207   ???? ????      00690         PAGESEL __gptrget1
+0209   2???           00691         CALL    __gptrget1
+020A   ???? ????      00692         PAGESEL $
+020C   ???? ????      00693         BANKSEL r0x101F
+020E   00??           00694         MOVWF   r0x101F
+020F   02??           00695         SUBWF   r0x1021,W
+0210   1C03           00696         BTFSS   STATUS,0
+0211   2???           00697         GOTO    _00166_DS_
+                      00698 ;;genSkipc:3247: created from rifx:00000000047558B0
+                      00699 ;       .line   273; "pbd_prg.c"        strBtnInfo[enuBtnId].enuBtnState = PBD_HOLD;
+0212   08??           00700         MOVF    r0x101B,W
+0213   1283 1303      00701         BANKSEL FSR
+0215   0084           00702         MOVWF   FSR
+0216   1383           00703         BCF     STATUS,7
+0217   ???? ????      00704         BANKSEL r0x101E
+0219   18??           00705         BTFSC   r0x101E,0
+021A   1783           00706         BSF     STATUS,7
+021B   3003           00707         MOVLW   0x03
+021C   1283 1303      00708         BANKSEL INDF
+021E   0080           00709         MOVWF   INDF
+021F                  00710 _00166_DS_
+021F   0008           00711         RETURN  
+                      00712 ; exit point of _vidPreHoldState
+                      00713 
+                      00714 ;***
+                      00715 ;  pBlock Stats: dbName = C
+                      00716 ;***
+                      00717 ;entry:  _vidPushState  ;Function start
+                      00718 ; 2 exit points
+                      00719 ;has an exit
+                      00720 ;functions called:
+                      00721 ;   __mulchar
+                      00722 ;   __gptrget1
+                      00723 ;   _DIO_u8ReadChannel
+                      00724 ;   __mulchar
+                      00725 ;   __gptrget1
+                      00726 ;   _DIO_u8ReadChannel
+                      00727 ;8 compiler assigned registers:
+                      00728 ;   r0x1022
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\p   11-10-2022  14:55:37        PAGE 15
+
+
+LOC    OBJECT CODE    LINE  SOURCE TEXT
+  VALUE
+
+                      00729 ;   STK00
+                      00730 ;   r0x1023
+                      00731 ;   r0x1024
+                      00732 ;   r0x1025
+                      00733 ;   STK01
+                      00734 ;   r0x1026
+                      00735 ;   r0x1027
+                      00736 ;; Starting pCode block
+0220                  00737 _vidPushState   ;Function start
+                      00738 ; 2 exit points
+                      00739 ;       .line   233; "pbd_prg.c"        static void vidPushState(PBD_tenuButtonId enuBtnId)
+0220   ???? ????      00740         BANKSEL r0x1022
+0222   00??           00741         MOVWF   r0x1022
+                      00742 ;       .line   237; "pbd_prg.c"        u8BtnValue = DIO_u8ReadChannel(PBD_enuBtnConfig[enuBtnId].enuBtn
+                            ChannelId);
+0223   3003           00743         MOVLW   0x03
+0224   00??           00744         MOVWF   STK00
+0225   08??           00745         MOVF    r0x1022,W
+0226   ???? ????      00746         PAGESEL __mulchar
+0228   2???           00747         CALL    __mulchar
+0229   ???? ????      00748         PAGESEL $
+022B   ???? ????      00749         BANKSEL r0x1023
+022D   00??           00750         MOVWF   r0x1023
+022E   01??           00751         CLRF    r0x1024
+022F   08??           00752         MOVF    r0x1023,W
+0230   3E??           00753         ADDLW   (_PBD_enuBtnConfig + 0)
+0231   00??           00754         MOVWF   r0x1022
+0232   30??           00755         MOVLW   high (_PBD_enuBtnConfig + 0)
+0233   00??           00756         MOVWF   r0x1025
+0234   3000           00757         MOVLW   0x00
+0235   1803           00758         BTFSC   STATUS,0
+0236   0F??           00759         INCFSZ  r0x1024,W
+0237   07??           00760         ADDWF   r0x1025,F
+0238   08??           00761         MOVF    r0x1022,W
+0239   00??           00762         MOVWF   STK01
+023A   08??           00763         MOVF    r0x1025,W
+023B   00??           00764         MOVWF   STK00
+023C   3080           00765         MOVLW   0x80
+023D   ???? ????      00766         PAGESEL __gptrget1
+023F   2???           00767         CALL    __gptrget1
+0240   ???? ????      00768         PAGESEL $
+0242   ???? ????      00769         BANKSEL r0x1026
+0244   00??           00770         MOVWF   r0x1026
+0245   ???? ????      00771         PAGESEL _DIO_u8ReadChannel
+0247   2???           00772         CALL    _DIO_u8ReadChannel
+0248   ???? ????      00773         PAGESEL $
+                      00774 ;       .line   239; "pbd_prg.c"        if(u8BtnValue == PBD_RELEASE_LEVEL)
+024A   ???? ????      00775         BANKSEL r0x1022
+024C   00??           00776         MOVWF   r0x1022
+024D   3A01           00777         XORLW   0x01
+024E   1D03           00778         BTFSS   STATUS,2
+024F   2???           00779         GOTO    _00154_DS_
+                      00780 ;       .line   241; "pbd_prg.c"        strBtnInfo[enuBtnId].u8DebounceCntr = BTY_u8ZERO;
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\p   11-10-2022  14:55:37        PAGE 16
+
+
+LOC    OBJECT CODE    LINE  SOURCE TEXT
+  VALUE
+
+0250   08??           00781         MOVF    r0x1023,W
+0251   3E??           00782         ADDLW   (_strBtnInfo + 0)
+0252   00??           00783         MOVWF   r0x1022
+0253   30??           00784         MOVLW   high (_strBtnInfo + 0)
+0254   00??           00785         MOVWF   r0x1025
+0255   08??           00786         MOVF    r0x1024,W
+0256   1803           00787         BTFSC   STATUS,0
+0257   0F??           00788         INCFSZ  r0x1024,W
+0258   07??           00789         ADDWF   r0x1025,F
+0259   3001           00790         MOVLW   0x01
+025A   07??           00791         ADDWF   r0x1022,W
+025B   00??           00792         MOVWF   r0x1026
+025C   01??           00793         CLRF    r0x1027
+025D   0D??           00794         RLF     r0x1027,F
+025E   08??           00795         MOVF    r0x1025,W
+025F   07??           00796         ADDWF   r0x1027,F
+0260   08??           00797         MOVF    r0x1026,W
+0261   1283 1303      00798         BANKSEL FSR
+0263   0084           00799         MOVWF   FSR
+0264   1383           00800         BCF     STATUS,7
+0265   ???? ????      00801         BANKSEL r0x1027
+0267   18??           00802         BTFSC   r0x1027,0
+0268   1783           00803         BSF     STATUS,7
+0269   3000           00804         MOVLW   0x00
+026A   1283 1303      00805         BANKSEL INDF
+026C   0080           00806         MOVWF   INDF
+                      00807 ;       .line   242; "pbd_prg.c"        strBtnInfo[enuBtnId].enuBtnState    = PBD_PRE_RELEASE;
+026D   ???? ????      00808         BANKSEL r0x1022
+026F   08??           00809         MOVF    r0x1022,W
+0270   1283 1303      00810         BANKSEL FSR
+0272   0084           00811         MOVWF   FSR
+0273   1383           00812         BCF     STATUS,7
+0274   ???? ????      00813         BANKSEL r0x1025
+0276   18??           00814         BTFSC   r0x1025,0
+0277   1783           00815         BSF     STATUS,7
+0278   3004           00816         MOVLW   0x04
+0279   1283 1303      00817         BANKSEL INDF
+027B   0080           00818         MOVWF   INDF
+027C   2???           00819         GOTO    _00156_DS_
+027D                  00820 _00154_DS_
+                      00821 ;       .line   246; "pbd_prg.c"        strBtnInfo[enuBtnId].u8HoldCntr  = BTY_u8ZERO;
+027D   ???? ????      00822         BANKSEL r0x1023
+027F   08??           00823         MOVF    r0x1023,W
+0280   3E??           00824         ADDLW   (_strBtnInfo + 0)
+0281   00??           00825         MOVWF   r0x1023
+0282   08??           00826         MOVF    r0x1024,W
+0283   1803           00827         BTFSC   STATUS,0
+0284   0F??           00828         INCFSZ  r0x1024,W
+0285   3E??           00829         ADDLW   high (_strBtnInfo + 0)
+0286   00??           00830         MOVWF   r0x1024
+0287   3002           00831         MOVLW   0x02
+0288   07??           00832         ADDWF   r0x1023,W
+0289   00??           00833         MOVWF   r0x1022
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\p   11-10-2022  14:55:37        PAGE 17
+
+
+LOC    OBJECT CODE    LINE  SOURCE TEXT
+  VALUE
+
+028A   01??           00834         CLRF    r0x1025
+028B   0D??           00835         RLF     r0x1025,F
+028C   08??           00836         MOVF    r0x1024,W
+028D   07??           00837         ADDWF   r0x1025,F
+028E   08??           00838         MOVF    r0x1022,W
+028F   1283 1303      00839         BANKSEL FSR
+0291   0084           00840         MOVWF   FSR
+0292   1383           00841         BCF     STATUS,7
+0293   ???? ????      00842         BANKSEL r0x1025
+0295   18??           00843         BTFSC   r0x1025,0
+0296   1783           00844         BSF     STATUS,7
+0297   3000           00845         MOVLW   0x00
+0298   1283 1303      00846         BANKSEL INDF
+029A   0080           00847         MOVWF   INDF
+                      00848 ;       .line   247; "pbd_prg.c"        strBtnInfo[enuBtnId].enuBtnState = PBD_PRE_HOLD;
+029B   ???? ????      00849         BANKSEL r0x1023
+029D   08??           00850         MOVF    r0x1023,W
+029E   1283 1303      00851         BANKSEL FSR
+02A0   0084           00852         MOVWF   FSR
+02A1   1383           00853         BCF     STATUS,7
+02A2   ???? ????      00854         BANKSEL r0x1024
+02A4   18??           00855         BTFSC   r0x1024,0
+02A5   1783           00856         BSF     STATUS,7
+02A6   3002           00857         MOVLW   0x02
+02A7   1283 1303      00858         BANKSEL INDF
+02A9   0080           00859         MOVWF   INDF
+02AA                  00860 _00156_DS_
+02AA   0008           00861         RETURN  
+                      00862 ; exit point of _vidPushState
+                      00863 
+                      00864 ;***
+                      00865 ;  pBlock Stats: dbName = C
+                      00866 ;***
+                      00867 ;entry:  _vidPrePushState       ;Function start
+                      00868 ; 2 exit points
+                      00869 ;has an exit
+                      00870 ;functions called:
+                      00871 ;   __mulchar
+                      00872 ;   __gptrget1
+                      00873 ;   _DIO_u8ReadChannel
+                      00874 ;   __gptrget1
+                      00875 ;   __mulchar
+                      00876 ;   __gptrget1
+                      00877 ;   _DIO_u8ReadChannel
+                      00878 ;   __gptrget1
+                      00879 ;9 compiler assigned registers:
+                      00880 ;   r0x1028
+                      00881 ;   STK00
+                      00882 ;   r0x1029
+                      00883 ;   r0x102A
+                      00884 ;   r0x102B
+                      00885 ;   STK01
+                      00886 ;   r0x102C
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\p   11-10-2022  14:55:37        PAGE 18
+
+
+LOC    OBJECT CODE    LINE  SOURCE TEXT
+  VALUE
+
+                      00887 ;   r0x102D
+                      00888 ;   r0x102E
+                      00889 ;; Starting pCode block
+02AB                  00890 _vidPrePushState        ;Function start
+                      00891 ; 2 exit points
+                      00892 ;       .line   201; "pbd_prg.c"        static void vidPrePushState(PBD_tenuButtonId enuBtnId)
+02AB   ???? ????      00893         BANKSEL r0x1028
+02AD   00??           00894         MOVWF   r0x1028
+                      00895 ;       .line   205; "pbd_prg.c"        u8BtnValue = DIO_u8ReadChannel(PBD_enuBtnConfig[enuBtnId].enuBtn
+                            ChannelId);
+02AE   3003           00896         MOVLW   0x03
+02AF   00??           00897         MOVWF   STK00
+02B0   08??           00898         MOVF    r0x1028,W
+02B1   ???? ????      00899         PAGESEL __mulchar
+02B3   2???           00900         CALL    __mulchar
+02B4   ???? ????      00901         PAGESEL $
+02B6   ???? ????      00902         BANKSEL r0x1029
+02B8   00??           00903         MOVWF   r0x1029
+02B9   01??           00904         CLRF    r0x102A
+02BA   08??           00905         MOVF    r0x1029,W
+02BB   3E??           00906         ADDLW   (_PBD_enuBtnConfig + 0)
+02BC   00??           00907         MOVWF   r0x1028
+02BD   30??           00908         MOVLW   high (_PBD_enuBtnConfig + 0)
+02BE   00??           00909         MOVWF   r0x102B
+02BF   3000           00910         MOVLW   0x00
+02C0   1803           00911         BTFSC   STATUS,0
+02C1   0F??           00912         INCFSZ  r0x102A,W
+02C2   07??           00913         ADDWF   r0x102B,F
+02C3   08??           00914         MOVF    r0x1028,W
+02C4   00??           00915         MOVWF   STK01
+02C5   08??           00916         MOVF    r0x102B,W
+02C6   00??           00917         MOVWF   STK00
+02C7   3080           00918         MOVLW   0x80
+02C8   ???? ????      00919         PAGESEL __gptrget1
+02CA   2???           00920         CALL    __gptrget1
+02CB   ???? ????      00921         PAGESEL $
+02CD   ???? ????      00922         BANKSEL r0x102C
+02CF   00??           00923         MOVWF   r0x102C
+02D0   ???? ????      00924         PAGESEL _DIO_u8ReadChannel
+02D2   2???           00925         CALL    _DIO_u8ReadChannel
+02D3   ???? ????      00926         PAGESEL $
+                      00927 ;       .line   207; "pbd_prg.c"        if(u8BtnValue == PBD_RELEASE_LEVEL)
+02D5   ???? ????      00928         BANKSEL r0x1028
+02D7   00??           00929         MOVWF   r0x1028
+02D8   3A01           00930         XORLW   0x01
+02D9   1D03           00931         BTFSS   STATUS,2
+02DA   2???           00932         GOTO    _00146_DS_
+                      00933 ;       .line   209; "pbd_prg.c"        strBtnInfo[enuBtnId].u8DebounceCntr = BTY_u8ZERO;
+02DB   08??           00934         MOVF    r0x1029,W
+02DC   3E??           00935         ADDLW   (_strBtnInfo + 0)
+02DD   00??           00936         MOVWF   r0x1028
+02DE   30??           00937         MOVLW   high (_strBtnInfo + 0)
+02DF   00??           00938         MOVWF   r0x102B
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\p   11-10-2022  14:55:37        PAGE 19
+
+
+LOC    OBJECT CODE    LINE  SOURCE TEXT
+  VALUE
+
+02E0   08??           00939         MOVF    r0x102A,W
+02E1   1803           00940         BTFSC   STATUS,0
+02E2   0F??           00941         INCFSZ  r0x102A,W
+02E3   07??           00942         ADDWF   r0x102B,F
+02E4   3001           00943         MOVLW   0x01
+02E5   07??           00944         ADDWF   r0x1028,W
+02E6   00??           00945         MOVWF   r0x102C
+02E7   01??           00946         CLRF    r0x102D
+02E8   0D??           00947         RLF     r0x102D,F
+02E9   08??           00948         MOVF    r0x102B,W
+02EA   07??           00949         ADDWF   r0x102D,F
+02EB   08??           00950         MOVF    r0x102C,W
+02EC   1283 1303      00951         BANKSEL FSR
+02EE   0084           00952         MOVWF   FSR
+02EF   1383           00953         BCF     STATUS,7
+02F0   ???? ????      00954         BANKSEL r0x102D
+02F2   18??           00955         BTFSC   r0x102D,0
+02F3   1783           00956         BSF     STATUS,7
+02F4   3000           00957         MOVLW   0x00
+02F5   1283 1303      00958         BANKSEL INDF
+02F7   0080           00959         MOVWF   INDF
+                      00960 ;       .line   210; "pbd_prg.c"        strBtnInfo[enuBtnId].enuBtnState    = PBD_PRE_RELEASE;
+02F8   ???? ????      00961         BANKSEL r0x1028
+02FA   08??           00962         MOVF    r0x1028,W
+02FB   1283 1303      00963         BANKSEL FSR
+02FD   0084           00964         MOVWF   FSR
+02FE   1383           00965         BCF     STATUS,7
+02FF   ???? ????      00966         BANKSEL r0x102B
+0301   18??           00967         BTFSC   r0x102B,0
+0302   1783           00968         BSF     STATUS,7
+0303   3004           00969         MOVLW   0x04
+0304   1283 1303      00970         BANKSEL INDF
+0306   0080           00971         MOVWF   INDF
+0307   2???           00972         GOTO    _00148_DS_
+0308                  00973 _00146_DS_
+                      00974 ;       .line   214; "pbd_prg.c"        strBtnInfo[enuBtnId].u8DebounceCntr++;
+0308   ???? ????      00975         BANKSEL r0x1029
+030A   08??           00976         MOVF    r0x1029,W
+030B   3E??           00977         ADDLW   (_strBtnInfo + 0)
+030C   00??           00978         MOVWF   r0x1028
+030D   30??           00979         MOVLW   high (_strBtnInfo + 0)
+030E   00??           00980         MOVWF   r0x102B
+030F   08??           00981         MOVF    r0x102A,W
+0310   1803           00982         BTFSC   STATUS,0
+0311   0F??           00983         INCFSZ  r0x102A,W
+0312   07??           00984         ADDWF   r0x102B,F
+0313   3001           00985         MOVLW   0x01
+0314   07??           00986         ADDWF   r0x1028,W
+0315   00??           00987         MOVWF   r0x102C
+0316   01??           00988         CLRF    r0x102D
+0317   0D??           00989         RLF     r0x102D,F
+0318   08??           00990         MOVF    r0x102B,W
+0319   07??           00991         ADDWF   r0x102D,F
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\p   11-10-2022  14:55:37        PAGE 20
+
+
+LOC    OBJECT CODE    LINE  SOURCE TEXT
+  VALUE
+
+031A   08??           00992         MOVF    r0x102C,W
+031B   1283 1303      00993         BANKSEL FSR
+031D   0084           00994         MOVWF   FSR
+031E   1383           00995         BCF     STATUS,7
+031F   ???? ????      00996         BANKSEL r0x102D
+0321   18??           00997         BTFSC   r0x102D,0
+0322   1783           00998         BSF     STATUS,7
+0323   1283 1303      00999         BANKSEL INDF
+0325   0800           01000         MOVF    INDF,W
+0326   ???? ????      01001         BANKSEL r0x102E
+0328   00??           01002         MOVWF   r0x102E
+0329   0A??           01003         INCF    r0x102E,F
+032A   08??           01004         MOVF    r0x102C,W
+032B   1283 1303      01005         BANKSEL FSR
+032D   0084           01006         MOVWF   FSR
+032E   1383           01007         BCF     STATUS,7
+032F   ???? ????      01008         BANKSEL r0x102D
+0331   18??           01009         BTFSC   r0x102D,0
+0332   1783           01010         BSF     STATUS,7
+0333   08??           01011         MOVF    r0x102E,W
+0334   1283 1303      01012         BANKSEL INDF
+0336   0080           01013         MOVWF   INDF
+                      01014 ;       .line   217; "pbd_prg.c"        PBD_enuBtnConfig[enuBtnId].u8DebounceThreshold)
+0337   ???? ????      01015         BANKSEL r0x1029
+0339   08??           01016         MOVF    r0x1029,W
+033A   3E??           01017         ADDLW   (_PBD_enuBtnConfig + 0)
+033B   00??           01018         MOVWF   r0x1029
+033C   08??           01019         MOVF    r0x102A,W
+033D   1803           01020         BTFSC   STATUS,0
+033E   0F??           01021         INCFSZ  r0x102A,W
+033F   3E??           01022         ADDLW   high (_PBD_enuBtnConfig + 0)
+0340   00??           01023         MOVWF   r0x102A
+0341   0A??           01024         INCF    r0x1029,F
+0342   1903           01025         BTFSC   STATUS,2
+0343   0A??           01026         INCF    r0x102A,F
+0344   08??           01027         MOVF    r0x1029,W
+0345   00??           01028         MOVWF   STK01
+0346   08??           01029         MOVF    r0x102A,W
+0347   00??           01030         MOVWF   STK00
+0348   3080           01031         MOVLW   0x80
+0349   ???? ????      01032         PAGESEL __gptrget1
+034B   2???           01033         CALL    __gptrget1
+034C   ???? ????      01034         PAGESEL $
+034E   ???? ????      01035         BANKSEL r0x102C
+0350   00??           01036         MOVWF   r0x102C
+0351   06??           01037         XORWF   r0x102E,W
+0352   1D03           01038         BTFSS   STATUS,2
+0353   2???           01039         GOTO    _00148_DS_
+                      01040 ;       .line   219; "pbd_prg.c"        strBtnInfo[enuBtnId].enuBtnState    = PBD_PUSHED;
+0354   08??           01041         MOVF    r0x1028,W
+0355   1283 1303      01042         BANKSEL FSR
+0357   0084           01043         MOVWF   FSR
+0358   1383           01044         BCF     STATUS,7
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\p   11-10-2022  14:55:37        PAGE 21
+
+
+LOC    OBJECT CODE    LINE  SOURCE TEXT
+  VALUE
+
+0359   ???? ????      01045         BANKSEL r0x102B
+035B   18??           01046         BTFSC   r0x102B,0
+035C   1783           01047         BSF     STATUS,7
+035D   3001           01048         MOVLW   0x01
+035E   1283 1303      01049         BANKSEL INDF
+0360   0080           01050         MOVWF   INDF
+0361                  01051 _00148_DS_
+0361   0008           01052         RETURN  
+                      01053 ; exit point of _vidPrePushState
+                      01054 
+                      01055 ;***
+                      01056 ;  pBlock Stats: dbName = C
+                      01057 ;***
+                      01058 ;entry:  _vidUpdateBtnState     ;Function start
+                      01059 ; 2 exit points
+                      01060 ;has an exit
+                      01061 ;functions called:
+                      01062 ;   __mulchar
+                      01063 ;   _vidPrePushState
+                      01064 ;   _vidPushState
+                      01065 ;   _vidPreHoldState
+                      01066 ;   _vidHoldState
+                      01067 ;   _vidPreReleaseState
+                      01068 ;   _vidReleaseState
+                      01069 ;   __mulchar
+                      01070 ;   _vidPrePushState
+                      01071 ;   _vidPushState
+                      01072 ;   _vidPreHoldState
+                      01073 ;   _vidHoldState
+                      01074 ;   _vidPreReleaseState
+                      01075 ;   _vidReleaseState
+                      01076 ;5 compiler assigned registers:
+                      01077 ;   r0x102F
+                      01078 ;   STK00
+                      01079 ;   r0x1030
+                      01080 ;   r0x1031
+                      01081 ;   r0x1032
+                      01082 ;; Starting pCode block
+0362                  01083 _vidUpdateBtnState      ;Function start
+                      01084 ; 2 exit points
+                      01085 ;       .line   162; "pbd_prg.c"        static void  vidUpdateBtnState(PBD_tenuButtonId enuBtnId)
+0362   ???? ????      01086         BANKSEL r0x102F
+0364   00??           01087         MOVWF   r0x102F
+                      01088 ;       .line   164; "pbd_prg.c"        switch(strBtnInfo[enuBtnId].enuBtnState)
+0365   3003           01089         MOVLW   0x03
+0366   00??           01090         MOVWF   STK00
+0367   08??           01091         MOVF    r0x102F,W
+0368   ???? ????      01092         PAGESEL __mulchar
+036A   2???           01093         CALL    __mulchar
+036B   ???? ????      01094         PAGESEL $
+036D   ???? ????      01095         BANKSEL r0x1030
+036F   00??           01096         MOVWF   r0x1030
+0370   01??           01097         CLRF    r0x1031
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\p   11-10-2022  14:55:37        PAGE 22
+
+
+LOC    OBJECT CODE    LINE  SOURCE TEXT
+  VALUE
+
+0371   08??           01098         MOVF    r0x1030,W
+0372   3E??           01099         ADDLW   (_strBtnInfo + 0)
+0373   00??           01100         MOVWF   r0x1030
+0374   3000           01101         MOVLW   0x00
+0375   1803           01102         BTFSC   STATUS,0
+0376   0F??           01103         INCFSZ  r0x1031,W
+0377   3E??           01104         ADDLW   high (_strBtnInfo + 0)
+0378   00??           01105         MOVWF   r0x1031
+0379   08??           01106         MOVF    r0x1030,W
+037A   1283 1303      01107         BANKSEL FSR
+037C   0084           01108         MOVWF   FSR
+037D   1383           01109         BCF     STATUS,7
+037E   ???? ????      01110         BANKSEL r0x1031
+0380   18??           01111         BTFSC   r0x1031,0
+0381   1783           01112         BSF     STATUS,7
+0382   1283 1303      01113         BANKSEL INDF
+0384   0800           01114         MOVF    INDF,W
+0385   ???? ????      01115         BANKSEL r0x1032
+0387   00??           01116         MOVWF   r0x1032
+                      01117 ;;swapping arguments (AOP_TYPEs 1/2)
+                      01118 ;;unsigned compare: left >= lit(0x6=6), size=1
+0388   3006           01119         MOVLW   0x06
+0389   02??           01120         SUBWF   r0x1032,W
+038A   1803           01121         BTFSC   STATUS,0
+038B   2???           01122         GOTO    _00132_DS_
+                      01123 ;;genSkipc:3247: created from rifx:00000000047558B0
+038C   30??           01124         MOVLW   HIGH(_00138_DS_)
+038D   1283 1303      01125         BANKSEL PCLATH
+038F   008A           01126         MOVWF   PCLATH
+0390   30??           01127         MOVLW   _00138_DS_
+0391   ???? ????      01128         BANKSEL r0x1032
+0393   07??           01129         ADDWF   r0x1032,W
+0394   1C03           01130         BTFSS   STATUS,0
+0395   2???           01131         GOTO    _00001_DS_
+0396   1283 1303      01132         BANKSEL PCLATH
+0398   0A8A           01133         INCF    PCLATH,F
+0399                  01134 _00001_DS_
+0399   0082           01135         MOVWF   PCL
+039A                  01136 _00138_DS_
+039A   2???           01137         GOTO    _00124_DS_
+039B   2???           01138         GOTO    _00125_DS_
+039C   2???           01139         GOTO    _00126_DS_
+039D   2???           01140         GOTO    _00127_DS_
+039E   2???           01141         GOTO    _00128_DS_
+039F   2???           01142         GOTO    _00129_DS_
+03A0                  01143 _00124_DS_
+                      01144 ;       .line   167; "pbd_prg.c"        vidPrePushState(enuBtnId);
+03A0   ???? ????      01145         BANKSEL r0x102F
+03A2   08??           01146         MOVF    r0x102F,W
+03A3   2???           01147         CALL    _vidPrePushState
+                      01148 ;       .line   168; "pbd_prg.c"        break;
+03A4   2???           01149         GOTO    _00132_DS_
+03A5                  01150 _00125_DS_
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\p   11-10-2022  14:55:37        PAGE 23
+
+
+LOC    OBJECT CODE    LINE  SOURCE TEXT
+  VALUE
+
+                      01151 ;       .line   171; "pbd_prg.c"        vidPushState(enuBtnId);
+03A5   ???? ????      01152         BANKSEL r0x102F
+03A7   08??           01153         MOVF    r0x102F,W
+03A8   2???           01154         CALL    _vidPushState
+                      01155 ;       .line   172; "pbd_prg.c"        break;
+03A9   2???           01156         GOTO    _00132_DS_
+03AA                  01157 _00126_DS_
+                      01158 ;       .line   175; "pbd_prg.c"        vidPreHoldState(enuBtnId);
+03AA   ???? ????      01159         BANKSEL r0x102F
+03AC   08??           01160         MOVF    r0x102F,W
+03AD   2???           01161         CALL    _vidPreHoldState
+                      01162 ;       .line   176; "pbd_prg.c"        break;
+03AE   2???           01163         GOTO    _00132_DS_
+03AF                  01164 _00127_DS_
+                      01165 ;       .line   179; "pbd_prg.c"        vidHoldState(enuBtnId);
+03AF   ???? ????      01166         BANKSEL r0x102F
+03B1   08??           01167         MOVF    r0x102F,W
+03B2   2???           01168         CALL    _vidHoldState
+                      01169 ;       .line   180; "pbd_prg.c"        break;
+03B3   2???           01170         GOTO    _00132_DS_
+03B4                  01171 _00128_DS_
+                      01172 ;       .line   183; "pbd_prg.c"        vidPreReleaseState(enuBtnId);
+03B4   ???? ????      01173         BANKSEL r0x102F
+03B6   08??           01174         MOVF    r0x102F,W
+03B7   2???           01175         CALL    _vidPreReleaseState
+                      01176 ;       .line   184; "pbd_prg.c"        break;
+03B8   2???           01177         GOTO    _00132_DS_
+03B9                  01178 _00129_DS_
+                      01179 ;       .line   187; "pbd_prg.c"        vidReleaseState(enuBtnId);
+03B9   ???? ????      01180         BANKSEL r0x102F
+03BB   08??           01181         MOVF    r0x102F,W
+03BC   2???           01182         CALL    _vidReleaseState
+03BD                  01183 _00132_DS_
+                      01184 ;       .line   192; "pbd_prg.c"        }
+03BD   0008           01185         RETURN  
+                      01186 ; exit point of _vidUpdateBtnState
+                      01187 
+                      01188 ;***
+                      01189 ;  pBlock Stats: dbName = C
+                      01190 ;***
+                      01191 ;entry:  _PBD_enuGetButtonState ;Function start
+                      01192 ; 2 exit points
+                      01193 ;has an exit
+                      01194 ;functions called:
+                      01195 ;   __mulchar
+                      01196 ;   __mulchar
+                      01197 ;5 compiler assigned registers:
+                      01198 ;   r0x1033
+                      01199 ;   STK00
+                      01200 ;   r0x1034
+                      01201 ;   r0x1035
+                      01202 ;   r0x1036
+                      01203 ;; Starting pCode block
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\p   11-10-2022  14:55:37        PAGE 24
+
+
+LOC    OBJECT CODE    LINE  SOURCE TEXT
+  VALUE
+
+03BE                  01204 _PBD_enuGetButtonState  ;Function start
+                      01205 ; 2 exit points
+                      01206 ;       .line   130; "pbd_prg.c"        PBD_tenuButtonState PBD_enuGetButtonState(PBD_tenuButtonId enuBu
+                            ttonId)
+03BE   ???? ????      01207         BANKSEL r0x1033
+03C0   00??           01208         MOVWF   r0x1033
+                      01209 ;;unsigned compare: left < lit(0x3=3), size=1
+                      01210 ;       .line   134; "pbd_prg.c"        if(enuButtonId < PBD_BUTTONS_NUM)
+03C1   3003           01211         MOVLW   0x03
+03C2   02??           01212         SUBWF   r0x1033,W
+03C3   1803           01213         BTFSC   STATUS,0
+03C4   2???           01214         GOTO    _00118_DS_
+                      01215 ;;genSkipc:3247: created from rifx:00000000047558B0
+                      01216 ;       .line   136; "pbd_prg.c"        enuReturn = strBtnInfo[enuButtonId].enuBtnState;
+03C5   3003           01217         MOVLW   0x03
+03C6   00??           01218         MOVWF   STK00
+03C7   08??           01219         MOVF    r0x1033,W
+03C8   ???? ????      01220         PAGESEL __mulchar
+03CA   2???           01221         CALL    __mulchar
+03CB   ???? ????      01222         PAGESEL $
+03CD   ???? ????      01223         BANKSEL r0x1034
+03CF   00??           01224         MOVWF   r0x1034
+03D0   01??           01225         CLRF    r0x1035
+03D1   08??           01226         MOVF    r0x1034,W
+03D2   3E??           01227         ADDLW   (_strBtnInfo + 0)
+03D3   00??           01228         MOVWF   r0x1033
+03D4   30??           01229         MOVLW   high (_strBtnInfo + 0)
+03D5   00??           01230         MOVWF   r0x1036
+03D6   3000           01231         MOVLW   0x00
+03D7   1803           01232         BTFSC   STATUS,0
+03D8   0F??           01233         INCFSZ  r0x1035,W
+03D9   07??           01234         ADDWF   r0x1036,F
+03DA   08??           01235         MOVF    r0x1033,W
+03DB   1283 1303      01236         BANKSEL FSR
+03DD   0084           01237         MOVWF   FSR
+03DE   1383           01238         BCF     STATUS,7
+03DF   ???? ????      01239         BANKSEL r0x1036
+03E1   18??           01240         BTFSC   r0x1036,0
+03E2   1783           01241         BSF     STATUS,7
+03E3   1283 1303      01242         BANKSEL INDF
+03E5   0800           01243         MOVF    INDF,W
+03E6   ???? ????      01244         BANKSEL r0x1034
+03E8   00??           01245         MOVWF   r0x1034
+03E9   2???           01246         GOTO    _00119_DS_
+03EA                  01247 _00118_DS_
+                      01248 ;       .line   140; "pbd_prg.c"        enuReturn = PBD_UNDEFINED;
+03EA   3006           01249         MOVLW   0x06
+03EB   ???? ????      01250         BANKSEL r0x1034
+03ED   00??           01251         MOVWF   r0x1034
+03EE                  01252 _00119_DS_
+                      01253 ;       .line   143; "pbd_prg.c"        return (enuReturn);
+03EE   ???? ????      01254         BANKSEL r0x1034
+03F0   08??           01255         MOVF    r0x1034,W
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\p   11-10-2022  14:55:37        PAGE 25
+
+
+LOC    OBJECT CODE    LINE  SOURCE TEXT
+  VALUE
+
+03F1   0008           01256         RETURN  
+                      01257 ; exit point of _PBD_enuGetButtonState
+                      01258 
+                      01259 ;***
+                      01260 ;  pBlock Stats: dbName = C
+                      01261 ;***
+                      01262 ;entry:  _PBD_vidTask   ;Function start
+                      01263 ; 2 exit points
+                      01264 ;has an exit
+                      01265 ;functions called:
+                      01266 ;   _vidUpdateBtnState
+                      01267 ;   _vidUpdateBtnState
+                      01268 ;1 compiler assigned register :
+                      01269 ;   r0x1037
+                      01270 ;; Starting pCode block
+03F2                  01271 _PBD_vidTask    ;Function start
+                      01272 ; 2 exit points
+                      01273 ;       .line   117; "pbd_prg.c"        for(u8Index=0;u8Index<PBD_BUTTONS_NUM; u8Index++)
+03F2   ???? ????      01274         BANKSEL r0x1037
+03F4   01??           01275         CLRF    r0x1037
+03F5                  01276 _00112_DS_
+                      01277 ;       .line   119; "pbd_prg.c"        vidUpdateBtnState((PBD_tenuButtonId)u8Index);
+03F5   ???? ????      01278         BANKSEL r0x1037
+03F7   08??           01279         MOVF    r0x1037,W
+03F8   2???           01280         CALL    _vidUpdateBtnState
+                      01281 ;       .line   117; "pbd_prg.c"        for(u8Index=0;u8Index<PBD_BUTTONS_NUM; u8Index++)
+03F9   ???? ????      01282         BANKSEL r0x1037
+03FB   0A??           01283         INCF    r0x1037,F
+                      01284 ;;unsigned compare: left < lit(0x3=3), size=1
+03FC   3003           01285         MOVLW   0x03
+03FD   02??           01286         SUBWF   r0x1037,W
+03FE   1C03           01287         BTFSS   STATUS,0
+03FF   2???           01288         GOTO    _00112_DS_
+                      01289 ;;genSkipc:3247: created from rifx:00000000047558B0
+0400   0008           01290         RETURN  
+                      01291 ; exit point of _PBD_vidTask
+                      01292 
+                      01293 ;***
+                      01294 ;  pBlock Stats: dbName = C
+                      01295 ;***
+                      01296 ;entry:  _PBD_vidInit   ;Function start
+                      01297 ; 2 exit points
+                      01298 ;has an exit
+                      01299 ;functions called:
+                      01300 ;   __mulchar
+                      01301 ;   __mulchar
+                      01302 ;6 compiler assigned registers:
+                      01303 ;   r0x1038
+                      01304 ;   STK00
+                      01305 ;   r0x1039
+                      01306 ;   r0x103A
+                      01307 ;   r0x103B
+                      01308 ;   r0x103C
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\p   11-10-2022  14:55:37        PAGE 26
+
+
+LOC    OBJECT CODE    LINE  SOURCE TEXT
+  VALUE
+
+                      01309 ;; Starting pCode block
+0401                  01310 _PBD_vidInit    ;Function start
+                      01311 ; 2 exit points
+                      01312 ;       .line   96; "pbd_prg.c" for(u8Index=0;u8Index<PBD_BUTTONS_NUM;u8Index++)
+0401   ???? ????      01313         BANKSEL r0x1038
+0403   01??           01314         CLRF    r0x1038
+0404                  01315 _00106_DS_
+                      01316 ;       .line   98; "pbd_prg.c" strBtnInfo[u8Index].enuBtnState     = PBD_RELEASED;
+0404   3003           01317         MOVLW   0x03
+0405   00??           01318         MOVWF   STK00
+0406   ???? ????      01319         BANKSEL r0x1038
+0408   08??           01320         MOVF    r0x1038,W
+0409   ???? ????      01321         PAGESEL __mulchar
+040B   2???           01322         CALL    __mulchar
+040C   ???? ????      01323         PAGESEL $
+040E   ???? ????      01324         BANKSEL r0x1039
+0410   00??           01325         MOVWF   r0x1039
+0411   01??           01326         CLRF    r0x103A
+0412   08??           01327         MOVF    r0x1039,W
+0413   3E??           01328         ADDLW   (_strBtnInfo + 0)
+0414   00??           01329         MOVWF   r0x103B
+0415   30??           01330         MOVLW   high (_strBtnInfo + 0)
+0416   00??           01331         MOVWF   r0x103C
+0417   3000           01332         MOVLW   0x00
+0418   1803           01333         BTFSC   STATUS,0
+0419   0F??           01334         INCFSZ  r0x103A,W
+041A   07??           01335         ADDWF   r0x103C,F
+041B   08??           01336         MOVF    r0x103B,W
+041C   1283 1303      01337         BANKSEL FSR
+041E   0084           01338         MOVWF   FSR
+041F   1383           01339         BCF     STATUS,7
+0420   ???? ????      01340         BANKSEL r0x103C
+0422   18??           01341         BTFSC   r0x103C,0
+0423   1783           01342         BSF     STATUS,7
+0424   3005           01343         MOVLW   0x05
+0425   1283 1303      01344         BANKSEL INDF
+0427   0080           01345         MOVWF   INDF
+                      01346 ;       .line   99; "pbd_prg.c" strBtnInfo[u8Index].u8DebounceCntr  = BTY_u8ZERO;
+0428   ???? ????      01347         BANKSEL r0x1039
+042A   08??           01348         MOVF    r0x1039,W
+042B   3E??           01349         ADDLW   (_strBtnInfo + 0)
+042C   00??           01350         MOVWF   r0x1039
+042D   08??           01351         MOVF    r0x103A,W
+042E   1803           01352         BTFSC   STATUS,0
+042F   0F??           01353         INCFSZ  r0x103A,W
+0430   3E??           01354         ADDLW   high (_strBtnInfo + 0)
+0431   00??           01355         MOVWF   r0x103A
+0432   3001           01356         MOVLW   0x01
+0433   07??           01357         ADDWF   r0x1039,W
+0434   00??           01358         MOVWF   r0x103B
+0435   01??           01359         CLRF    r0x103C
+0436   0D??           01360         RLF     r0x103C,F
+0437   08??           01361         MOVF    r0x103A,W
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\p   11-10-2022  14:55:37        PAGE 27
+
+
+LOC    OBJECT CODE    LINE  SOURCE TEXT
+  VALUE
+
+0438   07??           01362         ADDWF   r0x103C,F
+0439   08??           01363         MOVF    r0x103B,W
+043A   1283 1303      01364         BANKSEL FSR
+043C   0084           01365         MOVWF   FSR
+043D   1383           01366         BCF     STATUS,7
+043E   ???? ????      01367         BANKSEL r0x103C
+0440   18??           01368         BTFSC   r0x103C,0
+0441   1783           01369         BSF     STATUS,7
+0442   3000           01370         MOVLW   0x00
+0443   1283 1303      01371         BANKSEL INDF
+0445   0080           01372         MOVWF   INDF
+                      01373 ;       .line   100; "pbd_prg.c"        strBtnInfo[u8Index].u8HoldCntr      = BTY_u8ZERO;
+0446   3002           01374         MOVLW   0x02
+0447   ???? ????      01375         BANKSEL r0x1039
+0449   07??           01376         ADDWF   r0x1039,F
+044A   1803           01377         BTFSC   STATUS,0
+044B   0A??           01378         INCF    r0x103A,F
+044C   08??           01379         MOVF    r0x1039,W
+044D   1283 1303      01380         BANKSEL FSR
+044F   0084           01381         MOVWF   FSR
+0450   1383           01382         BCF     STATUS,7
+0451   ???? ????      01383         BANKSEL r0x103A
+0453   18??           01384         BTFSC   r0x103A,0
+0454   1783           01385         BSF     STATUS,7
+0455   3000           01386         MOVLW   0x00
+0456   1283 1303      01387         BANKSEL INDF
+0458   0080           01388         MOVWF   INDF
+                      01389 ;       .line   96; "pbd_prg.c" for(u8Index=0;u8Index<PBD_BUTTONS_NUM;u8Index++)
+0459   ???? ????      01390         BANKSEL r0x1038
+045B   0A??           01391         INCF    r0x1038,F
+                      01392 ;;unsigned compare: left < lit(0x3=3), size=1
+045C   3003           01393         MOVLW   0x03
+045D   02??           01394         SUBWF   r0x1038,W
+045E   1C03           01395         BTFSS   STATUS,0
+045F   2???           01396         GOTO    _00106_DS_
+                      01397 ;;genSkipc:3247: created from rifx:00000000047558B0
+0460   0008           01398         RETURN  
+                      01399 ; exit point of _PBD_vidInit
+                      01400 
+                      01401 
+                      01402 ;       code size estimation:
+                      01403 ;         721+  200 =   921 instructions ( 2242 byte)
+                      01404 
+                      01405         end
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\p   11-10-2022  14:55:37        PAGE 28
+
+
+SYMBOL TABLE
+  LABEL                             VALUE
+
+ACKDT                             00000005
+ACKEN                             00000004
+ACKSTAT                           00000006
+ADCON0                            0000001F
+ADCON1                            0000009F
+ADCS0                             00000006
+ADCS1                             00000007
+ADCS2                             00000006
+ADDEN                             00000003
+ADFM                              00000007
+ADIE                              00000006
+ADIF                              00000006
+ADON                              00000000
+ADRESH                            0000001E
+ADRESL                            0000009E
+BCLIE                             00000003
+BCLIF                             00000003
+BF                                00000000
+BRGH                              00000002
+C                                 00000000
+C1INV                             00000004
+C1OUT                             00000006
+C2INV                             00000005
+C2OUT                             00000007
+CCP1CON                           00000017
+CCP1IE                            00000002
+CCP1IF                            00000002
+CCP1M0                            00000000
+CCP1M1                            00000001
+CCP1M2                            00000002
+CCP1M3                            00000003
+CCP1X                             00000005
+CCP1Y                             00000004
+CCP2CON                           0000001D
+CCP2IE                            00000000
+CCP2IF                            00000000
+CCP2M0                            00000000
+CCP2M1                            00000001
+CCP2M2                            00000002
+CCP2M3                            00000003
+CCP2X                             00000005
+CCP2Y                             00000004
+CCPR1                             00000015
+CCPR1H                            00000016
+CCPR1L                            00000015
+CCPR2                             0000001B
+CCPR2H                            0000001C
+CCPR2L                            0000001B
+CHS0                              00000003
+CHS1                              00000004
+CHS2                              00000005
+CIS                               00000003
+CKE                               00000006
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\p   11-10-2022  14:55:37        PAGE 29
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+CKP                               00000004
+CM0                               00000000
+CM1                               00000001
+CM2                               00000002
+CMCON                             0000009C
+CMIE                              00000006
+CMIF                              00000006
+CREN                              00000004
+CSRC                              00000007
+CVR0                              00000000
+CVR1                              00000001
+CVR2                              00000002
+CVR3                              00000003
+CVRCON                            0000009D
+CVREN                             00000007
+CVROE                             00000006
+CVRR                              00000005
+D                                 00000005
+DATA_ADDRESS                      00000005
+DC                                00000001
+D_A                               00000005
+D_NOT_A                           00000005
+EEADR                             0000010D
+EEADRH                            0000010F
+EECON1                            0000018C
+EECON2                            0000018D
+EEDATA                            0000010C
+EEDATH                            0000010E
+EEIE                              00000004
+EEIF                              00000004
+EEPGD                             00000007
+F                                 00000001
+FERR                              00000002
+FSR                               00000004
+GCEN                              00000007
+GIE                               00000007
+GO                                00000002
+GO_DONE                           00000002
+GO_NOT_DONE                       00000002
+I2C_DATA                          00000005
+I2C_READ                          00000002
+I2C_START                         00000003
+I2C_STOP                          00000004
+IBF                               00000007
+IBOV                              00000005
+INDF                              00000000
+INTCON                            0000000B
+INTE                              00000004
+INTEDG                            00000006
+INTF                              00000001
+IRP                               00000007
+NOT_A                             00000005
+NOT_ADDRESS                       00000005
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\p   11-10-2022  14:55:37        PAGE 30
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+NOT_BO                            00000000
+NOT_BOR                           00000000
+NOT_DONE                          00000002
+NOT_PD                            00000003
+NOT_POR                           00000001
+NOT_RBPU                          00000007
+NOT_RC8                           00000006
+NOT_T1SYNC                        00000002
+NOT_TO                            00000004
+NOT_TX8                           00000006
+NOT_W                             00000002
+NOT_WRITE                         00000002
+OBF                               00000006
+OERR                              00000001
+OPTION_REG                        00000081
+P                                 00000004
+PCFG0                             00000000
+PCFG1                             00000001
+PCFG2                             00000002
+PCFG3                             00000003
+PCL                               00000002
+PCLATH                            0000000A
+PCON                              0000008E
+PEIE                              00000006
+PEN                               00000002
+PIE1                              0000008C
+PIE2                              0000008D
+PIR1                              0000000C
+PIR2                              0000000D
+PORTA                             00000005
+PORTB                             00000006
+PORTC                             00000007
+PORTD                             00000008
+PORTE                             00000009
+PR2                               00000092
+PS0                               00000000
+PS1                               00000001
+PS2                               00000002
+PSA                               00000003
+PSAVE                             00000000
+PSPIE                             00000007
+PSPIF                             00000007
+PSPMODE                           00000004
+R                                 00000002
+RA0                               00000000
+RA1                               00000001
+RA2                               00000002
+RA3                               00000003
+RA4                               00000004
+RA5                               00000005
+RB0                               00000000
+RB1                               00000001
+RB2                               00000002
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\p   11-10-2022  14:55:37        PAGE 31
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+RB3                               00000003
+RB4                               00000004
+RB5                               00000005
+RB6                               00000006
+RB7                               00000007
+RBIE                              00000003
+RBIF                              00000000
+RC0                               00000000
+RC1                               00000001
+RC2                               00000002
+RC3                               00000003
+RC4                               00000004
+RC5                               00000005
+RC6                               00000006
+RC7                               00000007
+RC8_9                             00000006
+RC9                               00000006
+RCD8                              00000000
+RCEN                              00000003
+RCIE                              00000005
+RCIF                              00000005
+RCREG                             0000001A
+RCSTA                             00000018
+RD                                00000000
+RD0                               00000000
+RD1                               00000001
+RD2                               00000002
+RD3                               00000003
+RD4                               00000004
+RD5                               00000005
+RD6                               00000006
+RD7                               00000007
+RE0                               00000000
+RE1                               00000001
+RE2                               00000002
+READ_WRITE                        00000002
+RP0                               00000005
+RP1                               00000006
+RSEN                              00000001
+RX9                               00000006
+RX9D                              00000000
+R_NOT_W                           00000002
+R_W                               00000002
+S                                 00000003
+SEN                               00000000
+SMP                               00000007
+SPBRG                             00000099
+SPEN                              00000007
+SREN                              00000005
+SSAVE                             00000000
+SSPADD                            00000093
+SSPBUF                            00000013
+SSPCON                            00000014
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\p   11-10-2022  14:55:37        PAGE 32
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+SSPCON2                           00000091
+SSPEN                             00000005
+SSPIE                             00000003
+SSPIF                             00000003
+SSPM0                             00000000
+SSPM1                             00000001
+SSPM2                             00000002
+SSPM3                             00000003
+SSPOV                             00000006
+SSPSTAT                           00000094
+STATUS                            00000003
+STK00                             00000000
+STK01                             00000000
+STK02                             00000000
+STK03                             00000000
+STK04                             00000000
+STK05                             00000000
+STK06                             00000000
+STK07                             00000000
+STK08                             00000000
+STK09                             00000000
+STK10                             00000000
+STK11                             00000000
+STK12                             00000000
+SYNC                              00000004
+T0CS                              00000005
+T0IE                              00000005
+T0IF                              00000002
+T0SE                              00000004
+T1CKPS0                           00000004
+T1CKPS1                           00000005
+T1CON                             00000010
+T1INSYNC                          00000002
+T1OSCEN                           00000003
+T1SYNC                            00000002
+T2CKPS0                           00000000
+T2CKPS1                           00000001
+T2CON                             00000012
+TMR0                              00000001
+TMR0IE                            00000005
+TMR0IF                            00000002
+TMR1                              0000000E
+TMR1CS                            00000001
+TMR1H                             0000000F
+TMR1IE                            00000000
+TMR1IF                            00000000
+TMR1L                             0000000E
+TMR1ON                            00000000
+TMR2                              00000011
+TMR2IE                            00000001
+TMR2IF                            00000001
+TMR2ON                            00000002
+TOUTPS0                           00000003
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\p   11-10-2022  14:55:37        PAGE 33
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+TOUTPS1                           00000004
+TOUTPS2                           00000005
+TOUTPS3                           00000006
+TRISA                             00000085
+TRISA0                            00000000
+TRISA1                            00000001
+TRISA2                            00000002
+TRISA3                            00000003
+TRISA4                            00000004
+TRISA5                            00000005
+TRISB                             00000086
+TRISB0                            00000000
+TRISB1                            00000001
+TRISB2                            00000002
+TRISB3                            00000003
+TRISB4                            00000004
+TRISB5                            00000005
+TRISB6                            00000006
+TRISB7                            00000007
+TRISC                             00000087
+TRISC0                            00000000
+TRISC1                            00000001
+TRISC2                            00000002
+TRISC3                            00000003
+TRISC4                            00000004
+TRISC5                            00000005
+TRISC6                            00000006
+TRISC7                            00000007
+TRISD                             00000088
+TRISD0                            00000000
+TRISD1                            00000001
+TRISD2                            00000002
+TRISD3                            00000003
+TRISD4                            00000004
+TRISD5                            00000005
+TRISD6                            00000006
+TRISD7                            00000007
+TRISE                             00000089
+TRISE0                            00000000
+TRISE1                            00000001
+TRISE2                            00000002
+TRMT                              00000001
+TX8_9                             00000006
+TX9                               00000006
+TX9D                              00000000
+TXD8                              00000000
+TXEN                              00000005
+TXIE                              00000004
+TXIF                              00000004
+TXREG                             00000019
+TXSTA                             00000098
+UA                                00000001
+W                                 00000000
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\p   11-10-2022  14:55:37        PAGE 34
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+WCOL                              00000007
+WR                                00000001
+WREN                              00000002
+WRERR                             00000003
+WSAVE                             00000000
+Z                                 00000002
+_00001_DS_                        00000399
+_00106_DS_                        00000404
+_00112_DS_                        000003F5
+_00118_DS_                        000003EA
+_00119_DS_                        000003EE
+_00124_DS_                        000003A0
+_00125_DS_                        000003A5
+_00126_DS_                        000003AA
+_00127_DS_                        000003AF
+_00128_DS_                        000003B4
+_00129_DS_                        000003B9
+_00132_DS_                        000003BD
+_00138_DS_                        0000039A
+_00146_DS_                        00000308
+_00148_DS_                        00000361
+_00154_DS_                        0000027D
+_00156_DS_                        000002AA
+_00164_DS_                        000001C5
+_00166_DS_                        0000021F
+_00173_DS_                        00000167
+_00181_DS_                        000000E1
+_00183_DS_                        0000010E
+_00190_DS_                        00000058
+_BODEN_OFF                        00003FBF
+_BODEN_ON                         00003FFF
+_BOREN_OFF                        00003FBF
+_BOREN_ON                         00003FFF
+_CONFIG                           00002007
+_CPD_OFF                          00003FFF
+_CPD_ON                           00003EFF
+_CP_ALL                           00001FFF
+_CP_OFF                           00003FFF
+_CP_ON                            00001FFF
+_DEBUG_OFF                        00003FFF
+_DEBUG_ON                         000037FF
+_DEVID1                           00002006
+_DIO_u8ReadChannel                00000000
+_DIO_vidWriteChannel              00000000
+_DIO_vidWritePort                 00000000
+_FOSC_EXTRC                       00003FFF
+_FOSC_HS                          00003FFE
+_FOSC_LP                          00003FFC
+_FOSC_XT                          00003FFD
+_HS_OSC                           00003FFE
+_IDLOC0                           00002000
+_IDLOC1                           00002001
+_IDLOC2                           00002002
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\p   11-10-2022  14:55:37        PAGE 35
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+_IDLOC3                           00002003
+_LP_OSC                           00003FFC
+_LVP_OFF                          00003F7F
+_LVP_ON                           00003FFF
+_PBD_enuBtnChannelId              00000000
+_PBD_enuBtnConfig                 00000000
+_PBD_enuGetButtonState            000003BE
+_PBD_vidInit                      00000401
+_PBD_vidTask                      000003F2
+_PWRTE_OFF                        00003FFF
+_PWRTE_ON                         00003FF7
+_RC_OSC                           00003FFF
+_WDTE_OFF                         00003FFB
+_WDTE_ON                          00003FFF
+_WDT_OFF                          00003FFB
+_WDT_ON                           00003FFF
+_WRT_1FOURTH                      00003BFF
+_WRT_256                          00003DFF
+_WRT_HALF                         000039FF
+_WRT_OFF                          00003FFF
+_XT_OSC                           00003FFD
+__16F877A                         00000001
+__CODE_END                        00001FFF
+__CODE_START                      00000000
+__COMMON_RAM_END                  0000007F
+__COMMON_RAM_START                00000070
+__EEPROM_END                      000021FF
+__EEPROM_START                    00002100
+__VECTOR_INT                      00000004
+__VECTOR_RESET                    00000000
+__gptrget1                        00000000
+__mulchar                         00000000
+_code_pbd_prg_0009                00000009
+_code_pbd_prg_0020                00000020
+_code_pbd_prg_0025                00000025
+_code_pbd_prg_0062                00000062
+_code_pbd_prg_0079                00000079
+_code_pbd_prg_0081                00000081
+_code_pbd_prg_00CC                000000CC
+_code_pbd_prg_0118                00000118
+_code_pbd_prg_012F                0000012F
+_code_pbd_prg_0134                00000134
+_code_pbd_prg_0171                00000171
+_code_pbd_prg_0188                00000188
+_code_pbd_prg_0190                00000190
+_code_pbd_prg_020A                0000020A
+_code_pbd_prg_0229                00000229
+_code_pbd_prg_0240                00000240
+_code_pbd_prg_0248                00000248
+_code_pbd_prg_02B4                000002B4
+_code_pbd_prg_02CB                000002CB
+_code_pbd_prg_02D3                000002D3
+_code_pbd_prg_034C                0000034C
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\p   11-10-2022  14:55:37        PAGE 36
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+_code_pbd_prg_036B                0000036B
+_code_pbd_prg_03CB                000003CB
+_code_pbd_prg_040C                0000040C
+_strBtnInfo                       00000031
+_vidHoldState                     0000010F
+_vidPreHoldState                  00000168
+_vidPrePushState                  000002AB
+_vidPreReleaseState               00000059
+_vidPushState                     00000220
+_vidReleaseState                  00000000
+_vidUpdateBtnState                00000362
+r0x1009                           0000002D
+r0x100A                           0000002E
+r0x100B                           0000002F
+r0x100C                           00000030
+r0x100E                           00000026
+r0x100F                           00000027
+r0x1010                           00000028
+r0x1011                           00000029
+r0x1012                           0000002A
+r0x1013                           0000002B
+r0x1014                           0000002C
+r0x1016                           00000022
+r0x1017                           00000023
+r0x1018                           00000024
+r0x1019                           00000025
+r0x101B                           0000001B
+r0x101C                           0000001C
+r0x101D                           0000001D
+r0x101E                           0000001E
+r0x101F                           0000001F
+r0x1020                           00000020
+r0x1021                           00000021
+r0x1022                           00000015
+r0x1023                           00000016
+r0x1024                           00000017
+r0x1025                           00000018
+r0x1026                           00000019
+r0x1027                           0000001A
+r0x1028                           0000000E
+r0x1029                           0000000F
+r0x102A                           00000010
+r0x102B                           00000011
+r0x102C                           00000012
+r0x102D                           00000013
+r0x102E                           00000014
+r0x102F                           0000000A
+r0x1030                           0000000B
+r0x1031                           0000000C
+r0x1032                           0000000D
+r0x1033                           00000006
+r0x1034                           00000007
+r0x1035                           00000008
+gpasm-1.4.0 #1106 (Oct  6 2014) obj\Release\p   11-10-2022  14:55:37        PAGE 37
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+r0x1036                           00000009
+r0x1037                           00000005
+r0x1038                           00000000
+r0x1039                           00000001
+r0x103A                           00000002
+r0x103B                           00000003
+r0x103C                           00000004
+
+Errors   :     0
+Warnings :     0 reported,     0 suppressed
+Messages :     0 reported,     0 suppressed
+
+
